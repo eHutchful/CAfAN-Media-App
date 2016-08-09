@@ -11,6 +11,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using SupportFragment = Android.Support.V4.App.Fragment;
+using Android.Views.InputMethods;
 
 namespace DivineVerITies.Fragments
 {
@@ -21,14 +22,32 @@ namespace DivineVerITies.Fragments
             base.OnCreate(savedInstanceState);
 
             // Create your fragment here
+           
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            // Use this to return your custom view for this Fragment
-            // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
+            View View = inflater.Inflate(Resource.Layout.Fragment2, container, false);
 
-            return inflater.Inflate(Resource.Layout.Fragment2, container, false);
+            LinearLayout mLinearLayout = View.FindViewById<LinearLayout>(Resource.Id.mainView);
+            mLinearLayout.Click += mLinearLayout_Click;
+
+            Button mButtonSignIn = View.FindViewById<Button>(Resource.Id.btnSignIn);
+            mButtonSignIn.Click += mButtonSignIn_Click;
+
+            return View;  
+        }
+
+        private void mLinearLayout_Click(object sender, EventArgs e)
+        {
+            InputMethodManager inputManager = (InputMethodManager)Activity.GetSystemService(Android.App.Activity.InputMethodService);
+            inputManager.HideSoftInputFromWindow(Activity.CurrentFocus.WindowToken, HideSoftInputFlags.None);
+        }
+
+        private void mButtonSignIn_Click(object sender, EventArgs e)
+        {
+            Intent intent = new Intent(Activity, typeof(SelectTopics));
+            StartActivity(intent);
         }
     }
 }

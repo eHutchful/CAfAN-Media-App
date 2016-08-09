@@ -9,11 +9,14 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Android.Support.V7.App;
+using SupportToolbar = Android.Support.V7.Widget.Toolbar;
+using SupportActionBar = Android.Support.V7.App.ActionBar;
 
 namespace DivineVerITies
 {
-    [Activity(Label = "RecommendedForYou")]
-    public class RecommendedForYou : Activity
+    [Activity(Label = "PodcastDetails", Theme = "@style/Theme.DesignDemo")]
+    public class PodcastDetails : AppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {

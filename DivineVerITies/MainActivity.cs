@@ -11,6 +11,7 @@ using Android.Support.V7.App;
 using Android.Support.Design.Widget;
 using Android.Support.V4.View;
 using DivineVerITies.Fragments;
+using Android.Views.InputMethods;
 
 namespace DivineVerITies
 {
@@ -26,9 +27,11 @@ namespace DivineVerITies
             SetContentView(Resource.Layout.Main);
 
             CollapsingToolbarLayout collapsingToolBar = FindViewById<CollapsingToolbarLayout>(Resource.Id.collapsing_toolbar);
+            collapsingToolBar.TitleEnabled = false;
 
             SupportToolbar toolBar = FindViewById<SupportToolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolBar);
+            SupportActionBar.Title = " ";
 
             TabLayout tabs = FindViewById<TabLayout>(Resource.Id.tabs);
 
@@ -37,24 +40,6 @@ namespace DivineVerITies
             SetUpViewPager(viewPager);
 
             tabs.SetupWithViewPager(viewPager);
-
-            Button mButtonSignUp = FindViewById<Button>(Resource.Id.btnSignUp);
-            mButtonSignUp.Click += mButtonSignUp_Click;
-
-            Button mButtonSignIn = FindViewById<Button>(Resource.Id.btnSignIn);
-            mButtonSignIn.Click += mButtonSignIn_Click;
-        }
-
-        void mButtonSignIn_Click(object sender, EventArgs e)
-        {
-            Intent intent = new Intent(this, typeof(RecommendedForYou));
-            StartActivity(intent);
-            this.Finish();
-        }
-
-        void mButtonSignUp_Click(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         private void SetUpViewPager(ViewPager viewPager)
