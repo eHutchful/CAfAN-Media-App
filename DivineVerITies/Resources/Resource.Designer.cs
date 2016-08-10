@@ -1847,22 +1847,25 @@ namespace DivineVerITies
 			public const int ic_menu = 2130837585;
 			
 			// aapt resource value: 0x7f020052
-			public const int Icon = 2130837586;
+			public const int ic_search = 2130837586;
 			
 			// aapt resource value: 0x7f020053
-			public const int Imagination = 2130837587;
+			public const int Icon = 2130837587;
 			
 			// aapt resource value: 0x7f020054
-			public const int Liberty = 2130837588;
+			public const int Imagination = 2130837588;
 			
 			// aapt resource value: 0x7f020055
-			public const int Mbro = 2130837589;
+			public const int Liberty = 2130837589;
 			
 			// aapt resource value: 0x7f020056
-			public const int mdslogo = 2130837590;
+			public const int Mbro = 2130837590;
 			
 			// aapt resource value: 0x7f020057
-			public const int notification_template_icon_bg = 2130837591;
+			public const int mdslogo = 2130837591;
+			
+			// aapt resource value: 0x7f020058
+			public const int notification_template_icon_bg = 2130837592;
 			
 			static Drawable()
 			{
@@ -1923,7 +1926,10 @@ namespace DivineVerITies
 			public const int action_mode_close_button = 2131099708;
 			
 			// aapt resource value: 0x7f0600a0
-			public const int action_settings = 2131099808;
+			public const int action_search = 2131099808;
+			
+			// aapt resource value: 0x7f0600a1
+			public const int action_settings = 2131099809;
 			
 			// aapt resource value: 0x7f06003d
 			public const int activity_chooser_view_content = 2131099709;
