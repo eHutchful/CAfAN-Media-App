@@ -1,17 +1,11 @@
-﻿using System;
-using Android.App;
-using Android.Content;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+﻿using Android.App;
 using Android.OS;
-using SupportToolbar = Android.Support.V7.Widget.Toolbar;
-using SupportActionBar = Android.Support.V7.App.ActionBar;
-using Android.Support.V7.App;
 using Android.Support.Design.Widget;
 using Android.Support.V4.View;
+using Android.Support.V7.App;
 using DivineVerITies.Fragments;
-using Android.Views.InputMethods;
+using SupportActionBar = Android.Support.V7.App.ActionBar;
+using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace DivineVerITies
 {
