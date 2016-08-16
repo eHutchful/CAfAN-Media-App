@@ -5,6 +5,7 @@ using Android.Support.Design.Widget;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
+using DivineVerITies.ExoPlayer;
 using SupportActionBar = Android.Support.V7.App.ActionBar;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 
@@ -27,6 +28,16 @@ namespace DivineVerITies
             CollapsingToolbarLayout collapsingToolBar = FindViewById<CollapsingToolbarLayout>(Resource.Id.collapsing_toolbar);
             collapsingToolBar.Title = "Prayer";
             collapsingToolBar.SetExpandedTitleColor(Android.Resource.Color.Transparent);
+
+            FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
+
+            fab.Click += (o, e) =>
+            {
+                View anchor = o as View;
+
+                Android.Content.Intent intent = new Android.Content.Intent(fab.Context, typeof(SampleChooserActivity));
+                StartActivity(intent);
+            };
 
             LoadBackDrop();
         }

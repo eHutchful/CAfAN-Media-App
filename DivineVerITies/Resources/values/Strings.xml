@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="Hello">Hello World, Click Me!</string>
+  <!-- The user visible name of the application. [CHAR LIMIT=20] -->
     <string name="ApplicationName">DivineVerITies</string>
 
   <string name="select_topics">
@@ -15,5 +16,28 @@
     May the Lord help you understand further what prayer is and how we can pray for others and achieve results. 
     This is Part One of the message in this series. God bless you richly.
   </string>
-  
+
+  <string name="enable_background_audio">Play in background</string>
+
+  <string name="video">Video</string>
+
+  <string name="audio">Audio</string>
+
+  <string name="text">Text</string>
+
+  <string name="logging">Logging</string>
+
+  <string name="logging_normal">Normal</string>
+
+  <string name="logging_verbose">Verbose</string>
+
+  <string name="retry">Retry</string>
+
+  <string name="off">[off]</string>
+
+  <string name="drm_error_not_supported">Protected content not supported on API levels below 18</string>
+
+  <string name="drm_error_unsupported_scheme">This device does not support the required DRM scheme</string>
+
+  <string name="drm_error_unknown">An unknown DRM error occurred</string>
 </resources>

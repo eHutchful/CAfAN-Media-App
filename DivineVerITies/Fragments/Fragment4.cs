@@ -11,11 +11,16 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using SupportFragment = Android.Support.V4.App.Fragment;
+using Android.Support.V4.Widget;
+using Android.Support.V7.Widget;
 
 namespace DivineVerITies.Fragments
 {
     public class Fragment4 : SupportFragment
     {
+        private SwipeRefreshLayout swipeRefreshLayout;
+        private RecyclerView recyclerView;
+
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -28,7 +33,8 @@ namespace DivineVerITies.Fragments
             // Use this to return your custom view for this Fragment
             // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
 
-            return inflater.Inflate(Resource.Layout.Fragment4, container, false);
+            recyclerView = inflater.Inflate(Resource.Layout.Fragment4, container, false) as RecyclerView;
+            return recyclerView;
         }
     }
 }
