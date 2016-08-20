@@ -23,6 +23,10 @@ using Uri = Android.Net.Uri;
 using DivineVerITies.ExoPlayer.Player;
 using Com.Google.Android.Exoplayer;
 using Exoplayer1 = Com.Google.Android.Exoplayer.ExoPlayer;
+using Android.Support.V7.App;
+using SupportActionBar = Android.Support.V7.App.ActionBar;
+using SupportToolbar = Android.Support.V7.Widget.Toolbar;
+using Android.Support.Design.Widget;
 
 namespace DivineVerITies.ExoPlayer
 {
@@ -34,10 +38,10 @@ namespace DivineVerITies.ExoPlayer
 		ConfigurationChanges = ConfigChanges.KeyboardHidden | ConfigChanges.Keyboard | ConfigChanges.Orientation | ConfigChanges.ScreenSize,
 		LaunchMode = LaunchMode.SingleInstance,
         Label = "@string/ApplicationName",
-		Theme = "@style/PlayerTheme"
+        Theme = "@style/Theme.DesignDemo"
 		)]
     [IntentFilter(new[] { "divineVerITies.ExoPlayer.action.VIEW" }, Categories = new[] { "android.intent.category.DEFAULT" }, DataScheme = "http")]
-	class PlayerActivity : Activity, ISurfaceHolderCallback, View.IOnClickListener,
+	class PlayerActivity : AppCompatActivity, ISurfaceHolderCallback, View.IOnClickListener,
 		VideoPlayer.IListener, VideoPlayer.ICaptionListener, VideoPlayer.ID3MetadataListener,
 		AudioCapabilitiesReceiver.IListener
 	{
@@ -50,7 +54,7 @@ namespace DivineVerITies.ExoPlayer
 		public const int TypeOther = 3;
 
 		// For use when launching the demo app using adb.
-		private const string ContentExtExtra = "type";
+		public const string ContentExtExtra = "type";
 		private const string ExtDash = ".mpd";
 		private const string ExtSs = ".ism";
 		private const string ExtHls = ".m3u8";
@@ -58,7 +62,7 @@ namespace DivineVerITies.ExoPlayer
 		private const int MenuGroupTracks = 1;
 		private const int IdOffset = 2;
 
-		private static readonly CookieManager DefaultCookieManager;
+		public static readonly CookieManager DefaultCookieManager;
 
 		static PlayerActivity()
 		{
@@ -66,32 +70,34 @@ namespace DivineVerITies.ExoPlayer
 			DefaultCookieManager.SetCookiePolicy(CookiePolicy.AcceptOriginalServer);
 		}
 
+        private SupportToolbar toolBar;
 		private EventLogger _eventLogger;
 		private MediaController _mediaController;
 		private View _debugRootView;
 		private View _shutterView;
 		private AspectRatioFrameLayout _videoFrame;
 		private SurfaceView _surfaceView;
-		private TextView _debugTextView;
-		private TextView _playerStateTextView;
+		//private TextView _debugTextView;
+		//public TextView _playerStateTextView;
+        private string _playerState;
 		private SubtitleLayout _subtitleLayout;
 		private Button _videoButton;
 		private Button _audioButton;
 		private Button _textButton;
 		private Button _retryButton;
 
-		private VideoPlayer _player;
-		private DebugTextViewHelper _debugViewHelper;
+		public VideoPlayer _player;
+		//private DebugTextViewHelper _debugViewHelper;
 		private bool _playerNeedsPrepare;
 
-		private long _playerPosition;
-		private bool _enableBackgroundAudio;
+		public long _playerPosition;
+		public bool _enableBackgroundAudio;
 
-		private Uri _contentUri;
-		private int _contentType;
-		private string _contentId;
+        public Uri _contentUri;
+        public int _contentType;
+		public string _contentId;
 
-		private AudioCapabilitiesReceiver _audioCapabilitiesReceiver;
+		public AudioCapabilitiesReceiver _audioCapabilitiesReceiver;
 
 		#region Activity lifecycle
 
@@ -100,6 +106,12 @@ namespace DivineVerITies.ExoPlayer
 			base.OnCreate(savedInstanceState);
 
 			SetContentView(Resource.Layout.player_activity);
+
+            toolBar = FindViewById<SupportToolbar>(Resource.Id.toolbar);
+            SetSupportActionBar(toolBar);
+            SupportActionBar.Title = "Now Playing";
+            SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+
 			var root = FindViewById(Resource.Id.root);
 
 			root.Touch += (sender, args) =>
@@ -136,9 +148,9 @@ namespace DivineVerITies.ExoPlayer
 			_videoFrame = FindViewById<AspectRatioFrameLayout>(Resource.Id.video_frame);
 			_surfaceView = FindViewById<SurfaceView>(Resource.Id.surface_view);
 			_surfaceView.Holder.AddCallback(this);
-			_debugTextView = FindViewById<TextView>(Resource.Id.debug_text_view);
+			//_debugTextView = FindViewById<TextView>(Resource.Id.debug_text_view);
 
-			_playerStateTextView = FindViewById<TextView>(Resource.Id.player_state_view);
+			//_playerStateTextView = FindViewById<TextView>(Resource.Id.player_state_view);
 			_subtitleLayout = FindViewById<SubtitleLayout>(Resource.Id.subtitles);
 
 			_mediaController = new MediaController(this);
@@ -157,7 +169,32 @@ namespace DivineVerITies.ExoPlayer
 
 			_audioCapabilitiesReceiver = new AudioCapabilitiesReceiver(this, this);
 			_audioCapabilitiesReceiver.Register();
+
+             
 		}
+
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            MenuInflater.Inflate(Resource.Menu.audio_list, menu);
+            return true;
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch (item.ItemId)
+            {
+                case Android.Resource.Id.Home:
+                    Finish();
+                    return true;
+
+                case Resource.Id.action_audio_list:
+                    Intent intent = new Intent(this, typeof(MainApp));
+                    StartActivity(intent);
+                    break;
+            }
+
+            return base.OnOptionsItemSelected(item);
+        }
 
 		protected override void OnNewIntent(Intent intent)
 		{
@@ -259,7 +296,7 @@ namespace DivineVerITies.ExoPlayer
 			}
 		}
 
-		private void PreparePlayer(bool playWhenReady)
+		public void PreparePlayer(bool playWhenReady)
 		{
 			if (_player == null)
 			{
@@ -276,8 +313,8 @@ namespace DivineVerITies.ExoPlayer
 				_player.AddListener(_eventLogger);
 				_player.SetInfoListener(_eventLogger);
 				_player.SetInternalErrorListener(_eventLogger);
-				_debugViewHelper = new DebugTextViewHelper(_player, _debugTextView);
-				_debugViewHelper.Start();
+				//_debugViewHelper = new DebugTextViewHelper(_player, _debugTextView);
+				//_debugViewHelper.Start();
 			}
 			if (_playerNeedsPrepare)
 			{
@@ -289,12 +326,12 @@ namespace DivineVerITies.ExoPlayer
 			_player.PlayWhenReady = playWhenReady;
 		}
 
-		private void ReleasePlayer()
+		public void ReleasePlayer()
 		{
 			if (_player != null)
 			{
-				_debugViewHelper.Stop();
-				_debugViewHelper = null;
+                //_debugViewHelper.Stop();
+                //_debugViewHelper = null;
 				_playerPosition = _player.CurrentPosition;
 				_player.Release();
 				_player = null;
@@ -335,9 +372,20 @@ namespace DivineVerITies.ExoPlayer
 					text += "unknown";
 					break;
 			}
-			_playerStateTextView.Text = text;
+			_playerState = text;
 			UpdateButtonVisibilities();
+            
+            //if(playbackState != Exoplayer1.StateReady)
+            //{
+                ShowTheSnackBar(_shutterView);
+            //}
 		}
+
+        private void ShowTheSnackBar(View o)
+        {
+            Snackbar.Make(o, _playerState, Snackbar.LengthLong)
+                    .Show();
+        }
 
 		public void OnError(Exception e)
 		{
@@ -634,7 +682,7 @@ namespace DivineVerITies.ExoPlayer
 
 		#endregion
 
-		private void ConfigureSubtitleView()
+		public void ConfigureSubtitleView()
 		{
 			CaptionStyleCompat style;
 			float fontScale;
@@ -672,7 +720,7 @@ namespace DivineVerITies.ExoPlayer
 		/// <param name="uri">The <see cref="Uri"/> of the media.</param>
 		/// <param name="fileExtension">An overriding file extension.</param>
 		/// <returns>The inferred type.</returns>
-		private static int InferContentType(Uri uri, string fileExtension)
+		public static int InferContentType(Uri uri, string fileExtension)
 		{
 			var lastPathSegment = !string.IsNullOrEmpty(fileExtension)
 				? "." + fileExtension

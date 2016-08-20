@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="1dp"
+    android:background="#FFFF"
+    android:weightSum="100">
+<!--style="@style/Widget.CardContent"-->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="25"
+        android:orientation="vertical"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:paddingLeft="10dp"
+        android:paddingTop="25dp"
+        android:paddingBottom="7dp">
+        <refractored.controls.CircleImageView
+            android:id="@+id/avatar"
+            android:layout_width="60dp"
+            android:layout_height="60dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="75"
+        android:orientation="vertical"
+        android:paddingRight="5dp"
+        android:paddingLeft="7dp"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp">
+        <TextView
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtRow1"
+            android:textColor="#000"
+            android:gravity="center_vertical"
+            android:padding="2dp"
+            android:textSize="16sp" />
+        <TextView
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtRow2"
+            android:textColor="#000"
+            android:gravity="center_vertical"
+            android:padding="2dp"
+            android:textSize="14sp" />
+        <TextView
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtRow3"
+            android:textColor="#000"
+            android:gravity="center_vertical"
+            android:padding="2dp"
+            android:textSize="12sp" />
+    </LinearLayout>
+</LinearLayout>

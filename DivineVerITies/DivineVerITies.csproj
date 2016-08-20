@@ -68,7 +68,7 @@
       <HintPath>..\packages\modernhttpclient.2.4.2\lib\MonoAndroid\ModernHttpClient.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Mono.Android" />
+    <Reference Include="Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=84e04ff9cfb79065, processorArchitecture=MSIL" />
     <Reference Include="Mono.Android.Export" />
     <Reference Include="mscorlib" />
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -134,8 +134,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AudioList.cs" />
+    <Compile Include="AudioRecyclerViewAdapter.cs" />
     <Compile Include="ExoPlayer\EventLogger.cs" />
     <Compile Include="ExoPlayer\PlayerActivity.cs" />
+    <Compile Include="ExoPlayer\Player\Audio_Player.cs" />
     <Compile Include="ExoPlayer\Player\DashRendererBuilder.cs" />
     <Compile Include="ExoPlayer\Player\ExtractorRendererBuilder.cs" />
     <Compile Include="ExoPlayer\Player\HlsRendererBuilder.cs" />
@@ -152,6 +155,7 @@
     <Compile Include="Fragments\Fragment5.cs" />
     <Compile Include="Fragments\Fragment6.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />
+    <Compile Include="Helpers\Initialize.cs" />
     <Compile Include="Helpers\Topics.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MainApp.cs" />
@@ -211,6 +215,21 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\menu\drawer_view.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\new_audio.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\audio_player.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\menu\audio_list.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\menu\skip.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\player_activity.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -505,9 +524,6 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\player_activity.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\layout\sample_chooser_activity.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -533,6 +549,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_playlist_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\Logo_trans72.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\Logo_trans192.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Android.Support.Vector.Drawable.23.4.0.1\build\Xamarin.Android.Support.Vector.Drawable.targets" Condition="Exists('..\packages\Xamarin.Android.Support.Vector.Drawable.23.4.0.1\build\Xamarin.Android.Support.Vector.Drawable.targets')" />

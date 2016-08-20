@@ -4,15 +4,17 @@ using Android.Support.Design.Widget;
 using Android.Support.V4.View;
 using Android.Support.V7.App;
 using DivineVerITies.Fragments;
+using DivineVerITies.Helpers;
+using System.Collections.Generic;
 using SupportActionBar = Android.Support.V7.App.ActionBar;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace DivineVerITies
 {
-    [Activity(MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/Theme.DesignDemo")]
+    [Activity(MainLauncher = true, Icon = "@drawable/Logo_trans72", Theme = "@style/Theme.DesignDemo")]
     public class MainActivity : AppCompatActivity
     {
-
+   
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -34,6 +36,9 @@ namespace DivineVerITies
             SetUpViewPager(viewPager);
 
             tabs.SetupWithViewPager(viewPager);
+
+           
+
         }
 
         private void SetUpViewPager(ViewPager viewPager)

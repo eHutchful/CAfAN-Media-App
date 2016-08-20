@@ -10,14 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:fitsSystemWindows="true">
+        >
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            android:fitsSystemWindows="true"/>
+            
+            />
     </android.support.design.widget.AppBarLayout>
     <TextView
         android:id="@+id/txtSelectTopic"
@@ -26,19 +27,21 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="?attr/actionBarSize"
-        android:layout_gravity="top"
         android:gravity="left"
         android:paddingTop="10dp"
         android:textAppearance="@android:style/TextAppearance.Small"
         android:textStyle="bold"
-        android:text="@string/select_topics" />
+        android:text="@string/select_topics"
+        
+        />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="?attr/actionBarSize"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_marginLeft="20dp" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="?attr/actionBarSize"
+        />
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"

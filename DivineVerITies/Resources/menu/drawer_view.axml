@@ -11,6 +11,10 @@
         android:icon="@drawable/ic_playlist_add_check"
         android:title="Recommended Topics" />
     <item
+        android:id="@+id/nav_liveStream"
+        android:icon="@drawable/ic_playlist_add_check"
+        android:title="Live Stream" />
+    <item
         android:icon="@drawable/ic_settings_applications"
         android:title="Settings" />
     <item

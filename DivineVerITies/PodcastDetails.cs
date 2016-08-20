@@ -1,19 +1,28 @@
 
 using Android.App;
+using Android.Graphics;
+using Android.Net;
 using Android.OS;
 using Android.Support.Design.Widget;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
 using DivineVerITies.ExoPlayer;
+using DivineVerITies.ExoPlayer.Player;
+using DivineVerITies.Helpers;
+using Newtonsoft.Json;
+using System.Net.Http;
 using SupportActionBar = Android.Support.V7.App.ActionBar;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace DivineVerITies
 {
+    
     [Activity(Theme = "@style/Theme.DesignDemo")]
     public class PodcastDetails : AppCompatActivity
     {
+        bool isVisible = true;
+        AudioList selectedAudio;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -21,12 +30,14 @@ namespace DivineVerITies
             // Create your application here
             SetContentView(Resource.Layout.PodcastDetails);
 
+            selectedAudio = JsonConvert.DeserializeObject<AudioList>(Intent.GetStringExtra("selectedItem"));
+
             SupportToolbar toolBar = FindViewById<SupportToolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolBar);
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 
             CollapsingToolbarLayout collapsingToolBar = FindViewById<CollapsingToolbarLayout>(Resource.Id.collapsing_toolbar);
-            collapsingToolBar.Title = "Prayer";
+            collapsingToolBar.Title = selectedAudio.Title;
             collapsingToolBar.SetExpandedTitleColor(Android.Resource.Color.Transparent);
 
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
@@ -35,11 +46,24 @@ namespace DivineVerITies
             {
                 View anchor = o as View;
 
-                Android.Content.Intent intent = new Android.Content.Intent(fab.Context, typeof(SampleChooserActivity));
+                //var mpdIntent = new Android.Content.Intent(this, typeof(PlayerActivity))
+                //.SetData(Uri.Parse(selectedAudio.Link))
+                //    .PutExtra(PlayerActivity.ContentIdExtra, 3)
+                //.PutExtra(PlayerActivity.ContentTypeExtra, PlayerActivity.TypeOther);
+                //StartActivity(mpdIntent);
+
+                Android.Content.Intent intent = new Android.Content.Intent(this, typeof(Audio_Player));
+                var serial = JsonConvert.SerializeObject(selectedAudio);
+                intent.PutExtra("selectedItem", serial);
+
                 StartActivity(intent);
             };
 
-            LoadBackDrop();
+            
+
+            TextView mAudioDescription = FindViewById<TextView>(Resource.Id.AudioDescription);
+            mAudioDescription.Text = selectedAudio.Description;
+
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
@@ -60,10 +84,29 @@ namespace DivineVerITies
             return true;
         }
 
-        private void LoadBackDrop()
+        protected async override void OnStart()
         {
-            ImageView imageView = FindViewById<ImageView>(Resource.Id.backdrop);
-            imageView.SetImageResource(Resource.Drawable.PRAYER);
+            base.OnStart();
+            if (isVisible)
+            {
+                ImageView mAlbumArt = FindViewById<ImageView>(Resource.Id.backdrop);
+                Bitmap imageBitmap=null;
+                using (var client = new HttpClient())
+                {                  
+                    var imageBytes = await client.GetByteArrayAsync(selectedAudio.ImageUrl);
+                        
+                    if (imageBytes != null && imageBytes.Length > 0)
+                    {
+                        imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+                    }
+                }                
+                mAlbumArt.SetImageBitmap(imageBitmap);
+                ProgressBar pBar= FindViewById<ProgressBar>(Resource.Id.image_loading);
+                pBar.Visibility = ViewStates.Gone;
+                isVisible = false;
+            }
+
         }
+
     }
 }

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="#33000000"
+    android:id="@+id/audioPlayerView">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            android:fitsSystemWindows="true" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_above="@+id/audio_player_controls_container">
+        <ImageView
+            android:id="@+id/audio_player_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:ignore="ContentDescription" />
+        <ProgressBar
+            android:id="@+id/audio_player_loading"
+            style="?android:progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+        <TextView
+            android:id="@+id/player_state_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:textSize="20sp"
+            tools:ignore="SmallSp" />
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/audio_player_controls_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:paddingTop="10dp"
+        android:elevation="4dp"
+        android:translationZ="2dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/audio_player_position"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:textColor="@android:color/white"
+                android:layout_marginLeft="10dp"
+                tools:text="00:00"
+                tools:ignore="RtlHardcoded" />
+            <TextView
+                android:id="@+id/audio_player_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:textColor="@android:color/white"
+                android:layout_marginRight="10dp"
+                tools:text="00:00"
+                tools:ignore="RelativeOverlap,RtlHardcoded" />
+        </RelativeLayout>
+        <SeekBar
+            android:id="@+id/audio_player_seek"
+            style="?android:seekBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="10dp">
+            <android.support.v4.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+            <ImageButton
+                android:id="@+id/audio_player_shuffle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_shuffle"
+                android:scaleType="centerInside"
+                tools:ignore="ContentDescription" />
+            <android.support.v4.widget.Space
+                android:layout_width="44dp"
+                android:layout_height="match_parent" />
+            <ImageButton
+                android:id="@+id/audio_player_previous"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_fast_rewind_white"
+                android:scaleType="centerInside"
+                tools:ignore="ContentDescription"
+                android:clickable="true" />
+            <android.support.v4.widget.Space
+                android:layout_width="44dp"
+                android:layout_height="match_parent" />
+            <ImageButton
+                android:id="@+id/audio_player_play_pause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_play_arrow"
+                android:scaleType="centerInside"
+                tools:ignore="ContentDescription"
+                android:clickable="true" />
+            <android.support.v4.widget.Space
+                android:layout_width="44dp"
+                android:layout_height="match_parent" />
+            <ImageButton
+                android:id="@+id/audio_player_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_fast_forward_white"
+                android:scaleType="centerInside"
+                tools:ignore="ContentDescription"
+                android:clickable="true" />
+            <android.support.v4.widget.Space
+                android:layout_width="44dp"
+                android:layout_height="match_parent" />
+            <ImageButton
+                android:id="@+id/audio_download"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_cloud_download"
+                android:scaleType="centerInside"
+                tools:ignore="ContentDescription" />
+            <android.support.v4.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
