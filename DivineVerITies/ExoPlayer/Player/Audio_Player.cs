@@ -108,10 +108,57 @@ namespace DivineVerITies.ExoPlayer.Player
         {
             var builder = new Android.Support.V7.App.AlertDialog.Builder(this);
             builder.SetTitle("Confirm Download")
-           .SetMessage("Are You Sure You Want To Download" + "" + selectedAudio.SubTitle)
-           .SetPositiveButton("Yes", delegate { })
+           .SetMessage("Are You Sure You Want To Download" + " " + selectedAudio.SubTitle)
+           .SetPositiveButton("Yes", delegate { 
+                    //Run Download Code
+               
+              // DownLoadItemNotification();
+           })
            .SetNegativeButton("No", delegate { });
             builder.Create().Show();
+        }
+
+        private void DownLoadItemNotification()
+        {
+            // Instantiate the builder and set notification elements:
+            Notification.Builder builder = new Notification.Builder(this)
+                .SetContentTitle("Downloading Podcast")
+                .SetContentText("Download In Progress")
+                .SetDefaults(NotificationDefaults.Sound | NotificationDefaults.Vibrate)
+                .SetLargeIcon(BitmapFactory.DecodeResource(Resources, Resource.Drawable.Logo_trans72))
+                .SetSmallIcon(Resource.Drawable.ic_cloud_download)
+                //.SetPriority(NotificationPriority.High)
+                .SetVisibility (NotificationVisibility.Public)
+                .SetCategory(Notification.CategoryProgress)
+                //Initialize the download
+                .SetProgress(0, 0, true);
+
+
+            // Build the notification:
+            Notification notification = builder.Build();
+
+            // Get the notification manager:
+            NotificationManager notificationManager =
+                GetSystemService(Context.NotificationService) as NotificationManager;
+
+            // Publish the notification:
+            const int notificationId = 0;
+            notificationManager.Notify(notificationId, notification);
+
+            //Started download
+            int per = 1;
+            
+            builder.SetContentText("Downloaded (" + per + "/100")
+                    .SetProgress(100, per, false);
+            // Displays the progress bar for the first time.
+            notificationManager.Notify(notificationId, notification);
+
+            //download complete
+            builder.SetContentTitle("Done")
+                    .SetContentText("Download complete")
+                // Removes the progress bar
+                   .SetProgress(0, 0, false);
+            notificationManager.Notify(notificationId, notification);
         }
 
         private void ShowAudioSnackBar()
