@@ -52,6 +52,10 @@
       <HintPath>..\packages\Xam.Plugins.Android.ExoPlayer.1.5.8\lib\MonoAndroid\ExoPlayer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Glide, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Glide.Xamarin.3.7.0\lib\Glide.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.WindowsAzure.Mobile, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Azure.Mobile.Client.2.1.1\lib\monoandroid\Microsoft.WindowsAzure.Mobile.dll</HintPath>
       <Private>True</Private>
@@ -154,8 +158,11 @@
     <Compile Include="Fragments\Fragment4.cs" />
     <Compile Include="Fragments\Fragment5.cs" />
     <Compile Include="Fragments\Fragment6.cs" />
+    <Compile Include="Helpers\Download.cs" />
+    <Compile Include="Helpers\DownloadBytesProgress.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />
     <Compile Include="Helpers\Initialize.cs" />
+    <Compile Include="Helpers\MyService.cs" />
     <Compile Include="Helpers\Topics.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MainApp.cs" />
@@ -230,6 +237,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\player_activity.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\audio_cardview.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

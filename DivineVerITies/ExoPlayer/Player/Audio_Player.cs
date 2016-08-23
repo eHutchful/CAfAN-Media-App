@@ -15,6 +15,12 @@ using Newtonsoft.Json;
 using Android.Graphics;
 using System.Net.Http;
 using Android.Support.Design.Widget;
+using System.Threading;
+using DivineVerITies.Helpers;
+using System;
+using System.Threading.Tasks;
+using Java.Lang;
+using System.IO;
 
 namespace DivineVerITies.ExoPlayer.Player
 {
@@ -71,11 +77,12 @@ namespace DivineVerITies.ExoPlayer.Player
 
             toolBar = FindViewById<SupportToolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolBar);
-            SupportActionBar.Title = "Now Playing";
+            // Change To SubTitle Later
+            SupportActionBar.Title = selectedAudio.Title;
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 
             _player = new MediaPlayer();
-            _player.SetAudioStreamType(Stream.Music);            
+            _player.SetAudioStreamType(Android.Media.Stream.Music);            
             pState = mState.Idle;
 
             playPauseButton = FindViewById<ImageButton>(Resource.Id.audio_player_play_pause);
@@ -104,32 +111,76 @@ namespace DivineVerITies.ExoPlayer.Player
             ShowAudioSnackBar();
         }
 
-        void downloadButton_Click(object sender, System.EventArgs e)
+         void downloadButton_Click(object sender, System.EventArgs e)
         {
             var builder = new Android.Support.V7.App.AlertDialog.Builder(this);
             builder.SetTitle("Confirm Download")
            .SetMessage("Are You Sure You Want To Download" + " " + selectedAudio.SubTitle)
-           .SetPositiveButton("Yes", delegate { 
-                    //Run Download Code
+           .SetPositiveButton("Yes", async delegate { 
+                   
+               Progress<DownloadBytesProgress> progressReporter = new Progress<DownloadBytesProgress>();
+               DownLoadItemNotification();
+               progressReporter.ProgressChanged += (s, args) =>
+               {
+                   if (args.IsFinished)
+                   {
+                       dComplete();
+                   }
+                   else if (MyService.cts.IsCancellationRequested)
+                   {
+                       pBarCancelled();
+                   }
+                   else
+                   {
+                       int per = (int)(100 * args.PercentComplete);
+                       ChangePBar(per);
+                   }
+               };
+
+               int bytesDownloaded = await Download.CreateDownloadTask(selectedAudio.Link, FileCheck(), progressReporter, this);
                
-              // DownLoadItemNotification();
            })
            .SetNegativeButton("No", delegate { });
             builder.Create().Show();
         }
 
+        private string FileCheck()
+        {
+            
+            //var dir = new Java.IO.File(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + @"/cafan/Podcasts/audio/");
+            //if (!dir.Exists())
+            //    dir.Mkdirs();
+            if (!Directory.Exists(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + @"/cafan/Podcasts/audio/"))
+                Directory.CreateDirectory(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + @"/cafan/Podcasts/audio/");
+            //return dir.AbsolutePath +"/"+ selectedAudio.Title + ".mp3";
+            return Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + @"/cafan/Podcasts/audio/"
+                + selectedAudio.Title + ".mp3";
+        }
+
+        //public override ICharSequence GetActionTextFormatted(string actionText)
+        //{
+        //    return new Java.Lang.String(actionText);
+        //}
+        
         private void DownLoadItemNotification()
         {
+            var intent = new Intent(MyService.Cancel);
+            PendingIntent pIntent = PendingIntent.GetService(this, 0, intent, PendingIntentFlags.UpdateCurrent);
+
             // Instantiate the builder and set notification elements:
-            Notification.Builder builder = new Notification.Builder(this)
+            Android.Support.V4.App.NotificationCompat.Builder builder = new Android.Support.V4.App.NotificationCompat.Builder(this)
                 .SetContentTitle("Downloading Podcast")
-                .SetContentText("Download In Progress")
-                .SetDefaults(NotificationDefaults.Sound | NotificationDefaults.Vibrate)
-                .SetLargeIcon(BitmapFactory.DecodeResource(Resources, Resource.Drawable.Logo_trans72))
+                .SetContentText("Download Starting")
+                .SetLargeIcon(BitmapFactory.DecodeResource(Resources, Resource.Drawable.Logo_trans192))
                 .SetSmallIcon(Resource.Drawable.ic_cloud_download)
-                //.SetPriority(NotificationPriority.High)
-                .SetVisibility (NotificationVisibility.Public)
+                //.SetDefaults(NotificationDefaults.Sound | NotificationDefaults.Vibrate)
+                .SetDefaults(3)
+                .SetPriority(2)
+                //.SetVisibility (NotificationVisibility.Public)
+                .SetVisibility(3)
                 .SetCategory(Notification.CategoryProgress)
+                .AddAction(Resource.Drawable.ic_done,"Cancel",pIntent)
+                //.AddAction()
                 //Initialize the download
                 .SetProgress(0, 0, true);
 
@@ -145,22 +196,76 @@ namespace DivineVerITies.ExoPlayer.Player
             const int notificationId = 0;
             notificationManager.Notify(notificationId, notification);
 
-            //Started download
-            int per = 1;
-            
-            builder.SetContentText("Downloaded (" + per + "/100")
-                    .SetProgress(100, per, false);
-            // Displays the progress bar for the first time.
-            notificationManager.Notify(notificationId, notification);
 
-            //download complete
-            builder.SetContentTitle("Done")
-                    .SetContentText("Download complete")
-                // Removes the progress bar
-                   .SetProgress(0, 0, false);
-            notificationManager.Notify(notificationId, notification);
+            
         }
 
+        private void ChangePBar(int per)
+        {
+
+            var intent = new Intent(MyService.Cancel);
+            PendingIntent pIntent = PendingIntent.GetService(this, 0, intent, PendingIntentFlags.UpdateCurrent);
+            // Instantiate the builder and set notification elements:
+           Android.Support.V4.App. NotificationCompat.Builder builder = new Android.Support.V4.App.NotificationCompat.Builder(this)
+           .SetContentTitle("Downloading Podcast")
+                .SetContentText("Downloaded (" + per + "/100")
+                    .SetLargeIcon(BitmapFactory.DecodeResource(Resources, Resource.Drawable.Logo_trans192))
+                .SetSmallIcon(Resource.Drawable.ic_cloud_download)
+                .SetPriority(0)
+                .SetVisibility(3)
+                .SetCategory(Notification.CategoryProgress)
+                .AddAction(Resource.Drawable.ic_done, "Cancel", pIntent)
+                    .SetProgress(100, per, false);
+             
+            // Get the notification manager:
+            NotificationManager notificationManager =
+                GetSystemService(Context.NotificationService) as NotificationManager;
+            // Publish the notification:
+            const int notificationId = 0;
+            notificationManager.Notify(notificationId, builder.Build());            
+        }
+        private void dComplete()
+        {
+            //download complete
+
+
+
+            Android.Support.V4.App.NotificationCompat.Builder builder = new Android.Support.V4.App.NotificationCompat.Builder(this).SetContentTitle("Done")
+                    .SetContentText("Download complete")
+                    //.SetDefaults(NotificationDefaults.Sound | NotificationDefaults.Vibrate)
+                    .SetLargeIcon(BitmapFactory.DecodeResource(Resources, Resource.Drawable.Logo_trans192))
+                .SetSmallIcon(Resource.Drawable.ic_cloud_download)
+                .SetVisibility(3)
+                .SetCategory(Notification.CategoryProgress)
+                    .SetDefaults(3)
+                    .SetPriority(2)
+                // Removes the progress bar
+                   .SetProgress(0, 0, false);
+            NotificationManager notificationManager =
+                GetSystemService(Context.NotificationService) as NotificationManager;
+            // Publish the notification:
+            const int notificationId = 0;
+            notificationManager.Notify(notificationId, builder.Build());
+        }
+        void pBarCancelled()
+        {
+            Android.Support.V4.App.NotificationCompat.Builder builder = new Android.Support.V4.App.NotificationCompat.Builder(this).SetContentTitle("Cancelled")
+                    .SetContentText("Download was Cancelled")
+                //.SetDefaults(NotificationDefaults.Sound | NotificationDefaults.Vibrate)
+                    .SetLargeIcon(BitmapFactory.DecodeResource(Resources, Resource.Drawable.Logo_trans192))
+                .SetSmallIcon(Resource.Drawable.ic_cloud_download)
+                .SetVisibility(3)
+                .SetCategory(Notification.CategoryProgress)
+                    .SetDefaults(3)
+                    .SetPriority(2)
+                // Removes the progress bar
+                   .SetProgress(0, 0, false);
+            NotificationManager notificationManager =
+                GetSystemService(Context.NotificationService) as NotificationManager;
+            // Publish the notification:
+            const int notificationId = 0;
+            notificationManager.Notify(notificationId, builder.Build());
+        }
         private void ShowAudioSnackBar()
         {
             var text = "";
@@ -249,8 +354,8 @@ namespace DivineVerITies.ExoPlayer.Player
                     }
                 }
                                
-                await _player.SetDataSourceAsync(ApplicationContext,Android.Net.Uri.Parse(selectedAudio.Link));
-                _player.PrepareAsync();
+                //await _player.SetDataSourceAsync(ApplicationContext,Android.Net.Uri.Parse(selectedAudio.Link));
+                //_player.PrepareAsync();
                 
                 isVisible = false;
             }
