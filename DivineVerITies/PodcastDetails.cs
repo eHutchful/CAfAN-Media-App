@@ -7,6 +7,8 @@ using Android.Support.Design.Widget;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
+using Com.Bumptech.Glide;
+using Com.Bumptech.Glide.Load.Engine;
 using DivineVerITies.ExoPlayer;
 using DivineVerITies.ExoPlayer.Player;
 using DivineVerITies.Helpers;
@@ -87,24 +89,32 @@ namespace DivineVerITies
         protected async override void OnStart()
         {
             base.OnStart();
-            if (isVisible)
-            {
-                ImageView mAlbumArt = FindViewById<ImageView>(Resource.Id.backdrop);
-                Bitmap imageBitmap=null;
-                using (var client = new HttpClient())
-                {                  
-                    var imageBytes = await client.GetByteArrayAsync(selectedAudio.ImageUrl);
+            //if (isVisible)
+            //{
+            ImageView mAlbumArt = FindViewById<ImageView>(Resource.Id.backdrop);
+            //    Bitmap imageBitmap=null;
+            //    using (var client = new HttpClient())
+            //    {                  
+            //        var imageBytes = await client.GetByteArrayAsync(selectedAudio.ImageUrl);
                         
-                    if (imageBytes != null && imageBytes.Length > 0)
-                    {
-                        imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
-                    }
-                }                
-                mAlbumArt.SetImageBitmap(imageBitmap);
+            //        if (imageBytes != null && imageBytes.Length > 0)
+            //        {
+            //            imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+            //        }
+            //    }                
+            //    mAlbumArt.SetImageBitmap(imageBitmap);
+
+             Glide.With(this)
+                    .Load(selectedAudio.ImageUrl)
+                    .Placeholder(Resource.Drawable.Logo_trans192)
+                    .Error(Resource.Drawable.Logo_trans192)
+                    //.SkipMemoryCache(true)
+                    .DiskCacheStrategy(DiskCacheStrategy.All)
+                    .Into(mAlbumArt);
                 ProgressBar pBar= FindViewById<ProgressBar>(Resource.Id.image_loading);
                 pBar.Visibility = ViewStates.Gone;
-                isVisible = false;
-            }
+                //isVisible = false;
+           // }
 
         }
 

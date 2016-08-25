@@ -21,6 +21,8 @@ using System;
 using System.Threading.Tasks;
 using Java.Lang;
 using System.IO;
+using Com.Bumptech.Glide;
+using Com.Bumptech.Glide.Load.Engine;
 
 namespace DivineVerITies.ExoPlayer.Player
 {
@@ -73,7 +75,7 @@ namespace DivineVerITies.ExoPlayer.Player
             selectedAudio = JsonConvert.DeserializeObject<AudioList>(Intent.GetStringExtra("selectedItem"));
 
             // Create your application here
-            SetContentView(Resource.Layout.audio_player);
+            SetContentView(Resource.Layout.newtest);
 
             toolBar = FindViewById<SupportToolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolBar);
@@ -103,7 +105,7 @@ namespace DivineVerITies.ExoPlayer.Player
                 _player.Start();
                 loadingBar = FindViewById<ProgressBar>(Resource.Id.audio_player_loading);
                 loadingBar.Visibility = ViewStates.Gone;
-                artworkView.SetImageBitmap(imageBitmap); 
+               // artworkView.SetImageBitmap(imageBitmap); 
             };
             _player.Completion +=(sender,e)=>{_player.Stop();};
 
@@ -156,11 +158,6 @@ namespace DivineVerITies.ExoPlayer.Player
             return Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + @"/cafan/Podcasts/audio/"
                 + selectedAudio.Title + ".mp3";
         }
-
-        //public override ICharSequence GetActionTextFormatted(string actionText)
-        //{
-        //    return new Java.Lang.String(actionText);
-        //}
         
         private void DownLoadItemNotification()
         {
@@ -179,7 +176,7 @@ namespace DivineVerITies.ExoPlayer.Player
                 //.SetVisibility (NotificationVisibility.Public)
                 .SetVisibility(3)
                 .SetCategory(Notification.CategoryProgress)
-                .AddAction(Resource.Drawable.ic_done,"Cancel",pIntent)
+                .AddAction(Resource.Drawable.ic_cancel,"Cancel",pIntent)
                 //.AddAction()
                 //Initialize the download
                 .SetProgress(0, 0, true);
@@ -214,7 +211,7 @@ namespace DivineVerITies.ExoPlayer.Player
                 .SetPriority(0)
                 .SetVisibility(3)
                 .SetCategory(Notification.CategoryProgress)
-                .AddAction(Resource.Drawable.ic_done, "Cancel", pIntent)
+                .AddAction(Resource.Drawable.ic_cancel, "Cancel", pIntent)
                     .SetProgress(100, per, false);
              
             // Get the notification manager:
@@ -249,7 +246,7 @@ namespace DivineVerITies.ExoPlayer.Player
         }
         void pBarCancelled()
         {
-            Android.Support.V4.App.NotificationCompat.Builder builder = new Android.Support.V4.App.NotificationCompat.Builder(this).SetContentTitle("Cancelled")
+            Android.Support.V4.App.NotificationCompat.Builder builder = new Android.Support.V4.App.NotificationCompat.Builder(this).SetContentTitle("Download Interrupted")
                     .SetContentText("Download was Cancelled")
                 //.SetDefaults(NotificationDefaults.Sound | NotificationDefaults.Vibrate)
                     .SetLargeIcon(BitmapFactory.DecodeResource(Resources, Resource.Drawable.Logo_trans192))
@@ -340,25 +337,34 @@ namespace DivineVerITies.ExoPlayer.Player
         protected async override void OnStart()
         {
             base.OnStart();
-            if (isVisible)
-            {
+            //if (isVisible)
+            //{
+
                 artworkView = FindViewById<ImageView>(Resource.Id.audio_player_image);
                 
-                using (var client = new HttpClient())
-                {
-                    var imageBytes = await client.GetByteArrayAsync(selectedAudio.ImageUrl);
+                //using (var client = new HttpClient())
+                //{
+                //    var imageBytes = await client.GetByteArrayAsync(selectedAudio.ImageUrl);
 
-                    if (imageBytes != null && imageBytes.Length > 0)
-                    {
-                        imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
-                    }
-                }
-                               
-                //await _player.SetDataSourceAsync(ApplicationContext,Android.Net.Uri.Parse(selectedAudio.Link));
+                //    if (imageBytes != null && imageBytes.Length > 0)
+                //    {
+                //        imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+                //    }
+                //}
+
+                Glide.With(this)
+                    .Load(selectedAudio.ImageUrl)
+                    .Placeholder(Resource.Drawable.Logo_trans192)
+                    .Error(Resource.Drawable.Logo_trans192)
+                    //.SkipMemoryCache(true)
+                    .DiskCacheStrategy(DiskCacheStrategy.All)
+                    .Into(artworkView);
+
+                //await _player.SetDataSourceAsync(ApplicationContext, Android.Net.Uri.Parse(selectedAudio.Link));
                 //_player.PrepareAsync();
                 
-                isVisible = false;
-            }
+            //    isVisible = false;
+            //}
 
         }
 

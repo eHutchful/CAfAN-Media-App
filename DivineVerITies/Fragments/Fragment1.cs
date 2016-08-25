@@ -6,6 +6,7 @@ using Android.Views;
 using Android.Widget;
 using SupportFragment = Android.Support.V4.App.Fragment;
 using Android.Views.InputMethods;
+using Android.Content;
 
 namespace DivineVerITies.Fragments
 {
@@ -39,7 +40,8 @@ namespace DivineVerITies.Fragments
 
         private void mButtonSignUp_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            Intent intent = new Intent(Activity, typeof(SelectTopics));
+            StartActivity(intent);
         }
     }
 }

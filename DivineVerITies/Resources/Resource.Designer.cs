@@ -1898,97 +1898,157 @@ namespace DivineVerITies
 			public const int ic_album = 2130837583;
 			
 			// aapt resource value: 0x7f020050
-			public const int ic_cloud_download = 2130837584;
+			public const int ic_arrow_drop_down = 2130837584;
 			
 			// aapt resource value: 0x7f020051
-			public const int ic_done = 2130837585;
+			public const int ic_arrow_drop_down_circle = 2130837585;
 			
 			// aapt resource value: 0x7f020052
-			public const int ic_fast_forward_white = 2130837586;
+			public const int ic_audiotrack = 2130837586;
 			
 			// aapt resource value: 0x7f020053
-			public const int ic_fast_rewind_white = 2130837587;
+			public const int ic_cancel = 2130837587;
 			
 			// aapt resource value: 0x7f020054
-			public const int ic_feedback = 2130837588;
+			public const int ic_clear = 2130837588;
 			
 			// aapt resource value: 0x7f020055
-			public const int ic_file_download = 2130837589;
+			public const int ic_cloud_done = 2130837589;
 			
 			// aapt resource value: 0x7f020056
-			public const int ic_help_outline = 2130837590;
+			public const int ic_cloud_download = 2130837590;
 			
 			// aapt resource value: 0x7f020057
-			public const int ic_home = 2130837591;
+			public const int ic_done = 2130837591;
 			
 			// aapt resource value: 0x7f020058
-			public const int ic_info_outline = 2130837592;
+			public const int ic_error_outline = 2130837592;
 			
 			// aapt resource value: 0x7f020059
-			public const int ic_launcher = 2130837593;
+			public const int ic_expand_more = 2130837593;
 			
 			// aapt resource value: 0x7f02005a
-			public const int ic_library_music = 2130837594;
+			public const int ic_explore = 2130837594;
 			
 			// aapt resource value: 0x7f02005b
-			public const int ic_menu = 2130837595;
+			public const int ic_fast_forward_white = 2130837595;
 			
 			// aapt resource value: 0x7f02005c
-			public const int ic_play_arrow = 2130837596;
+			public const int ic_fast_rewind_white = 2130837596;
 			
 			// aapt resource value: 0x7f02005d
-			public const int ic_play_arrow_white_24dp = 2130837597;
+			public const int ic_favorite_border = 2130837597;
 			
 			// aapt resource value: 0x7f02005e
-			public const int ic_play_circle_outline = 2130837598;
+			public const int ic_feedback = 2130837598;
 			
 			// aapt resource value: 0x7f02005f
-			public const int ic_playlist_add = 2130837599;
+			public const int ic_file_download = 2130837599;
 			
 			// aapt resource value: 0x7f020060
-			public const int ic_playlist_add_check = 2130837600;
+			public const int ic_forward_30 = 2130837600;
 			
 			// aapt resource value: 0x7f020061
-			public const int ic_search = 2130837601;
+			public const int ic_help_outline = 2130837601;
 			
 			// aapt resource value: 0x7f020062
-			public const int ic_settings = 2130837602;
+			public const int ic_home = 2130837602;
 			
 			// aapt resource value: 0x7f020063
-			public const int ic_settings_applications = 2130837603;
+			public const int ic_info_outline = 2130837603;
 			
 			// aapt resource value: 0x7f020064
-			public const int ic_shuffle = 2130837604;
+			public const int ic_launcher = 2130837604;
 			
 			// aapt resource value: 0x7f020065
-			public const int ic_subscriptions = 2130837605;
+			public const int ic_library_music = 2130837605;
 			
 			// aapt resource value: 0x7f020066
-			public const int ic_video_library = 2130837606;
+			public const int ic_loop = 2130837606;
 			
 			// aapt resource value: 0x7f020067
-			public const int ic_video_library_white_24dp = 2130837607;
+			public const int ic_menu = 2130837607;
 			
 			// aapt resource value: 0x7f020068
-			public const int Icon = 2130837608;
+			public const int ic_play_arrow = 2130837608;
 			
 			// aapt resource value: 0x7f020069
-			public const int Imagination = 2130837609;
+			public const int ic_play_circle_outline = 2130837609;
 			
 			// aapt resource value: 0x7f02006a
-			public const int Liberty = 2130837610;
+			public const int ic_playlist_add = 2130837610;
 			
 			// aapt resource value: 0x7f02006b
-			public const int Logo_trans192 = 2130837611;
+			public const int ic_playlist_add_check = 2130837611;
 			
 			// aapt resource value: 0x7f02006c
-			public const int Logo_trans72 = 2130837612;
-			
-			// aapt resource value: 0x7f02006e
-			public const int notification_template_icon_bg = 2130837614;
+			public const int ic_repeat = 2130837612;
 			
 			// aapt resource value: 0x7f02006d
-			public const int PRAYER = 2130837613;
+			public const int ic_repeat_one = 2130837613;
+			
+			// aapt resource value: 0x7f02006e
+			public const int ic_replay_10 = 2130837614;
+			
+			// aapt resource value: 0x7f02006f
+			public const int ic_search = 2130837615;
+			
+			// aapt resource value: 0x7f020070
+			public const int ic_settings = 2130837616;
+			
+			// aapt resource value: 0x7f020071
+			public const int ic_settings_applications = 2130837617;
+			
+			// aapt resource value: 0x7f020072
+			public const int ic_share = 2130837618;
+			
+			// aapt resource value: 0x7f020073
+			public const int ic_shuffle = 2130837619;
+			
+			// aapt resource value: 0x7f020074
+			public const int ic_stop = 2130837620;
+			
+			// aapt resource value: 0x7f020075
+			public const int ic_subscriptions = 2130837621;
+			
+			// aapt resource value: 0x7f020076
+			public const int ic_subtitles = 2130837622;
+			
+			// aapt resource value: 0x7f020077
+			public const int ic_video_library = 2130837623;
+			
+			// aapt resource value: 0x7f020078
+			public const int ic_video_library_white_24dp = 2130837624;
+			
+			// aapt resource value: 0x7f020079
+			public const int ic_visibility = 2130837625;
+			
+			// aapt resource value: 0x7f02007a
+			public const int ic_visibility_off = 2130837626;
+			
+			// aapt resource value: 0x7f02007b
+			public const int ic_warning = 2130837627;
+			
+			// aapt resource value: 0x7f02007c
+			public const int Icon = 2130837628;
+			
+			// aapt resource value: 0x7f02007d
+			public const int Imagination = 2130837629;
+			
+			// aapt resource value: 0x7f02007e
+			public const int Liberty = 2130837630;
+			
+			// aapt resource value: 0x7f02007f
+			public const int Logo_trans192 = 2130837631;
+			
+			// aapt resource value: 0x7f020080
+			public const int Logo_trans72 = 2130837632;
+			
+			// aapt resource value: 0x7f020082
+			public const int notification_template_icon_bg = 2130837634;
+			
+			// aapt resource value: 0x7f020081
+			public const int PRAYER = 2130837633;
 			
 			static Drawable()
 			{
@@ -2795,55 +2855,58 @@ namespace DivineVerITies
 			public const int new_audio = 2130903090;
 			
 			// aapt resource value: 0x7f030033
-			public const int notification_media_action = 2130903091;
+			public const int newtest = 2130903091;
 			
 			// aapt resource value: 0x7f030034
-			public const int notification_media_cancel_action = 2130903092;
+			public const int notification_media_action = 2130903092;
 			
 			// aapt resource value: 0x7f030035
-			public const int notification_template_big_media = 2130903093;
+			public const int notification_media_cancel_action = 2130903093;
 			
 			// aapt resource value: 0x7f030036
-			public const int notification_template_big_media_narrow = 2130903094;
+			public const int notification_template_big_media = 2130903094;
 			
 			// aapt resource value: 0x7f030037
-			public const int notification_template_lines = 2130903095;
+			public const int notification_template_big_media_narrow = 2130903095;
 			
 			// aapt resource value: 0x7f030038
-			public const int notification_template_media = 2130903096;
+			public const int notification_template_lines = 2130903096;
 			
 			// aapt resource value: 0x7f030039
-			public const int notification_template_part_chronometer = 2130903097;
+			public const int notification_template_media = 2130903097;
 			
 			// aapt resource value: 0x7f03003a
-			public const int notification_template_part_time = 2130903098;
+			public const int notification_template_part_chronometer = 2130903098;
 			
 			// aapt resource value: 0x7f03003b
-			public const int player_activity = 2130903099;
+			public const int notification_template_part_time = 2130903099;
 			
 			// aapt resource value: 0x7f03003c
-			public const int PodcastDetails = 2130903100;
+			public const int player_activity = 2130903100;
 			
 			// aapt resource value: 0x7f03003d
-			public const int sample_chooser_activity = 2130903101;
+			public const int PodcastDetails = 2130903101;
 			
 			// aapt resource value: 0x7f03003e
-			public const int sample_chooser_inline_header = 2130903102;
+			public const int sample_chooser_activity = 2130903102;
 			
 			// aapt resource value: 0x7f03003f
-			public const int select_dialog_item_material = 2130903103;
+			public const int sample_chooser_inline_header = 2130903103;
 			
 			// aapt resource value: 0x7f030040
-			public const int select_dialog_multichoice_material = 2130903104;
+			public const int select_dialog_item_material = 2130903104;
 			
 			// aapt resource value: 0x7f030041
-			public const int select_dialog_singlechoice_material = 2130903105;
+			public const int select_dialog_multichoice_material = 2130903105;
 			
 			// aapt resource value: 0x7f030042
-			public const int SelectTopics = 2130903106;
+			public const int select_dialog_singlechoice_material = 2130903106;
 			
 			// aapt resource value: 0x7f030043
-			public const int support_simple_spinner_dropdown_item = 2130903107;
+			public const int SelectTopics = 2130903107;
+			
+			// aapt resource value: 0x7f030044
+			public const int support_simple_spinner_dropdown_item = 2130903108;
 			
 			static Layout()
 			{
