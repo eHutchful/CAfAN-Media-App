@@ -2333,8 +2333,8 @@ namespace DivineVerITies
 			// aapt resource value: 0x7f0600a1
 			public const int imgViewHeader = 2131099809;
 			
-			// aapt resource value: 0x7f06006d
-			public const int img_options = 2131099757;
+			// aapt resource value: 0x7f06006a
+			public const int img_options = 2131099754;
 			
 			// aapt resource value: 0x7f0600ad
 			public const int info = 2131099821;
@@ -2609,14 +2609,14 @@ namespace DivineVerITies
 			// aapt resource value: 0x7f06008a
 			public const int txtPhone = 2131099786;
 			
-			// aapt resource value: 0x7f06006a
-			public const int txtRow1 = 2131099754;
-			
 			// aapt resource value: 0x7f06006b
-			public const int txtRow2 = 2131099755;
+			public const int txtRow1 = 2131099755;
 			
 			// aapt resource value: 0x7f06006c
-			public const int txtRow3 = 2131099756;
+			public const int txtRow2 = 2131099756;
+			
+			// aapt resource value: 0x7f06006d
+			public const int txtRow3 = 2131099757;
 			
 			// aapt resource value: 0x7f0600bd
 			public const int txtSelectTopic = 2131099837;
