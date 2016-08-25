@@ -49,7 +49,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ExoPlayer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xam.Plugins.Android.ExoPlayer.1.5.8\lib\MonoAndroid\ExoPlayer.dll</HintPath>
+      <HintPath>..\packages\Xam.Plugins.Android.ExoPlayer.1.5.10\lib\MonoAndroid\ExoPlayer.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Glide, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">

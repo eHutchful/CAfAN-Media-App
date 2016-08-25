@@ -1,8 +1,8 @@
-using System.Linq;
 using Android.Content;
 using Android.Media;
 using Android.Runtime;
 using Android.Util;
+using Com.Google.Android.Exoplayer;
 using Com.Google.Android.Exoplayer.Audio;
 using Com.Google.Android.Exoplayer.Chunk;
 using Com.Google.Android.Exoplayer.Dash;
@@ -13,7 +13,7 @@ using Com.Google.Android.Exoplayer.Upstream;
 using Com.Google.Android.Exoplayer.Util;
 using Java.IO;
 using Java.Lang;
-using Com.Google.Android.Exoplayer;
+using System.Linq;
 
 namespace DivineVerITies.ExoPlayer.Player
 {

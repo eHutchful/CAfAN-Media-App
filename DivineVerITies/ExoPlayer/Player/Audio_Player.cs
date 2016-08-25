@@ -1,28 +1,21 @@
 
 using Android.App;
 using Android.Content;
+using Android.Graphics;
+using Android.Media;
 using Android.OS;
+using Android.Support.Design.Widget;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
-using SupportActionBar = Android.Support.V7.App.ActionBar;
-using SupportToolbar = Android.Support.V7.Widget.Toolbar;
-using Exoplayer1 = Com.Google.Android.Exoplayer.ExoPlayer;
-using Com.Google.Android.Exoplayer;
-using Com.Google.Android.Exoplayer.Audio;
-using Android.Media;
-using Newtonsoft.Json;
-using Android.Graphics;
-using System.Net.Http;
-using Android.Support.Design.Widget;
-using System.Threading;
-using DivineVerITies.Helpers;
-using System;
-using System.Threading.Tasks;
-using Java.Lang;
-using System.IO;
 using Com.Bumptech.Glide;
 using Com.Bumptech.Glide.Load.Engine;
+using DivineVerITies.Helpers;
+using Newtonsoft.Json;
+using System;
+using System.IO;
+using SupportActionBar = Android.Support.V7.App.ActionBar;
+using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace DivineVerITies.ExoPlayer.Player
 {

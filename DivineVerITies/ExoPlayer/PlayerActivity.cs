@@ -1,32 +1,32 @@
-using System;
-using System.Collections.Generic;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
+using Android.Support.Design.Widget;
+using Android.Support.V7.App;
 using Android.Text;
 using Android.Views;
 using Android.Views.Accessibility;
 using Android.Widget;
+using Com.Google.Android.Exoplayer;
 using Com.Google.Android.Exoplayer.Audio;
 using Com.Google.Android.Exoplayer.Drm;
 using Com.Google.Android.Exoplayer.Text;
 using Com.Google.Android.Exoplayer.Util;
+using DivineVerITies.ExoPlayer.Player;
 using Java.Interop;
 using Java.Lang;
 using Java.Net;
 using Java.Util;
+using System;
+using System.Collections.Generic;
 using Exception = Java.Lang.Exception;
-using String = Java.Lang.String;
-using Uri = Android.Net.Uri;
-using DivineVerITies.ExoPlayer.Player;
-using Com.Google.Android.Exoplayer;
 using Exoplayer1 = Com.Google.Android.Exoplayer.ExoPlayer;
-using Android.Support.V7.App;
+using String = Java.Lang.String;
 using SupportActionBar = Android.Support.V7.App.ActionBar;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
-using Android.Support.Design.Widget;
+using Uri = Android.Net.Uri;
 
 namespace DivineVerITies.ExoPlayer
 {
