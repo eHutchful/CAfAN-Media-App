@@ -30,28 +30,25 @@ namespace DivineVerITies.ExoPlayer.Player
     [Activity(Theme = "@style/Theme.DesignDemo")]
     public class Audio_Player : AppCompatActivity
     {
-        Bitmap imageBitmap = null;
-        private bool isVisible = true;
+        //Bitmap imageBitmap = null;
+        //private bool isVisible = true;
         private SupportToolbar toolBar;
         private ProgressBar loadingBar;
         private ImageView artworkView;
+        //private TextView currentPositionView;
+        //private TextView durationView;
 
-        private TextView currentPositionView;
-        private TextView durationView;
-
-        private SeekBar seekBar;
-        private bool shouldSetDuration;
-        private bool userInteracting;
-
+        //private SeekBar seekBar;
+        //private bool shouldSetDuration;
+        //private bool userInteracting;
         private ImageButton previousButton;
         private ImageButton playPauseButton;
         private ImageButton nextButton;
         private ImageButton downloadButton;
-
         private mState pState;
         AudioList selectedAudio;
-
         private View audio_player_view;
+        private MediaPlayer _player;
 
         private enum mState
         {
@@ -66,7 +63,7 @@ namespace DivineVerITies.ExoPlayer.Player
             Error,
             PlayBackCompleted
         }
-        MediaPlayer _player;
+        
 
         protected override void OnCreate(Bundle savedInstanceState)
         {

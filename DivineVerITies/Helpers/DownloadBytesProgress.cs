@@ -7,9 +7,9 @@ namespace DivineVerITies.Helpers
 {
     public class DownloadBytesProgress
     {
-        private string urlToDownload;
-        private int receivedBytes;
-        private int totalBytes;
+        //private string urlToDownload;
+        //private int receivedBytes;
+        //private int totalBytes;
 
         public DownloadBytesProgress(string urlToDownload, int receivedBytes, int totalBytes)
         {

@@ -23,7 +23,7 @@ namespace DivineVerITies
     [Activity(Theme = "@style/Theme.DesignDemo")]
     public class PodcastDetails : AppCompatActivity
     {
-        bool isVisible = true;
+        //bool isVisible = true;
         AudioList selectedAudio;
         protected override void OnCreate(Bundle savedInstanceState)
         {
