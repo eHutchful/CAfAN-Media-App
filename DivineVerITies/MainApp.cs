@@ -1,7 +1,6 @@
 
 using Android.App;
 using Android.Content;
-using Android.Net;
 using Android.OS;
 using Android.Support.Design.Widget;
 using Android.Support.V4.View;
@@ -9,7 +8,6 @@ using Android.Support.V4.Widget;
 using Android.Support.V7.App;
 using Android.Views;
 using DivineVerITies.ExoPlayer;
-using DivineVerITies.ExoPlayer.Player;
 using DivineVerITies.Fragments;
 using SupportActionBar = Android.Support.V7.App.ActionBar;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;

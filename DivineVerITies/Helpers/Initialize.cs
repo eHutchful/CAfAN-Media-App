@@ -1,20 +1,11 @@
+using Android.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using Android.Graphics;
-using System.Net;
-using System.IO;
 
 namespace DivineVerITies.Helpers
 {

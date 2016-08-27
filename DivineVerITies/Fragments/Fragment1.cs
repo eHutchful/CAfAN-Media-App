@@ -1,12 +1,11 @@
-using System;
-
 using Android.App;
+using Android.Content;
 using Android.OS;
 using Android.Views;
-using Android.Widget;
-using SupportFragment = Android.Support.V4.App.Fragment;
 using Android.Views.InputMethods;
-using Android.Content;
+using Android.Widget;
+using System;
+using SupportFragment = Android.Support.V4.App.Fragment;
 
 namespace DivineVerITies.Fragments
 {

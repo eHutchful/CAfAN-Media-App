@@ -1,27 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+using Android.Content.Res;
 using Android.Support.V7.Widget;
 using Android.Util;
-using Android.Content.Res;
-using DivineVerITies.Helpers;
+using Android.Views;
+using Android.Widget;
 using Com.Bumptech.Glide;
 using Com.Bumptech.Glide.Load.Engine;
-using Com.Nostra13.Universalimageloader.Core;
+using System.Collections.Generic;
+
 
 namespace DivineVerITies
 {
     class AudioRecyclerViewAdapter : RecyclerView.Adapter
     {
-        //bool isRecyclerVewVisible = false;
+        bool isRecyclerVewVisible = false;
         List<AudioList> mAudios;
         private readonly TypedValue mTypedValue = new TypedValue();
         private int mBackground;
@@ -62,27 +54,25 @@ namespace DivineVerITies
                 simpleHolder.mAudioSubTitle.Text = mAudios[position].SubTitle;
                 simpleHolder.mPubDate.Text = mAudios[position].PubDate;
 
+                Glide.With(mContext)
+                    .Load(mAudios[position].ImageUrl)
+                    .Placeholder(Resource.Drawable.Logo_trans192)
+                    .Error(Resource.Drawable.Logo_trans192)
+                    //.SkipMemoryCache(true)
+                    .DiskCacheStrategy(DiskCacheStrategy.All)
+                    .Into(simpleHolder.mAlbumArt);
 
 
-            Glide.With(mContext)
-                .Load(mAudios[position].ImageUrl)
-                .Placeholder(Resource.Drawable.Logo_trans192)
-                .Error(Resource.Drawable.Logo_trans192)
-                //.SkipMemoryCache(true)
-                .DiskCacheStrategy(DiskCacheStrategy.All)
-                .Into(simpleHolder.mAlbumArt);
+                //Picasso.With(mContext)
+                //       .Load(mAudios[position].ImageUrl)
+                //       .Placeholder(Resource.Drawable.Logo_trans192)
+                //       .Error(Resource.Drawable.Logo_trans192)
+                //       //.Resize(60, 60)
+                //       //.CenterCrop()
+                //       .Into(simpleHolder.mAlbumArt);
 
-
-            //Picasso.With(mContext)
-            //       .Load(mAudios[position].ImageUrl)
-            //       .Placeholder(Resource.Drawable.Logo_trans192)
-            //       .Error(Resource.Drawable.Logo_trans192)
-            //       //.Resize(60, 60)
-            //       //.CenterCrop()
-            //       .Into(simpleHolder.mAlbumArt);
-
-            //var imageBitmap = (new Initialize()).GetImageBitmapFromUrl(mAudios[position].ImageUrl);
-            //simpleHolder.mAlbumArt.SetImageBitmap(imageBitmap); 
+                //var imageBitmap = (new Initialize()).GetImageBitmapFromUrl(mAudios[position].ImageUrl);
+                //simpleHolder.mAlbumArt.SetImageBitmap(imageBitmap); 
             //}
             //else
             //{

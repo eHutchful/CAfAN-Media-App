@@ -4,8 +4,6 @@ using Android.Support.Design.Widget;
 using Android.Support.V4.View;
 using Android.Support.V7.App;
 using DivineVerITies.Fragments;
-using DivineVerITies.Helpers;
-using System.Collections.Generic;
 using SupportActionBar = Android.Support.V7.App.ActionBar;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 

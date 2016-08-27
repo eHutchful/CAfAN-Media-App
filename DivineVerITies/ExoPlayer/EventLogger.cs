@@ -9,8 +9,8 @@ using Java.Lang;
 using Java.Text;
 using Java.Util;
 using AudioTrack = Com.Google.Android.Exoplayer.Audio.AudioTrack;
-using SystemClock = Android.OS.SystemClock;
 using Exoplayer1 = Com.Google.Android.Exoplayer.ExoPlayer;
+using SystemClock = Android.OS.SystemClock;
 
 namespace DivineVerITies.ExoPlayer
 {

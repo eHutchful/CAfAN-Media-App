@@ -1,7 +1,5 @@
 
 using Android.App;
-using Android.Graphics;
-using Android.Net;
 using Android.OS;
 using Android.Support.Design.Widget;
 using Android.Support.V7.App;
@@ -9,11 +7,8 @@ using Android.Views;
 using Android.Widget;
 using Com.Bumptech.Glide;
 using Com.Bumptech.Glide.Load.Engine;
-using DivineVerITies.ExoPlayer;
 using DivineVerITies.ExoPlayer.Player;
-using DivineVerITies.Helpers;
 using Newtonsoft.Json;
-using System.Net.Http;
 using SupportActionBar = Android.Support.V7.App.ActionBar;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 
