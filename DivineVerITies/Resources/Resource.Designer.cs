@@ -2044,11 +2044,14 @@ namespace DivineVerITies
 			// aapt resource value: 0x7f020080
 			public const int Logo_trans72 = 2130837632;
 			
-			// aapt resource value: 0x7f020082
-			public const int notification_template_icon_bg = 2130837634;
+			// aapt resource value: 0x7f020083
+			public const int notification_template_icon_bg = 2130837635;
 			
 			// aapt resource value: 0x7f020081
-			public const int PRAYER = 2130837633;
+			public const int pause = 2130837633;
+			
+			// aapt resource value: 0x7f020082
+			public const int PRAYER = 2130837634;
 			
 			static Drawable()
 			{
