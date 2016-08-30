@@ -2015,76 +2015,85 @@ namespace DivineVerITies
 			public const int ic_menu = 2130837607;
 			
 			// aapt resource value: 0x7f020068
-			public const int ic_play_arrow = 2130837608;
+			public const int ic_pause = 2130837608;
 			
 			// aapt resource value: 0x7f020069
-			public const int ic_play_circle_outline = 2130837609;
+			public const int ic_pause_circle_outline = 2130837609;
 			
 			// aapt resource value: 0x7f02006a
-			public const int ic_playlist_add = 2130837610;
+			public const int ic_play_arrow = 2130837610;
 			
 			// aapt resource value: 0x7f02006b
-			public const int ic_playlist_add_check = 2130837611;
+			public const int ic_play_circle_outline = 2130837611;
 			
 			// aapt resource value: 0x7f02006c
-			public const int ic_repeat = 2130837612;
+			public const int ic_playlist_add = 2130837612;
 			
 			// aapt resource value: 0x7f02006d
-			public const int ic_repeat_one = 2130837613;
+			public const int ic_playlist_add_check = 2130837613;
 			
 			// aapt resource value: 0x7f02006e
-			public const int ic_replay_10 = 2130837614;
+			public const int ic_repeat = 2130837614;
 			
 			// aapt resource value: 0x7f02006f
-			public const int ic_search = 2130837615;
+			public const int ic_repeat_one = 2130837615;
 			
 			// aapt resource value: 0x7f020070
-			public const int ic_settings = 2130837616;
+			public const int ic_replay_10 = 2130837616;
 			
 			// aapt resource value: 0x7f020071
-			public const int ic_settings_applications = 2130837617;
+			public const int ic_search = 2130837617;
 			
 			// aapt resource value: 0x7f020072
-			public const int ic_share = 2130837618;
+			public const int ic_settings = 2130837618;
 			
 			// aapt resource value: 0x7f020073
-			public const int ic_shuffle = 2130837619;
+			public const int ic_settings_applications = 2130837619;
 			
 			// aapt resource value: 0x7f020074
-			public const int ic_stop = 2130837620;
+			public const int ic_share = 2130837620;
 			
 			// aapt resource value: 0x7f020075
-			public const int ic_subscriptions = 2130837621;
+			public const int ic_shuffle = 2130837621;
 			
 			// aapt resource value: 0x7f020076
-			public const int ic_subtitles = 2130837622;
+			public const int ic_stop = 2130837622;
 			
 			// aapt resource value: 0x7f020077
-			public const int ic_video_library = 2130837623;
+			public const int ic_subscriptions = 2130837623;
 			
 			// aapt resource value: 0x7f020078
-			public const int ic_video_library_white_24dp = 2130837624;
+			public const int ic_subtitles = 2130837624;
 			
 			// aapt resource value: 0x7f020079
-			public const int ic_visibility = 2130837625;
+			public const int ic_video_library = 2130837625;
 			
 			// aapt resource value: 0x7f02007a
-			public const int ic_visibility_off = 2130837626;
+			public const int ic_video_library_white_24dp = 2130837626;
 			
 			// aapt resource value: 0x7f02007b
-			public const int ic_warning = 2130837627;
+			public const int ic_visibility = 2130837627;
 			
 			// aapt resource value: 0x7f02007c
-			public const int Icon = 2130837628;
+			public const int ic_visibility_off = 2130837628;
 			
 			// aapt resource value: 0x7f02007d
-			public const int Logo_trans192 = 2130837629;
+			public const int ic_warning = 2130837629;
 			
 			// aapt resource value: 0x7f02007e
-			public const int Logo_trans72 = 2130837630;
+			public const int Icon = 2130837630;
 			
 			// aapt resource value: 0x7f02007f
-			public const int notification_template_icon_bg = 2130837631;
+			public const int Logo_trans192 = 2130837631;
+			
+			// aapt resource value: 0x7f020080
+			public const int Logo_trans72 = 2130837632;
+			
+			// aapt resource value: 0x7f020082
+			public const int notification_template_icon_bg = 2130837634;
+			
+			// aapt resource value: 0x7f020081
+			public const int pause = 2130837633;
 			
 			static Drawable()
 			{

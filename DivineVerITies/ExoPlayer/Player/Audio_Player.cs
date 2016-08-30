@@ -14,6 +14,8 @@ using DivineVerITies.Helpers;
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Net;
+using System.Net.Http;
 using SupportActionBar = Android.Support.V7.App.ActionBar;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 
@@ -23,28 +25,27 @@ namespace DivineVerITies.ExoPlayer.Player
     [Activity(Theme = "@style/Theme.DesignDemo")]
     public class Audio_Player : AppCompatActivity
     {
-        Bitmap imageBitmap = null;
-        private bool isVisible = true;
+        //Bitmap imageBitmap = null;
+        //private bool isVisible = true;
         private SupportToolbar toolBar;
-        private ProgressBar loadingBar;
+        public static ProgressBar loadingBar;
         private ImageView artworkView;
+        //private TextView currentPositionView;
+        //private TextView durationView;
 
-        private TextView currentPositionView;
-        private TextView durationView;
-
-        private SeekBar seekBar;
-        private bool shouldSetDuration;
-        private bool userInteracting;
-
+        //private SeekBar seekBar;
+        //private bool shouldSetDuration;
+        //private bool userInteracting;
         private ImageButton previousButton;
         private ImageButton playPauseButton;
         private ImageButton nextButton;
         private ImageButton downloadButton;
-
+        public static Context context;
+        public static TaskStackBuilder stackBuilder;
         private mState pState;
-        AudioList selectedAudio;
-
+        public static AudioList selectedAudio;
         private View audio_player_view;
+        private MediaPlayer _player;
 
         private enum mState
         {
@@ -59,13 +60,22 @@ namespace DivineVerITies.ExoPlayer.Player
             Error,
             PlayBackCompleted
         }
-        MediaPlayer _player;
+        
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
-            selectedAudio = JsonConvert.DeserializeObject<AudioList>(Intent.GetStringExtra("selectedItem"));
+            if (!DivineVerITies.Helpers.AudioService.isPrepared)
+            {
+                selectedAudio = DivineVerITies.Helpers.AudioService.selectedAudio;                
+            }
+            else
+            {
+                loadingBar.Visibility = ViewStates.Gone;
+            }
+            
+            
+            //JsonConvert.DeserializeObject<AudioList>(Intent.GetStringExtra("selectedItem"));
 
             // Create your application here
             SetContentView(Resource.Layout.newtest);
@@ -76,31 +86,31 @@ namespace DivineVerITies.ExoPlayer.Player
             SupportActionBar.Title = selectedAudio.Title;
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 
-            _player = new MediaPlayer();
-            _player.SetAudioStreamType(Android.Media.Stream.Music);            
-            pState = mState.Idle;
+            //_player = new MediaPlayer();
+            //_player.SetAudioStreamType(Android.Media.Stream.Music);            
+            //pState = mState.Idle;
 
-            playPauseButton = FindViewById<ImageButton>(Resource.Id.audio_player_play_pause);
-            playPauseButton.Click += playPauseButton_Click;
+            //playPauseButton = FindViewById<ImageButton>(Resource.Id.audio_player_play_pause);
+            //playPauseButton.Click += playPauseButton_Click;
 
-            previousButton = FindViewById<ImageButton>(Resource.Id.audio_player_previous);
-            previousButton.Click +=previousButton_Click;
+            //previousButton = FindViewById<ImageButton>(Resource.Id.audio_player_previous);
+            //previousButton.Click +=previousButton_Click;
 
-            nextButton = FindViewById<ImageButton>(Resource.Id.audio_player_next);
-            nextButton.Click += nextButton_Click;
+            //nextButton = FindViewById<ImageButton>(Resource.Id.audio_player_next);
+            //nextButton.Click += nextButton_Click;
 
-            downloadButton = FindViewById<ImageButton>(Resource.Id.audio_download);
-            downloadButton.Click += downloadButton_Click;
+            //downloadButton = FindViewById<ImageButton>(Resource.Id.audio_download);
+            //downloadButton.Click += downloadButton_Click;
                 
 
-            _player.Prepared += (sender, args) => 
-            {
-                _player.Start();
+            //_player.Prepared += (sender, args) => 
+            //{
+            //    _player.Start();
                 loadingBar = FindViewById<ProgressBar>(Resource.Id.audio_player_loading);
-                loadingBar.Visibility = ViewStates.Gone;
+                
                // artworkView.SetImageBitmap(imageBitmap); 
-            };
-            _player.Completion +=(sender,e)=>{_player.Stop();};
+            //};
+            //_player.Completion +=(sender,e)=>{_player.Stop();};
 
             audio_player_view = FindViewById(Resource.Id.audioPlayerView);
             ShowAudioSnackBar();
@@ -263,34 +273,34 @@ namespace DivineVerITies.ExoPlayer.Player
         }
         private void ShowAudioSnackBar()
         {
-            var text = "";
-            switch (pState)
-            { 
-                case mState.Prepared:
-                    text = "prepared";
-                    break;
-                case mState.End:
-                    text = "ended";
-                    break;
-                case mState.Idle:
-                    text = "idle";
-                    break;
-                case mState.Preparing:
-                    text = "preparing";
-                    break;
-                case mState.Initialized:
-                    text = "initialized";
-                    break;
-                default:
-                    text = "unknown";
-                    break;
-            }
+            //var text = "";
+            //switch (pState)
+            //{ 
+            //    case mState.Prepared:
+            //        text = "prepared";
+            //        break;
+            //    case mState.End:
+            //        text = "ended";
+            //        break;
+            //    case mState.Idle:
+            //        text = "idle";
+            //        break;
+            //    case mState.Preparing:
+            //        text = "preparing";
+            //        break;
+            //    case mState.Initialized:
+            //        text = "initialized";
+            //        break;
+            //    default:
+            //        text = "unknown";
+            //        break;
+            //}
             
-            if (text != string.Empty)
-            {
-                Snackbar.Make(audio_player_view, text, Snackbar.LengthLong)
-                    .Show();
-            }
+            //if (text != string.Empty)
+            //{
+            //    Snackbar.Make(audio_player_view, text, Snackbar.LengthLong)
+            //        .Show();
+            //}
         }
 
         void nextButton_Click(object sender, System.EventArgs e)
@@ -335,34 +345,38 @@ namespace DivineVerITies.ExoPlayer.Player
         protected override void OnStart()
         {
             base.OnStart();
-            //if (isVisible)
-            //{
-
-                artworkView = FindViewById<ImageView>(Resource.Id.audio_player_image);
-                
-                //using (var client = new HttpClient())
-                //{
-                //    var imageBytes = await client.GetByteArrayAsync(selectedAudio.ImageUrl);
-
-                //    if (imageBytes != null && imageBytes.Length > 0)
-                //    {
-                //        imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
-                //    }
-                //}
-
-                Glide.With(this)
+            context = ApplicationContext;
+            stackBuilder = TaskStackBuilder.Create(Audio_Player.context);
+            stackBuilder.AddParentStack(this);            
+            var intent = new Intent(this,typeof(DivineVerITies.Helpers.AudioService));
+            intent.SetAction(DivineVerITies.Helpers.AudioService.ActionPlay);
+            StartService(intent);
+            artworkView = FindViewById<ImageView>(Resource.Id.audio_player_image);
+            Glide.With(this)
                     .Load(selectedAudio.ImageUrl)
                     .Placeholder(Resource.Drawable.Logo_trans192)
                     .Error(Resource.Drawable.Logo_trans192)
                     //.SkipMemoryCache(true)
                     .DiskCacheStrategy(DiskCacheStrategy.All)
                     .Into(artworkView);
-
-                //await _player.SetDataSourceAsync(ApplicationContext, Android.Net.Uri.Parse(selectedAudio.Link));
-                //_player.PrepareAsync();
-                
-            //    isVisible = false;
-            //}
+            if (DivineVerITies.Helpers.AudioService.image == null)
+            {
+                using (var client = new HttpClient())
+                {
+                    try
+                    {
+                        var imageBytes = await client.GetByteArrayAsync(selectedAudio.ImageUrl);
+                        if (imageBytes != null && imageBytes.Length > 0)
+                        {
+                            DivineVerITies.Helpers.AudioService.image = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        DivineVerITies.Helpers.AudioService.failed = true;
+                    }                    
+                }
+            }
 
         }
 

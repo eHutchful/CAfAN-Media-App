@@ -25,7 +25,7 @@ namespace DivineVerITies.Fragments
         public List<AudioList> mAudios;
         public List<AudioList> mlist;
         private View view;
-        private XDocument xdoc;
+        //private XDocument xdoc;
  
         public override void OnCreate(Bundle savedInstanceState)
         {

@@ -9,7 +9,7 @@ namespace DivineVerITies.Fragments
 {
     public class Fragment4 : SupportFragment
     {
-        private SwipeRefreshLayout swipeRefreshLayout;
+        //private SwipeRefreshLayout swipeRefreshLayout;
         private RecyclerView recyclerView;
 
         public override void OnCreate(Bundle savedInstanceState)
