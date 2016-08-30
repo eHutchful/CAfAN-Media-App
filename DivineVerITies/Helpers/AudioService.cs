@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -35,14 +35,14 @@ namespace DivineVerITies.Helpers
         private AudioManager audioManager;
         private WifiManager wifiManager;
         private WifiManager.WifiLock wifiLock;
-        
-        
+
+
         private MediaSessionCompat mSession;
         public MediaControllerCompat mediaControllerCompat;
         private const int NotificationId = 1;
         private ComponentName remoteComponentName;
         private RemoteControlClient remoteControlClient;
-        
+
         public static AudioList selectedAudio = null;
         //Actions
         public const string ActionPlay = "com.xamarin.action.PLAY";
@@ -60,13 +60,13 @@ namespace DivineVerITies.Helpers
             {
                 //return (mediaControllerCompat.PlaybackState != null ?
                 //    mediaControllerCompat.PlaybackState.State : PlaybackStateCompat.StateNone);
-                if (mediaControllerCompat!= null)
+                if (mediaControllerCompat != null)
                 {
                     if (mediaControllerCompat != null && mediaControllerCompat.PlaybackState != null)
                         return mediaControllerCompat.PlaybackState.State;
                     else
                         return PlaybackStateCompat.StateNone;
-                }                    
+                }
                 else
                     return PlaybackStateCompat.StateNone;
             }
@@ -136,7 +136,7 @@ namespace DivineVerITies.Helpers
             audioManager = (AudioManager)GetSystemService(AudioService);
             wifiManager = (WifiManager)GetSystemService(WifiService);
             remoteComponentName = new ComponentName(PackageName, new RemoteControlBroadcastReceiver().ComponentName);
-            
+
         }
         private void InitMediaSession()
         {
@@ -217,7 +217,7 @@ namespace DivineVerITies.Helpers
         /// </summary>
         private void InitializePlayer()
         {
-            player = new MediaPlayer();            
+            player = new MediaPlayer();
             //streaming player
             player.SetAudioStreamType(Stream.Music);
             //keep player running under lock screen
@@ -226,7 +226,7 @@ namespace DivineVerITies.Helpers
             player.SetOnCompletionListener(this);
             player.SetOnErrorListener(this);
             player.SetOnPreparedListener(this);
-           
+
         }
         public void OnBufferingUpdate(MediaPlayer mp, int percent)
         {
@@ -263,8 +263,8 @@ namespace DivineVerITies.Helpers
             {
                 await Task.Delay(2000);
             }
-            
-            Audio_Player.loadingBar.Visibility = ViewStates.Gone;            
+
+            Audio_Player.loadingBar.Visibility = ViewStates.Gone;
             //Mediaplayer is prepared start track playback
             mp.Start();
             UpdatePlaybackState(PlaybackStateCompat.StatePlaying);
@@ -309,7 +309,7 @@ namespace DivineVerITies.Helpers
                 OnBuffering(EventArgs.Empty);
             }
         }
-        public static  Bitmap cover;
+        public static Bitmap cover;
         //public object Cover
         //{
         //    get
@@ -328,13 +328,13 @@ namespace DivineVerITies.Helpers
         {
             if ((MediaPlayerState == PlaybackStateCompat.StatePaused) && (player != null))
             {
-                
+
                 player.Start();
                 UpdatePlaybackState(PlaybackStateCompat.StatePlaying);
                 StartNotification();
                 Audio_Player.loadingBar.Visibility = ViewStates.Gone;
                 //Update remote client now that we are playing                
-                UpdateMediaMetadataCompat();                
+                UpdateMediaMetadataCompat();
                 return;
             }
             if (player == null)
@@ -436,7 +436,7 @@ namespace DivineVerITies.Helpers
             builder.SetVisibility(Android.Support.V4.App.NotificationCompat.VisibilityPublic);
 
             builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaRew, "", ActionRewind));
-            AddPlayPauseActionCompat(builder); 
+            AddPlayPauseActionCompat(builder);
             builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaFf, "", ActionFastForward));
             style.SetShowActionsInCompactView(0, 1, 2);
 
@@ -463,7 +463,7 @@ namespace DivineVerITies.Helpers
                 builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaPause, "", ActionPause));
                 var image = GetDrawable(Android.Resource.Drawable.IcMediaPause);
                 Audio_Player.playPauseButton.SetImageDrawable(image);
-                
+
             }
             else
             {
@@ -503,7 +503,7 @@ namespace DivineVerITies.Helpers
             mSession.SetMetadata(builder.Build());
         }
 
-        
+
         private void UnregisterMediaSessionCompat()
         {
             try
@@ -530,7 +530,7 @@ namespace DivineVerITies.Helpers
                     return;
                 if (player.IsPlaying)
                     player.Pause();
-                
+
                 UpdatePlaybackState(PlaybackStateCompat.StatePaused);
             });
         }
@@ -548,7 +548,7 @@ namespace DivineVerITies.Helpers
                 }
 
                 UpdatePlaybackState(PlaybackStateCompat.StateStopped);
-                player.Reset();                
+                player.Reset();
                 StopNotification();
                 Audio_Player.loadingBar.Visibility = ViewStates.Gone;
                 var image = GetDrawable(Resource.Drawable.ic_play_arrow);
@@ -666,7 +666,7 @@ namespace DivineVerITies.Helpers
                     if (!player.IsPlaying)
                     {
                         player.Start();
-                        
+
                     }
 
                     player.SetVolume(1.0f, 1.0f);//Turn it up!
@@ -686,7 +686,7 @@ namespace DivineVerITies.Helpers
                     break;
 
             }
-        }       
+        }
         public class MediaSessionCallback : MediaSessionCompat.Callback
         {
 
@@ -743,8 +743,8 @@ namespace DivineVerITies.Helpers
     }
 
     [BroadcastReceiver]
-    [Android.App.IntentFilter(new[] { Intent.ActionMediaButton})]
-    public class RemoteControlBroadcastReceiver:BroadcastReceiver
+    [Android.App.IntentFilter(new[] { Intent.ActionMediaButton })]
+    public class RemoteControlBroadcastReceiver : BroadcastReceiver
     {
         public string ComponentName { get { return this.Class.Name; } }
         public override void OnReceive(Context context, Intent intent)
@@ -757,7 +757,7 @@ namespace DivineVerITies.Helpers
             var action = AudioService.ActionPlay;
             switch (key.KeyCode)
             {
-                case Keycode.Headsethook:                
+                case Keycode.Headsethook:
                 case Keycode.MediaPlay: action = AudioService.ActionPlay; break;
                 case Keycode.MediaPause: action = AudioService.ActionPause; break;
                 case Keycode.MediaStop: action = AudioService.ActionStop; break;
@@ -767,8 +767,8 @@ namespace DivineVerITies.Helpers
             }
             var remoteIntent = new Intent(context, typeof(DivineVerITies.Helpers.AudioService));
             intent.SetAction(action);
-            context.StartService(intent);           
-            
+            context.StartService(intent);
+
         }
     }
 }
