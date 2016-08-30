@@ -106,40 +106,45 @@ namespace DivineVerITies.ExoPlayer.Player
             ShowAudioSnackBar();
         }
 
-         void downloadButton_Click(object sender, System.EventArgs e)
+        public void downloadButton_Click(object sender, System.EventArgs e)
         {
             var builder = new Android.Support.V7.App.AlertDialog.Builder(this);
             builder.SetTitle("Confirm Download")
            .SetMessage("Are You Sure You Want To Download" + " " + selectedAudio.SubTitle)
-           .SetPositiveButton("Yes", async delegate { 
-                   
-               Progress<DownloadBytesProgress> progressReporter = new Progress<DownloadBytesProgress>();
-               DownLoadItemNotification();
-               progressReporter.ProgressChanged += (s, args) =>
-               {
-                   if (args.IsFinished)
-                   {
-                       dComplete();
-                   }
-                   else if (MyService.cts.IsCancellationRequested)
-                   {
-                       pBarCancelled();
-                   }
-                   else
-                   {
-                       int per = (int)(100 * args.PercentComplete);
-                       ChangePBar(per);
-                   }
-               };
+           .SetPositiveButton("Yes", delegate {
 
-               int bytesDownloaded = await Download.CreateDownloadTask(selectedAudio.Link, FileCheck(), progressReporter, this);
-               
+               StartDownload();
            })
            .SetNegativeButton("No", delegate { });
             builder.Create().Show();
         }
 
-        private string FileCheck()
+         public async void StartDownload()
+         {
+             Progress<DownloadBytesProgress> progressReporter = new Progress<DownloadBytesProgress>();
+             DownLoadItemNotification();
+             progressReporter.ProgressChanged += (s, args) =>
+             {
+                 if (args.IsFinished)
+                 {
+                     dComplete();
+                 }
+                 else if (MyService.cts.IsCancellationRequested)
+                 {
+                     pBarCancelled();
+                 }
+                 else
+                 {
+                     int per = (int)(100 * args.PercentComplete);
+                     ChangePBar(per);
+                 }
+             };
+
+             int bytesDownloaded = await Download.CreateDownloadTask(selectedAudio.Link, FileCheck(), progressReporter, this);
+               
+         }
+
+        public string FileCheck()
         {
             
             //var dir = new Java.IO.File(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + @"/cafan/Podcasts/audio/");
@@ -152,7 +157,7 @@ namespace DivineVerITies.ExoPlayer.Player
                 + selectedAudio.Title + ".mp3";
         }
         
-        private void DownLoadItemNotification()
+        public void DownLoadItemNotification()
         {
             var intent = new Intent(MyService.Cancel);
             PendingIntent pIntent = PendingIntent.GetService(this, 0, intent, PendingIntentFlags.UpdateCurrent);
@@ -190,7 +195,7 @@ namespace DivineVerITies.ExoPlayer.Player
             
         }
 
-        private void ChangePBar(int per)
+        public void ChangePBar(int per)
         {
 
             var intent = new Intent(MyService.Cancel);
@@ -214,7 +219,7 @@ namespace DivineVerITies.ExoPlayer.Player
             const int notificationId = 0;
             notificationManager.Notify(notificationId, builder.Build());            
         }
-        private void dComplete()
+        public void dComplete()
         {
             //download complete
 
@@ -237,7 +242,7 @@ namespace DivineVerITies.ExoPlayer.Player
             const int notificationId = 0;
             notificationManager.Notify(notificationId, builder.Build());
         }
-        void pBarCancelled()
+        public void pBarCancelled()
         {
             Android.Support.V4.App.NotificationCompat.Builder builder = new Android.Support.V4.App.NotificationCompat.Builder(this).SetContentTitle("Download Interrupted")
                     .SetContentText("Download was Cancelled")
@@ -327,7 +332,7 @@ namespace DivineVerITies.ExoPlayer.Player
             }
         }
 
-        protected async override void OnStart()
+        protected override void OnStart()
         {
             base.OnStart();
             //if (isVisible)

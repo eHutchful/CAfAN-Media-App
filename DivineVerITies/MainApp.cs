@@ -24,7 +24,7 @@ namespace DivineVerITies
             Resource.Drawable.ic_video_library,
             //Resource.Drawable.ic_subscriptions,
             Resource.Drawable.ic_album};
-
+    
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
