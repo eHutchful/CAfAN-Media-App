@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools">
+<item
+    android:id="@+id/action_add_favourite"
+    android:orderInCategory="100"
+    android:title="Favourite" />
+
+<item
+    android:id="@+id/action_play_next"
+    android:orderInCategory="101"
+    android:title="Play Next" />
+
+  <item
+    android:id="@+id/action_Download"
+    android:orderInCategory="102"
+    android:title="Download" />
+</menu>

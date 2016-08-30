@@ -35,7 +35,7 @@
     <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
     <Debugger>Xamarin</Debugger>
     <AndroidEnableMultiDex>False</AndroidEnableMultiDex>
-    <JavaMaximumHeapSize>600m</JavaMaximumHeapSize>
+    <JavaMaximumHeapSize>300m</JavaMaximumHeapSize>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -108,10 +108,6 @@
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="UniversalImageLoader, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xamarin.Bindings.UniversalImageLoader.1.0.4\lib\MonoAndroid\UniversalImageLoader.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Xamarin.Android.Support.Animated.Vector.Drawable, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Xamarin.Android.Support.Animated.Vector.Drawable.23.4.0.1\lib\MonoAndroid403\Xamarin.Android.Support.Animated.Vector.Drawable.dll</HintPath>
       <Private>True</Private>
@@ -142,6 +138,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AudioAlbumRecyclerAdapter.cs" />
     <Compile Include="AudioList.cs" />
     <Compile Include="AudioRecyclerViewAdapter.cs" />
     <Compile Include="ExoPlayer\EventLogger.cs" />
@@ -162,7 +159,6 @@
     <Compile Include="Fragments\Fragment4.cs" />
     <Compile Include="Fragments\Fragment5.cs" />
     <Compile Include="Fragments\Fragment6.cs" />
-    <Compile Include="Helpers\AudioService.cs" />
     <Compile Include="Helpers\Download.cs" />
     <Compile Include="Helpers\DownloadBytesProgress.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />
@@ -250,6 +246,9 @@
     <AndroidResource Include="Resources\layout\newtest.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\album_card.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml">
@@ -281,15 +280,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\checkbox_style.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\cheese_1.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Imagination.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Liberty.jpg" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\Dimens.xml">
@@ -355,9 +345,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_file_download.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\PRAYER.jpg" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\ic_feedback.png" />
@@ -632,28 +619,28 @@
     <AndroidResource Include="Resources\drawable-hdpi\ic_subtitles.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\togglebutton_playpause.xml" />
+    <AndroidResource Include="Resources\menu\menu_album.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\button_play.xml" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_dots.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\button_pause.xml" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_dots.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\btn_pause_static.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_dots.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\btn_play_static.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_dots.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_pause.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_pause.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\plays.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_pause_circle_outline.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\pause.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\pause.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Android.Support.Vector.Drawable.23.4.0.1\build\Xamarin.Android.Support.Vector.Drawable.targets" Condition="Exists('..\packages\Xamarin.Android.Support.Vector.Drawable.23.4.0.1\build\Xamarin.Android.Support.Vector.Drawable.targets')" />
