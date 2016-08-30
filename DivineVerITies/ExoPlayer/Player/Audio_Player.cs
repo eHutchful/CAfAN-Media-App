@@ -5,6 +5,7 @@ using Android.Graphics;
 using Android.Media;
 using Android.OS;
 using Android.Support.Design.Widget;
+using Android.Support.V4.Media.Session;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
@@ -25,104 +26,198 @@ namespace DivineVerITies.ExoPlayer.Player
     [Activity(Theme = "@style/Theme.DesignDemo")]
     public class Audio_Player : AppCompatActivity
     {
-        //Bitmap imageBitmap = null;
-        //private bool isVisible = true;
-        private SupportToolbar toolBar;
+        public static AudioList selectedAudio;
         public static ProgressBar loadingBar;
         private ImageView artworkView;
-        //private TextView currentPositionView;
-        //private TextView durationView;
 
-        //private SeekBar seekBar;
-        //private bool shouldSetDuration;
-        //private bool userInteracting;
-        private ImageButton previousButton;
-        private ImageButton playPauseButton;
-        private ImageButton nextButton;
-        private ImageButton downloadButton;
-        public static Context context;
-        public static TaskStackBuilder stackBuilder;
-        private mState pState;
-        public static AudioList selectedAudio;
         private View audio_player_view;
-        private MediaPlayer _player;
+        private SupportToolbar toolBar;
+        private TextView position;
+        private TextView duration;
 
-        private enum mState
-        {
-            Idle,
-            Initialized,            
-            Prepared,
-            Started,
-            Paused,
-            Stopped,
-            Preparing,
-            End,
-            Error,
-            PlayBackCompleted
-        }
+        private bool shouldSetDuration;
+        private bool userInteracting;
+
+        private SeekBar seekbar;        
+        private ImageButton rewButton;
+        public static ImageButton playPauseButton;
+        private ImageButton forButton;
+        private ImageButton stopButton;
+        private ImageButton downloadButton;
+
+        public bool isBound = false;
+        public AudioServiceBinder binder;
+        AudioServiceConnection audioServiceConnection;
+        private Intent audioServiceIntent;
+        public event StatusChangedEventHandler StatusChanged;
+        public event CoverReloadedEventHandler CoverReloaded;
+        public event PlayingEventHandler Playing;
+        public event BufferingEventHandler Buffering;
         
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            
             base.OnCreate(savedInstanceState);
-            if (!DivineVerITies.Helpers.AudioService.isPrepared)
-            {
-                selectedAudio = DivineVerITies.Helpers.AudioService.selectedAudio;                
-            }
-            else
-            {
-                loadingBar.Visibility = ViewStates.Gone;
-            }
-            
-            
-            //JsonConvert.DeserializeObject<AudioList>(Intent.GetStringExtra("selectedItem"));
-
+            selectedAudio = DivineVerITies.Helpers.AudioService.selectedAudio;            
             // Create your application here
             SetContentView(Resource.Layout.newtest);
-
             toolBar = FindViewById<SupportToolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolBar);
             // Change To SubTitle Later
             SupportActionBar.Title = selectedAudio.Title;
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+            SupportActionBar.SetHomeButtonEnabled(true);
 
-            //_player = new MediaPlayer();
-            //_player.SetAudioStreamType(Android.Media.Stream.Music);            
-            //pState = mState.Idle;
+            if (audioServiceConnection == null)
+                InitilizeMedia();
+            if(playPauseButton == null)
+            {
+                playPauseButton = FindViewById<ImageButton>(Resource.Id.audio_player_play_pause);
+                var image = GetDrawable(Resource.Drawable.ic_play_arrow);
+                Audio_Player.playPauseButton.SetImageDrawable(image);
+            }           
+            
+            playPauseButton.Click += async (sender, args) => {
+                loadingBar.Visibility = ViewStates.Visible;
+                try {
+                    var client = new WebClient();
+                    client.DownloadDataCompleted += (s, e) =>
+                    {
+                        BitmapFactory.DecodeByteArrayAsync(e.Result, 0, e.Result.Length);
+                    };
+                    client.DownloadDataAsync(new Uri(DivineVerITies.Helpers.AudioService.selectedAudio.Link));
+                }
+                catch(Exception e)
+                {
+                    DivineVerITies.Helpers.AudioService.failed = true;
+                }
+                if (binder.GetMediaPlayerService().player != null && binder.GetMediaPlayerService().MediaPlayerState == PlaybackStateCompat.StatePlaying)
+                {
+                    await binder.GetMediaPlayerService().Pause();
+                    
+                }
+                else
+                {
+                    await binder.GetMediaPlayerService().Play();
+                    
+                }
+                    
+            };
 
-            //playPauseButton = FindViewById<ImageButton>(Resource.Id.audio_player_play_pause);
-            //playPauseButton.Click += playPauseButton_Click;
+            rewButton = FindViewById<ImageButton>(Resource.Id.audio_player_reverse);
+            //rewButton.SetImageBitmap(BitmapFactory.DecodeResource(Resources,Android.Resource.Drawable.IcMediaRew));
+            rewButton.Click += async (sender, args) =>
+            {
+                if (binder.GetMediaPlayerService().player != null && 
+                binder.GetMediaPlayerService().MediaPlayerState != PlaybackStateCompat.StateStopped)
+                    await binder.GetMediaPlayerService().Rewind();
+            };
 
-            //previousButton = FindViewById<ImageButton>(Resource.Id.audio_player_previous);
-            //previousButton.Click +=previousButton_Click;
+            forButton = FindViewById<ImageButton>(Resource.Id.audio_player_forward);
+            //forButton.SetImageBitmap(BitmapFactory.DecodeResource(Resources, Android.Resource.Drawable.IcMediaFf));
+            forButton.Click += async (sender, args) =>
+            {
+                if (binder.GetMediaPlayerService().player != null &&
+                binder.GetMediaPlayerService().MediaPlayerState != PlaybackStateCompat.StateStopped)
+                    await binder.GetMediaPlayerService().FastForward();
+            };
+            stopButton = FindViewById<ImageButton>(Resource.Id.audio_player_stop);
+            //stopButton.SetImageBitmap(BitmapFactory.DecodeResource(Resources, Android.Resource.Drawable.IcMediaFf));
+            stopButton.Click += async (sender, args) =>
+            {
+                if (binder.GetMediaPlayerService().player != null &&
+                binder.GetMediaPlayerService().MediaPlayerState != PlaybackStateCompat.StateStopped)
+                    await binder.GetMediaPlayerService().Stop();
+            };
+            position = FindViewById<TextView>(Resource.Id.audio_player_position);
+            duration = FindViewById<TextView>(Resource.Id.audio_player_duration);
+            seekbar = FindViewById<SeekBar>(Resource.Id.audio_player_seek);
 
-            //nextButton = FindViewById<ImageButton>(Resource.Id.audio_player_next);
-            //nextButton.Click += nextButton_Click;
+            Playing += (object sender, EventArgs e) => {
+                seekbar.Max = binder.GetMediaPlayerService().Duration;
+                seekbar.Progress = binder.GetMediaPlayerService().Position;
 
-            //downloadButton = FindViewById<ImageButton>(Resource.Id.audio_download);
-            //downloadButton.Click += downloadButton_Click;
-                
+                position.Text = GetFormattedTime(binder.GetMediaPlayerService().Position);
+                duration.Text = GetFormattedTime(binder.GetMediaPlayerService().Duration);
+            };
 
-            //_player.Prepared += (sender, args) => 
-            //{
-            //    _player.Start();
-                loadingBar = FindViewById<ProgressBar>(Resource.Id.audio_player_loading);
-                
-               // artworkView.SetImageBitmap(imageBitmap); 
-            //};
-            //_player.Completion +=(sender,e)=>{_player.Stop();};
+            Buffering += (object sender, EventArgs e) => {
+                seekbar.SecondaryProgress = binder.GetMediaPlayerService().Buffered;
+            };
 
+            StatusChanged += (object sender, EventArgs e) => {
+                var metadata = binder.GetMediaPlayerService().mediaControllerCompat.Metadata;
+                if (metadata != null)
+                {
+                    RunOnUiThread(() => {
+                        //title.Text = metadata.GetString(MediaMetadata.MetadataKeyTitle);
+                        //subtitle.Text = metadata.GetString(MediaMetadata.MetadataKeyArtist);
+                        playPauseButton.Selected = binder.GetMediaPlayerService().mediaControllerCompat.PlaybackState.State == PlaybackStateCompat.StatePlaying;
+                    });
+                }
+            };
+
+            downloadButton = FindViewById<ImageButton>(Resource.Id.audio_download);
+            downloadButton.Click += downloadButton_Click;            
+            
             audio_player_view = FindViewById(Resource.Id.audioPlayerView);
-            ShowAudioSnackBar();
+            //ShowAudioSnackBar();
         }
+        private string GetFormattedTime(int value)
+        {
+            var span = TimeSpan.FromMilliseconds(value);
+            if (span.Hours > 0)
+            {
+                return string.Format("{0}:{1:00}:{2:00}", (int)span.TotalHours, span.Minutes, span.Seconds);
+            }
+            else
+            {
+                return string.Format("{0}:{1:00}", (int)span.Minutes, span.Seconds);
+            }
+        }
+        private void InitilizeMedia()
+        {
+            audioServiceIntent = new Intent(ApplicationContext, typeof(AudioService));
+            audioServiceConnection = new AudioServiceConnection(this);
+            BindService(audioServiceIntent, audioServiceConnection, Bind.AutoCreate);
+        }
+        private class AudioServiceConnection : Java.Lang.Object, IServiceConnection
+        {
+            Audio_Player instance;
 
-         void downloadButton_Click(object sender, System.EventArgs e)
+            public AudioServiceConnection(Audio_Player mediaPlayer)
+            {
+                this.instance = mediaPlayer;
+            }
+
+            public void OnServiceConnected(ComponentName name, IBinder service)
+            {
+                var mediaPlayerServiceBinder = service as AudioServiceBinder;
+                if (mediaPlayerServiceBinder != null)
+                {
+                    var binder = (AudioServiceBinder)service;
+                    instance.binder = binder;
+                    instance.isBound = true;
+
+                    binder.GetMediaPlayerService().CoverReloaded += (object sender, EventArgs e) => { if (instance.CoverReloaded != null) instance.CoverReloaded(sender, e); };
+                    binder.GetMediaPlayerService().StatusChanged += (object sender, EventArgs e) => { if (instance.StatusChanged != null) instance.StatusChanged(sender, e); };
+                    binder.GetMediaPlayerService().Playing += (object sender, EventArgs e) => { if (instance.Playing != null) instance.Playing(sender, e); };
+                    binder.GetMediaPlayerService().Buffering += (object sender, EventArgs e) => { if (instance.Buffering != null) instance.Buffering(sender, e); };
+                }
+            }
+
+            public void OnServiceDisconnected(ComponentName name)
+            {
+                instance.isBound = false;
+            }
+        }
+        public void downloadButton_Click(object sender, System.EventArgs e)
         {
             var builder = new Android.Support.V7.App.AlertDialog.Builder(this);
             builder.SetTitle("Confirm Download")
            .SetMessage("Are You Sure You Want To Download" + " " + selectedAudio.SubTitle)
-           .SetPositiveButton("Yes", async delegate { 
-                   
+           .SetPositiveButton("Yes", async delegate {                    
                Progress<DownloadBytesProgress> progressReporter = new Progress<DownloadBytesProgress>();
                DownLoadItemNotification();
                progressReporter.ProgressChanged += (s, args) =>
@@ -141,32 +236,23 @@ namespace DivineVerITies.ExoPlayer.Player
                        ChangePBar(per);
                    }
                };
-
-               int bytesDownloaded = await Download.CreateDownloadTask(selectedAudio.Link, FileCheck(), progressReporter, this);
-               
+               int bytesDownloaded = await Download.CreateDownloadTask(selectedAudio.Link, FileCheck(), progressReporter, this);               
            })
            .SetNegativeButton("No", delegate { });
             builder.Create().Show();
         }
-
         private string FileCheck()
         {
-            
-            //var dir = new Java.IO.File(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + @"/cafan/Podcasts/audio/");
-            //if (!dir.Exists())
-            //    dir.Mkdirs();
             if (!Directory.Exists(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + @"/cafan/Podcasts/audio/"))
                 Directory.CreateDirectory(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + @"/cafan/Podcasts/audio/");
-            //return dir.AbsolutePath +"/"+ selectedAudio.Title + ".mp3";
+            
             return Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + @"/cafan/Podcasts/audio/"
                 + selectedAudio.Title + ".mp3";
         }
-        
         private void DownLoadItemNotification()
         {
             var intent = new Intent(MyService.Cancel);
             PendingIntent pIntent = PendingIntent.GetService(this, 0, intent, PendingIntentFlags.UpdateCurrent);
-
             // Instantiate the builder and set notification elements:
             Android.Support.V4.App.NotificationCompat.Builder builder = new Android.Support.V4.App.NotificationCompat.Builder(this)
                 .SetContentTitle("Downloading Podcast")
@@ -183,40 +269,30 @@ namespace DivineVerITies.ExoPlayer.Player
                 //.AddAction()
                 //Initialize the download
                 .SetProgress(0, 0, true);
-
-
             // Build the notification:
             Notification notification = builder.Build();
-
             // Get the notification manager:
             NotificationManager notificationManager =
                 GetSystemService(Context.NotificationService) as NotificationManager;
-
             // Publish the notification:
             const int notificationId = 0;
             notificationManager.Notify(notificationId, notification);
-
-
-            
         }
-
         private void ChangePBar(int per)
         {
-
             var intent = new Intent(MyService.Cancel);
             PendingIntent pIntent = PendingIntent.GetService(this, 0, intent, PendingIntentFlags.UpdateCurrent);
             // Instantiate the builder and set notification elements:
            Android.Support.V4.App. NotificationCompat.Builder builder = new Android.Support.V4.App.NotificationCompat.Builder(this)
            .SetContentTitle("Downloading Podcast")
-                .SetContentText("Downloaded (" + per + "/100")
-                    .SetLargeIcon(BitmapFactory.DecodeResource(Resources, Resource.Drawable.Logo_trans192))
-                .SetSmallIcon(Resource.Drawable.ic_cloud_download)
-                .SetPriority(0)
-                .SetVisibility(3)
-                .SetCategory(Notification.CategoryProgress)
-                .AddAction(Resource.Drawable.ic_cancel, "Cancel", pIntent)
-                    .SetProgress(100, per, false);
-             
+           .SetContentText("Downloaded (" + per + "/100")
+           .SetLargeIcon(BitmapFactory.DecodeResource(Resources, Resource.Drawable.Logo_trans192))
+           .SetSmallIcon(Resource.Drawable.ic_cloud_download)
+           .SetPriority(0)
+           .SetVisibility(3)
+           .SetCategory(Notification.CategoryProgress)
+           .AddAction(Resource.Drawable.ic_cancel, "Cancel", pIntent)
+           .SetProgress(100, per, false);             
             // Get the notification manager:
             NotificationManager notificationManager =
                 GetSystemService(Context.NotificationService) as NotificationManager;
@@ -226,40 +302,37 @@ namespace DivineVerITies.ExoPlayer.Player
         }
         private void dComplete()
         {
-            //download complete
-
-
-
-            Android.Support.V4.App.NotificationCompat.Builder builder = new Android.Support.V4.App.NotificationCompat.Builder(this).SetContentTitle("Done")
-                    .SetContentText("Download complete")
-                    //.SetDefaults(NotificationDefaults.Sound | NotificationDefaults.Vibrate)
-                    .SetLargeIcon(BitmapFactory.DecodeResource(Resources, Resource.Drawable.Logo_trans192))
+            Android.Support.V4.App.NotificationCompat.Builder builder = new Android.Support.V4.App.NotificationCompat.Builder(this)
+                .SetContentTitle("Done")
+                .SetContentText("Download complete")
+                //.SetDefaults(NotificationDefaults.Sound | NotificationDefaults.Vibrate)
+                .SetLargeIcon(BitmapFactory.DecodeResource(Resources, Resource.Drawable.Logo_trans192))
                 .SetSmallIcon(Resource.Drawable.ic_cloud_download)
                 .SetVisibility(3)
                 .SetCategory(Notification.CategoryProgress)
-                    .SetDefaults(3)
-                    .SetPriority(2)
+                .SetDefaults(3)
+                .SetPriority(2)
                 // Removes the progress bar
-                   .SetProgress(0, 0, false);
+                .SetProgress(0, 0, false);
             NotificationManager notificationManager =
                 GetSystemService(Context.NotificationService) as NotificationManager;
             // Publish the notification:
             const int notificationId = 0;
             notificationManager.Notify(notificationId, builder.Build());
         }
-        void pBarCancelled()
+        private void pBarCancelled()
         {
-            Android.Support.V4.App.NotificationCompat.Builder builder = new Android.Support.V4.App.NotificationCompat.Builder(this).SetContentTitle("Download Interrupted")
-                    .SetContentText("Download was Cancelled")
-                //.SetDefaults(NotificationDefaults.Sound | NotificationDefaults.Vibrate)
-                    .SetLargeIcon(BitmapFactory.DecodeResource(Resources, Resource.Drawable.Logo_trans192))
+            Android.Support.V4.App.NotificationCompat.Builder builder = new Android.Support.V4.App.NotificationCompat.Builder(this)
+                .SetContentTitle("Download Interrupted")
+                .SetContentText("Download was Cancelled")               
+                .SetLargeIcon(BitmapFactory.DecodeResource(Resources, Resource.Drawable.Logo_trans192))
                 .SetSmallIcon(Resource.Drawable.ic_cloud_download)
                 .SetVisibility(3)
                 .SetCategory(Notification.CategoryProgress)
-                    .SetDefaults(3)
-                    .SetPriority(2)
+                .SetDefaults(3)
+                .SetPriority(2)
                 // Removes the progress bar
-                   .SetProgress(0, 0, false);
+                .SetProgress(0, 0, false);
             NotificationManager notificationManager =
                 GetSystemService(Context.NotificationService) as NotificationManager;
             // Publish the notification:
@@ -296,91 +369,29 @@ namespace DivineVerITies.ExoPlayer.Player
             //    Snackbar.Make(audio_player_view, text, Snackbar.LengthLong)
             //        .Show();
             //}
-        }
-
-        void nextButton_Click(object sender, System.EventArgs e)
+        }       
+        protected override void OnStart()
         {
-            if(pState==mState.Prepared||pState==mState.Paused)
-            {
-                var i = _player.CurrentPosition;
-                i += 1000;
-                _player.SeekTo(i);
-
-            }
-            else if(pState==mState.PlayBackCompleted){}
-            
-        }
-
-        private void previousButton_Click(object sender, System.EventArgs e)
-        {
-            if (pState == mState.Prepared || pState == mState.Paused)
-            {
-                var i = _player.CurrentPosition;
-                i -= 1000;
-                _player.SeekTo(i);
-
-            }
-            else if (pState == mState.PlayBackCompleted) { }
-        }
-
-        void playPauseButton_Click(object sender, System.EventArgs e)
-        { 
-            if(!_player.IsPlaying)
-            {
-                _player.Start();
-                pState = mState.Started;
-            }
-            else
-            {
-                _player.Pause();
-                pState = mState.Paused;
-            }
-        }
-
-        protected async override void OnStart()
-        {
-            base.OnStart();
-            context = ApplicationContext;
-            stackBuilder = TaskStackBuilder.Create(Audio_Player.context);
-            stackBuilder.AddParentStack(this);            
-            var intent = new Intent(this,typeof(DivineVerITies.Helpers.AudioService));
-            intent.SetAction(DivineVerITies.Helpers.AudioService.ActionPlay);
-            StartService(intent);
+            base.OnStart();            
+            //var intent = new Intent(this,typeof(DivineVerITies.Helpers.AudioService));
+            //intent.SetAction(DivineVerITies.Helpers.AudioService.ActionPlay);
+            //StartService(intent);
             artworkView = FindViewById<ImageView>(Resource.Id.audio_player_image);
             Glide.With(this)
                     .Load(selectedAudio.ImageUrl)
                     .Placeholder(Resource.Drawable.Logo_trans192)
                     .Error(Resource.Drawable.Logo_trans192)
-                    //.SkipMemoryCache(true)
                     .DiskCacheStrategy(DiskCacheStrategy.All)
                     .Into(artworkView);
-            if (DivineVerITies.Helpers.AudioService.image == null)
-            {
-                using (var client = new HttpClient())
-                {
-                    try
-                    {
-                        var imageBytes = await client.GetByteArrayAsync(selectedAudio.ImageUrl);
-                        if (imageBytes != null && imageBytes.Length > 0)
-                        {
-                            DivineVerITies.Helpers.AudioService.image = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        DivineVerITies.Helpers.AudioService.failed = true;
-                    }                    
-                }
-            }
-
+            loadingBar = FindViewById<ProgressBar>(Resource.Id.audio_player_loading);
+            loadingBar.Visibility = ViewStates.Invisible;
+           
         }
-
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
             MenuInflater.Inflate(Resource.Menu.audio_list, menu);
             return true;
         }
-
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
             switch (item.ItemId)

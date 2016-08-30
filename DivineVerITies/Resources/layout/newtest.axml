@@ -82,25 +82,13 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
             <ImageButton
-                android:id="@+id/audio_player_shuffle"
+                android:id="@+id/audio_player_reverse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_favorite_border"
+                android:src="@drawable/ic_fast_rewind_white"
                 android:scaleType="centerInside"
                 tools:ignore="ContentDescription" />
-            <android.support.v4.widget.Space
-                android:layout_width="44dp"
-                android:layout_height="match_parent" />
-            <ImageButton
-                android:id="@+id/audio_player_previous"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_replay_10"
-                android:scaleType="centerInside"
-                tools:ignore="ContentDescription"
-                android:clickable="true" />
             <android.support.v4.widget.Space
                 android:layout_width="44dp"
                 android:layout_height="match_parent" />
@@ -108,8 +96,20 @@
                 android:id="@+id/audio_player_play_pause"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                
+                android:scaleType="centerInside"
+                tools:ignore="ContentDescription"
+                android:clickable="true"
+                android:layout_marginBottom="0.0dp" />
+            <android.support.v4.widget.Space
+                android:layout_width="44dp"
+                android:layout_height="match_parent" />
+            <ImageButton
+                android:id="@+id/audio_player_stop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_play_arrow"
+                android:src="@drawable/ic_stop"
                 android:scaleType="centerInside"
                 tools:ignore="ContentDescription"
                 android:clickable="true" />
@@ -117,11 +117,11 @@
                 android:layout_width="44dp"
                 android:layout_height="match_parent" />
             <ImageButton
-                android:id="@+id/audio_player_next"
+                android:id="@+id/audio_player_forward"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:src="@drawable/ic_fast_forward_white"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_forward_30"
                 android:scaleType="centerInside"
                 tools:ignore="ContentDescription"
                 android:clickable="true" />
