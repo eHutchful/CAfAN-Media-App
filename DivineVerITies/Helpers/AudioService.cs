@@ -345,10 +345,11 @@ namespace DivineVerITies.Helpers
             if (player.IsPlaying) { UpdatePlaybackState(PlaybackStateCompat.StatePlaying); return; }
             try
             {
-                MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
-                await player.SetDataSourceAsync(ApplicationContext,
-                    Android.Net.Uri.Parse(Audio_Player.selectedAudio.Link));
-                await metaRetriever.SetDataSourceAsync(Audio_Player.selectedAudio.Link, new Dictionary<string, string>());
+                //MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
+                //await player.SetDataSourceAsync(ApplicationContext,
+                //    Android.Net.Uri.Parse(Audio_Player.selectedAudio.Link));
+                await setDataSourceAsync();
+                //await metaRetriever.SetDataSourceAsync(Audio_Player.selectedAudio.Link, new Dictionary<string, string>());
                 var focusResult = audioManager.RequestAudioFocus(this, Stream.Music,
                     AudioFocus.Gain);
                 if (focusResult != AudioFocusRequest.Granted)
@@ -359,7 +360,7 @@ namespace DivineVerITies.Helpers
                 player.PrepareAsync();
                 AcquireWifiLock();
 
-                //UpdateMediaMetadataCompat(metaRetriever);
+                UpdateMediaMetadataCompat();
                 //byte[] imageByteArray = metaRetriever.GetEmbeddedPicture();
                 //if (imageByteArray == null)
                 //    Cover = await BitmapFactory.DecodeResourceAsync(Resources, Resource.Drawable.Logo_trans192);
@@ -377,6 +378,14 @@ namespace DivineVerITies.Helpers
                 Console.WriteLine("Unable to start playback: " + ex);
             }
         }
+
+        private async Task setDataSourceAsync()
+        {
+            //MediaMetadataRetriever metaretriever
+            player.SetDataSource(ApplicationContext,Android.Net.Uri.Parse(selectedAudio.Link));
+            //metaretriever.SetDataSource(Audio_Player.selectedAudio.Link, new Dictionary<string, string>());
+        }
+
         public async Task Seek(int position)
         {
             await Task.Run(() =>
@@ -455,7 +464,6 @@ namespace DivineVerITies.Helpers
 
             return new Android.Support.V4.App.NotificationCompat.Action.Builder(icon, title, pendingIntent).Build();
         }
-
         private void AddPlayPauseActionCompat(Android.Support.V4.App.NotificationCompat.Builder builder)
         {
             if (MediaPlayerState == PlaybackStateCompat.StatePlaying)
@@ -463,6 +471,7 @@ namespace DivineVerITies.Helpers
                 builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaPause, "", ActionPause));
                 var image = GetDrawable(Android.Resource.Drawable.IcMediaPause);
                 Audio_Player.playPauseButton.SetImageDrawable(image);
+                Audio_Player.playPauseButton.SetBackgroundColor(Color.Transparent);
 
             }
             else
@@ -470,6 +479,7 @@ namespace DivineVerITies.Helpers
                 builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaPlay, "", ActionPlay));
                 var image = GetDrawable(Resource.Drawable.ic_play_arrow);
                 Audio_Player.playPauseButton.SetImageDrawable(image);
+                Audio_Player.playPauseButton.SetBackgroundColor(Color.Transparent);
             }
         }
         public void StopNotification()
@@ -502,8 +512,6 @@ namespace DivineVerITies.Helpers
 
             mSession.SetMetadata(builder.Build());
         }
-
-
         private void UnregisterMediaSessionCompat()
         {
             try

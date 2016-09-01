@@ -164,6 +164,7 @@
     <Compile Include="Helpers\DownloadBytesProgress.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />
     <Compile Include="Helpers\Initialize.cs" />
+    <Compile Include="Helpers\MediaPlayerService.cs" />
     <Compile Include="Helpers\MyService.cs" />
     <Compile Include="Helpers\Topics.cs" />
     <Compile Include="MainActivity.cs" />
