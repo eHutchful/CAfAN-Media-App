@@ -9,6 +9,7 @@ using Android.Widget;
 using Com.Bumptech.Glide;
 using Com.Bumptech.Glide.Load.Engine;
 using DivineVerITies.ExoPlayer.Player;
+using DivineVerITies.Helpers;
 using Newtonsoft.Json;
 using System;
 using System.Net;
@@ -53,7 +54,7 @@ namespace DivineVerITies
                 //StartActivity(mpdIntent);
 
                 Android.Content.Intent intent = new Android.Content.Intent(this, typeof(Audio_Player));
-                DivineVerITies.Helpers.AudioService.selectedAudio = selectedAudio;
+                MediaPlayerService.selectedAudio = selectedAudio;
                 //var serial = JsonConvert.SerializeObject(selectedAudio);
                 //intent.PutExtra("selectedItem", serial);                
                 StartActivity(intent);
