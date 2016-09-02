@@ -35,8 +35,8 @@ namespace DivineVerITies.ExoPlayer.Player
         private TextView position;
         private TextView duration;
 
-        private bool shouldSetDuration;
-        private bool userInteracting;
+        //private bool shouldSetDuration;
+        //private bool userInteracting;
 
         private SeekBar seekbar;        
         private ImageButton rewButton;

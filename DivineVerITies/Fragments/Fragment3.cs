@@ -3,6 +3,7 @@ using Android.Content;
 using Android.Graphics;
 using Android.OS;
 using Android.Support.Design.Widget;
+using Android.Support.V4.View;
 using Android.Support.V4.Widget;
 using Android.Support.V7.Widget;
 using Android.Views;
@@ -13,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using SupportFragment = Android.Support.V4.App.Fragment;
+using Android.Runtime;
 
 namespace DivineVerITies.Fragments
 {
@@ -25,6 +27,7 @@ namespace DivineVerITies.Fragments
         public List<AudioList> mAudios;
         public List<AudioList> mlist;
         private View view;
+        private Android.Support.V7.Widget.SearchView mSearchView;
         //private XDocument xdoc;
  
         public override void OnCreate(Bundle savedInstanceState)
@@ -38,13 +41,14 @@ namespace DivineVerITies.Fragments
         public override void OnActivityCreated(Bundle savedInstanceState)
         {
             base.OnActivityCreated(savedInstanceState);
-            
+
             getAudiosAsyc();
-            
-            
+
+            HasOptionsMenu = true;
 
             swipeRefreshLayout.Refresh += swipeRefreshLayout_Refresh;
             //mAudios = await (new Initialize()).getAudioList();
+            
         }
 
         private async void getAudiosAsyc()
@@ -116,6 +120,52 @@ namespace DivineVerITies.Fragments
 
                 context.StartActivity(intent);
             });
+        }
+
+        public override void OnCreateOptionsMenu(IMenu menu, MenuInflater inflater)
+        {
+            //base.OnCreateOptionsMenu(menu, inflater);
+           //inflater.Inflate(Resource.Menu.sample_actions, menu);
+
+            var item = menu.FindItem(Resource.Id.action_search);
+
+            var searchView = MenuItemCompat.GetActionView(item);
+            mSearchView = searchView.JavaCast<Android.Support.V7.Widget.SearchView>();
+
+            mSearchView.QueryTextChange += (s, e) => mAudioAdapter.Filter.InvokeFilter(e.NewText);
+
+            mSearchView.QueryTextSubmit += (s, e) =>
+            {
+                // Handle enter/search button on keyboard here
+                Toast.MakeText(Activity, "Searched for: " + e.Query, ToastLength.Short).Show();
+                e.Handled = true;
+            };
+
+            mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
+            MenuItemCompat.SetOnActionExpandListener(item, new SearchViewExpandListener(mAudioAdapter));
+
+            
+        }
+    }
+
+    public class SearchViewExpandListener : Java.Lang.Object, MenuItemCompat.IOnActionExpandListener
+    {
+        private readonly IFilterable _adapter;
+
+        public SearchViewExpandListener(IFilterable adapter)
+        {
+            _adapter = adapter;
+        }
+
+        public bool OnMenuItemActionCollapse(IMenuItem item)
+        {
+            _adapter.Filter.InvokeFilter("");
+            return true;
+        }
+
+        public bool OnMenuItemActionExpand(IMenuItem item)
+        {
+            return true;
         }
     }
 }

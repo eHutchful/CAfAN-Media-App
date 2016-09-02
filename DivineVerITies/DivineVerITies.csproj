@@ -165,6 +165,7 @@
     <Compile Include="Helpers\ExtensionMethods.cs" />
     <Compile Include="Helpers\Initialize.cs" />
     <Compile Include="Helpers\MyService.cs" />
+    <Compile Include="Helpers\ObjectExtensions.cs" />
     <Compile Include="Helpers\Topics.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MainApp.cs" />

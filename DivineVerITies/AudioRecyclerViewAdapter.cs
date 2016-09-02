@@ -6,17 +6,21 @@ using Android.Views;
 using Android.Widget;
 using Com.Bumptech.Glide;
 using Com.Bumptech.Glide.Load.Engine;
-using DivineVerITies.ExoPlayer.Player;
+using Java.Lang;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Object = Java.Lang.Object;
+using DivineVerITies.Helpers;
 
 
 namespace DivineVerITies
 {
-    class AudioRecyclerViewAdapter : RecyclerView.Adapter
+    public class AudioRecyclerViewAdapter : RecyclerView.Adapter, IFilterable
     {
         //bool isRecyclerVewVisible = false;
-        List<AudioList> mAudios;
+        public List<AudioList> mAudios;
+        public List<AudioList> mFilterAudios;
         private readonly TypedValue mTypedValue = new TypedValue();
         private int mBackground;
         Resources mResource;
@@ -25,11 +29,14 @@ namespace DivineVerITies
 
         public AudioRecyclerViewAdapter(Context context, List<AudioList> audios, Resources res)
         {
+           // mFilterAudios = audios;
             mContext = context;
             context.Theme.ResolveAttribute(Resource.Attribute.selectableItemBackground, mTypedValue, true);
             mBackground = mTypedValue.ResourceId;
             mAudios = audios;
             mResource = res;
+
+            Filter = new AudioFilter(this);
         }
 
         public override int ItemCount
@@ -141,6 +148,64 @@ namespace DivineVerITies
                 mOptions = view.FindViewById<ImageButton>(Resource.Id.img_options);
                 mMainAudioView.Click += (sender, e) => listener(base.Position);
             }
+        }
+
+        public Filter Filter { get; private set; }
+
+        //public void NotifyDataSetChanged()
+        //{
+        //    // If you are using cool stuff like sections
+        //    // remember to update the indices here!
+        //    base.NotifyDataSetChanged();
+        //}
+    }
+
+    class AudioFilter : Filter
+    {
+        private readonly AudioRecyclerViewAdapter _adapter;
+        public AudioFilter(AudioRecyclerViewAdapter adapter)
+        {
+            _adapter = adapter;
+        }
+
+        protected override FilterResults PerformFiltering(ICharSequence constraint)
+        {
+            var returnObj = new FilterResults();
+            var results = new List<AudioList>();
+            if (_adapter.mFilterAudios == null)
+                _adapter.mFilterAudios = _adapter.mAudios;
+
+            if (constraint == null) return returnObj;
+
+            if (_adapter.mFilterAudios != null && _adapter.mFilterAudios.Any())
+            {
+                // Compare constraint to all names lowercased. 
+                // It they are contained they are added to results.
+                results.AddRange(
+                    _adapter.mFilterAudios.Where(
+                        audio => audio.Title.ToLower().Contains(constraint.ToString())));
+            }
+
+            // Nasty piece of .NET to Java wrapping, be careful with this!
+            returnObj.Values = FromArray(results.Select(r => r.ToJavaObject()).ToArray());
+            returnObj.Count = results.Count;
+
+            constraint.Dispose();
+
+            return returnObj;
+        }
+
+        protected override void PublishResults(ICharSequence constraint, FilterResults results)
+        {
+            using (var values = results.Values)
+                _adapter.mAudios = values.ToArray<Object>()
+                    .Select(r => r.ToNetObject<AudioList>()).ToList();
+
+            _adapter.NotifyDataSetChanged();
+
+            // Don't do this and see GREF counts rising
+            constraint.Dispose();
+            results.Dispose();
         }
     }
 }
