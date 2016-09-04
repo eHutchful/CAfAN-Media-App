@@ -523,9 +523,9 @@ namespace DivineVerITies.Helpers
                 .SetOngoing(MediaPlayerState == PlaybackStateCompat.StatePlaying)
                 .SetVisibility(NotificationCompat.VisibilityPublic);
 
-            builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaPrevious, "Previous", ActionPrevious));
+            builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaPrevious, "", ActionPrevious));
             AddPlayPauseActionCompat(builder);
-            builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaNext, "Next", ActionNext));
+            builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaNext, "", ActionNext));
             style.SetShowActionsInCompactView(0, 1, 2);
 
             NotificationManagerCompat.From(ApplicationContext).Notify(NotificationId, builder.Build());
@@ -549,14 +549,14 @@ namespace DivineVerITies.Helpers
         {
             if (MediaPlayerState == PlaybackStateCompat.StatePlaying)
             {
-                builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaPause, "Pause", ActionPause));
+                builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaPause, "", ActionPause));
                 Audio_Player.playPauseButton.SetImageResource(Android.Resource.Drawable.IcMediaPause);
                 Audio_Player.playPauseButton.SetBackgroundColor(Color.Transparent);
                 
             }
             else
             {
-                builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaPlay, "Play", ActionPlay));
+                builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaPlay, "", ActionPlay));
                 Audio_Player.playPauseButton.SetImageResource(Android.Resource.Drawable.IcMediaPlay);
                 Audio_Player.playPauseButton.SetBackgroundColor(Color.Transparent);
             }
