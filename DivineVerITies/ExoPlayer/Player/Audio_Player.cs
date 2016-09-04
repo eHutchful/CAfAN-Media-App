@@ -34,10 +34,7 @@ namespace DivineVerITies.ExoPlayer.Player
         private SupportToolbar toolBar;
         private TextView position;
         private TextView duration;
-
-        //private bool shouldSetDuration;
-        //private bool userInteracting;
-
+        
         private SeekBar seekbar;        
         private ImageButton rewButton;
         public static ImageButton playPauseButton;
@@ -72,14 +69,7 @@ namespace DivineVerITies.ExoPlayer.Player
 
             if (mediaPlayerServiceConnection == null)
                 InitilizeMedia();
-            if(playPauseButton == null)
-            {
-                playPauseButton = FindViewById<ImageButton>(Resource.Id.audio_player_play_pause);
-                var image = GetDrawable(Resource.Drawable.ic_play_arrow);
-                Audio_Player.playPauseButton.SetImageDrawable(image);                
-                playPauseButton.SetBackgroundColor(Color.Transparent);                
-            }           
-            
+            playPauseButton = FindViewById<ImageButton>(Resource.Id.audio_player_play_pause);
             playPauseButton.Click += async (sender, args) =>
             {
                 loadingBar.Visibility = ViewStates.Visible;
@@ -145,8 +135,9 @@ namespace DivineVerITies.ExoPlayer.Player
             };
 
             Buffering += (object sender, EventArgs e) => {
-                seekbar.SecondaryProgress = binder.GetMediaPlayerService().Buffered;
                 loadingBar.Visibility = ViewStates.Visible;
+                seekbar.SecondaryProgress = binder.GetMediaPlayerService().Buffered;
+                
             };
 
             StatusChanged += (object sender, EventArgs e) => {

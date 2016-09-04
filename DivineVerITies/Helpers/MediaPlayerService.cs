@@ -11,7 +11,8 @@ using Android.Support.V4.Media;
 using Android.Support.V4.App;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-
+using DivineVerITies.ExoPlayer.Player;
+using System.Net;
 
 namespace DivineVerITies.Helpers
 {
@@ -209,9 +210,11 @@ namespace DivineVerITies.Helpers
 
         public void OnPrepared(MediaPlayer mp)
         {
+            Audio_Player.loadingBar.Visibility = Android.Views.ViewStates.Invisible;            
             //Mediaplayer is prepared start track playback
             mp.Start();
             UpdatePlaybackState(PlaybackStateCompat.StatePlaying);
+
         }
 
         public int Position
@@ -318,13 +321,23 @@ namespace DivineVerITies.Helpers
                 UpdatePlaybackState(PlaybackStateCompat.StateBuffering);
                 mediaPlayer.PrepareAsync();
                 AquireWifiLock();
+                var client = new WebClient();
+                client.DownloadDataCompleted += (sender, args) =>
+                {
+                    cover = BitmapFactory.DecodeByteArray(args.Result, 0, args.Result.Length);
+                };
+                client.DownloadDataAsync(new System.Uri(selectedAudio.ImageUrl));
+                while (cover == null)
+                {
+                    await Task.Delay(1000);
+                }
                 UpdateMediaMetadataCompat(metaRetriever);
                 StartNotification();
-                byte[] imageByteArray = metaRetriever.GetEmbeddedPicture();
-                if (imageByteArray == null)
-                    Cover = await BitmapFactory.DecodeResourceAsync(Resources, Resource.Drawable.Logo_trans192);
-                else
-                    Cover = await BitmapFactory.DecodeByteArrayAsync(imageByteArray, 0, imageByteArray.Length);
+                //byte[] imageByteArray = metaRetriever.GetEmbeddedPicture();
+                //if (imageByteArray == null)
+                //    Cover = await BitmapFactory.DecodeResourceAsync(Resources, Resource.Drawable.Logo_trans192);
+                //else
+                //    Cover = await BitmapFactory.DecodeByteArrayAsync(imageByteArray, 0, imageByteArray.Length);
             }
             catch (Exception ex)
             {
@@ -485,7 +498,7 @@ namespace DivineVerITies.Helpers
             if (mediaSessionCompat == null)
                 return;
 
-            var pendingIntent = PendingIntent.GetActivity(ApplicationContext, 0, new Intent(ApplicationContext, typeof(MainActivity)), PendingIntentFlags.UpdateCurrent);
+            var pendingIntent = PendingIntent.GetActivity(ApplicationContext, 0, new Intent(ApplicationContext, typeof(Audio_Player)), PendingIntentFlags.UpdateCurrent);
             MediaMetadataCompat currentTrack = mediaControllerCompat.Metadata;
 
             Android.Support.V7.App.NotificationCompat.MediaStyle style = new Android.Support.V7.App.NotificationCompat.MediaStyle();
@@ -510,9 +523,9 @@ namespace DivineVerITies.Helpers
                 .SetOngoing(MediaPlayerState == PlaybackStateCompat.StatePlaying)
                 .SetVisibility(NotificationCompat.VisibilityPublic);
 
-            builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaPrevious, "Previous", ActionPrevious));
+            builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaPrevious, "", ActionPrevious));
             AddPlayPauseActionCompat(builder);
-            builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaNext, "Next", ActionNext));
+            builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaNext, "", ActionNext));
             style.SetShowActionsInCompactView(0, 1, 2);
 
             NotificationManagerCompat.From(ApplicationContext).Notify(NotificationId, builder.Build());
@@ -535,9 +548,18 @@ namespace DivineVerITies.Helpers
         private void AddPlayPauseActionCompat(NotificationCompat.Builder builder)
         {
             if (MediaPlayerState == PlaybackStateCompat.StatePlaying)
-                builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaPause, "Pause", ActionPause));
+            {
+                builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaPause, "", ActionPause));
+                Audio_Player.playPauseButton.SetImageResource(Android.Resource.Drawable.IcMediaPause);
+                Audio_Player.playPauseButton.SetBackgroundColor(Color.Transparent);
+                
+            }
             else
-                builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaPlay, "Play", ActionPlay));
+            {
+                builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaPlay, "", ActionPlay));
+                Audio_Player.playPauseButton.SetImageResource(Android.Resource.Drawable.IcMediaPlay);
+                Audio_Player.playPauseButton.SetBackgroundColor(Color.Transparent);
+            }
         }
 
         public void StopNotification()
