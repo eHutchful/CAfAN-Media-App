@@ -1,4 +1,3 @@
-
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -23,8 +22,8 @@ namespace DivineVerITies
             Resource.Drawable.ic_library_music,
             Resource.Drawable.ic_video_library,
             //Resource.Drawable.ic_subscriptions,
-            Resource.Drawable.ic_album};
-    
+            Resource.Drawable.ic_explore};
+
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -40,7 +39,7 @@ namespace DivineVerITies
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 
             mDrawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
-            
+
 
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
             if (navigationView != null)
@@ -64,7 +63,7 @@ namespace DivineVerITies
             {
                 View anchor = o as View;
 
-                if (tabs.SelectedTabPosition == 0 )
+                if (tabs.SelectedTabPosition == 0)
                 {
                     Snackbar.Make(anchor, "No Connection", Snackbar.LengthLong)
                        .SetAction("Retry", v =>
@@ -112,10 +111,34 @@ namespace DivineVerITies
                     mDrawerLayout.OpenDrawer((int)GravityFlags.Left);
                     return true;
 
+                case Resource.Id.action_appSettings:
+                    return true;
+
+                case Resource.Id.action_signOut:
+                    return true;
+
                 default:
                     return base.OnOptionsItemSelected(item);
             }
         }
+
+        //private void ShowOverflowActionsDialog()
+        //{
+        //    View overflow = FindViewById(Resource.Id.action_settings);
+        //    Android.Support.V7.Widget.PopupMenu Popup = new Android.Support.V7.Widget.PopupMenu(this, overflow);
+        //    Popup.Inflate(Resource.Menu.menu_overflow_main);
+        //    Popup.MenuItemClick += (o, args) =>
+        //    {
+        //        switch (args.Item.ItemId)
+        //        {
+        //            case Resource.Id.action_appSettings:
+        //                break;
+
+        //            
+        //                break;
+        //        }
+        //    }; Popup.Show();
+        //}
 
         public override bool OnCreateOptionsMenu(IMenu menu)
         {

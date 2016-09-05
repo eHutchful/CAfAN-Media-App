@@ -29,13 +29,13 @@ namespace DivineVerITies.Fragments
         private View view;
         private Android.Support.V7.Widget.SearchView mSearchView;
         //private XDocument xdoc;
- 
+
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
             // Create your fragment here
-            
+
         }
 
         public override void OnActivityCreated(Bundle savedInstanceState)
@@ -47,18 +47,13 @@ namespace DivineVerITies.Fragments
             HasOptionsMenu = true;
 
             swipeRefreshLayout.Refresh += swipeRefreshLayout_Refresh;
-            //mAudios = await (new Initialize()).getAudioList();
-            
         }
 
         private async void getAudiosAsyc()
         {
             try
             {
-                //var response = await httpClient.GetStringAsync(feed);
-                //xdoc = XDocument.Parse(response);
-                //GetAudios();
-                mAudios = await(new Initialize()).getAudioList();
+                mAudios = await (new Initialize()).getAudioList();
                 mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
                 recyclerView.SetAdapter(mAudioAdapter);
 
@@ -71,11 +66,8 @@ namespace DivineVerITies.Fragments
                 Snackbar.Make(view, "Connection Error", Snackbar.LengthIndefinite)
                  .SetAction("Retry", v =>
                  {
-                     //var response = await httpClient.GetStringAsync(feed);
-                     //xdoc = XDocument.Parse(response);
-                     //GetAudios();
-                     mProgresBar.Visibility = ViewStates.Visible;                    
-                    getAudiosAsyc();
+                     mProgresBar.Visibility = ViewStates.Visible;
+                     getAudiosAsyc();
                  }).Show();
             }
         }
@@ -86,7 +78,7 @@ namespace DivineVerITies.Fragments
 
             swipeRefreshLayout.Refreshing = false;
         }
-        
+
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -96,18 +88,14 @@ namespace DivineVerITies.Fragments
             recyclerView = view.FindViewById<RecyclerView>(Resource.Id.recyclerview);
             mProgresBar = view.FindViewById<ProgressBar>(Resource.Id.audio_player_loading);
             swipeRefreshLayout = view.FindViewById<SwipeRefreshLayout>(Resource.Id.swipe_refresh_layout);
-            swipeRefreshLayout.SetColorSchemeColors(Color.Indigo, Color.Pink, Color.Blue, Color.Yellow);            
+            swipeRefreshLayout.SetColorSchemeColors(Color.Indigo, Color.Pink, Color.Blue, Color.Yellow);
             SetUpAudioRecyclerView(recyclerView);
             return view;
         }
 
         private void SetUpAudioRecyclerView(RecyclerView recyclerView)
         {
-            
             recyclerView.SetLayoutManager(new LinearLayoutManager(recyclerView.Context));
-           // mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, null, Activity.Resources);
-            //recyclerView.SetAdapter(mAudioAdapter);
-            
 
             recyclerView.SetItemClickListener((rv, position, view) =>
             {
@@ -115,8 +103,8 @@ namespace DivineVerITies.Fragments
                 //An item has been clicked
                 Context context = view.Context;
                 Intent intent = new Intent(context, typeof(PodcastDetails));
-                var serial= JsonConvert.SerializeObject(mAudios[position]);
-                intent.PutExtra("selectedItem", serial );
+                var serial = JsonConvert.SerializeObject(mAudios[position]);
+                intent.PutExtra("selectedItem", serial);
 
                 context.StartActivity(intent);
             });
@@ -124,11 +112,8 @@ namespace DivineVerITies.Fragments
 
         public override void OnCreateOptionsMenu(IMenu menu, MenuInflater inflater)
         {
-            //base.OnCreateOptionsMenu(menu, inflater);
-           //inflater.Inflate(Resource.Menu.sample_actions, menu);
-
             var item = menu.FindItem(Resource.Id.action_search);
-
+                
             var searchView = MenuItemCompat.GetActionView(item);
             mSearchView = searchView.JavaCast<Android.Support.V7.Widget.SearchView>();
 
@@ -143,8 +128,6 @@ namespace DivineVerITies.Fragments
 
             mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
             MenuItemCompat.SetOnActionExpandListener(item, new SearchViewExpandListener(mAudioAdapter));
-
-            
         }
     }
 

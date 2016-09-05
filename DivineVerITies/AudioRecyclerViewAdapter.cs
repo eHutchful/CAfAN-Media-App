@@ -18,7 +18,6 @@ namespace DivineVerITies
 {
     public class AudioRecyclerViewAdapter : RecyclerView.Adapter, IFilterable
     {
-        //bool isRecyclerVewVisible = false;
         public List<AudioList> mAudios;
         public List<AudioList> mFilterAudios;
         private readonly TypedValue mTypedValue = new TypedValue();
@@ -29,7 +28,6 @@ namespace DivineVerITies
 
         public AudioRecyclerViewAdapter(Context context, List<AudioList> audios, Resources res)
         {
-           // mFilterAudios = audios;
             mContext = context;
             context.Theme.ResolveAttribute(Resource.Attribute.selectableItemBackground, mTypedValue, true);
             mBackground = mTypedValue.ResourceId;
@@ -61,41 +59,20 @@ namespace DivineVerITies
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
-            //if (isRecyclerVewVisible)
-            //{
-                var simpleHolder = holder as SimpleAudioViewHolder;
-                //int indexPosition = (mAudios.Count - 1) - position;
+            var simpleHolder = holder as SimpleAudioViewHolder;
+            //int indexPosition = (mAudios.Count - 1) - position;
 
-                simpleHolder.mAudioTitle.Text = mAudios[position].Title;
-                simpleHolder.mAudioSubTitle.Text = mAudios[position].SubTitle;
-                simpleHolder.mPubDate.Text = mAudios[position].PubDate;
+            simpleHolder.mAudioTitle.Text = mAudios[position].Title;
+            simpleHolder.mAudioSubTitle.Text = mAudios[position].SubTitle;
+            simpleHolder.mPubDate.Text = mAudios[position].PubDate;
 
-                Glide.With(simpleHolder.mAlbumArt.Context)
-                    .Load(mAudios[position].ImageUrl)
-                    .Placeholder(Resource.Drawable.Logo_trans192)
-                    .Error(Resource.Drawable.Logo_trans192)
-                    //.SkipMemoryCache(true)
-                    //.Thumbnail(1)
-                    .DiskCacheStrategy(DiskCacheStrategy.All)
-                    .Into(simpleHolder.mAlbumArt);
-
-
-                //Picasso.With(mContext)
-                //       .Load(mAudios[position].ImageUrl)
-                //       .Placeholder(Resource.Drawable.Logo_trans192)
-                //       .Error(Resource.Drawable.Logo_trans192)
-                //       //.Resize(60, 60)
-                //       //.CenterCrop()
-                //       .Into(simpleHolder.mAlbumArt);
-
-                //var imageBitmap = (new Initialize()).GetImageBitmapFromUrl(mAudios[position].ImageUrl);
-                //simpleHolder.mAlbumArt.SetImageBitmap(imageBitmap); 
-            //}
-            //else
-            //{
-            //    isRecyclerVewVisible = true;
-            //}
-
+            Glide.With(simpleHolder.mAlbumArt.Context)
+                .Load(mAudios[position].ImageUrl)
+                .Transform(new CircleTransform(simpleHolder.mAlbumArt.Context))
+                .Placeholder(Resource.Drawable.Logo_trans192)
+                .Error(Resource.Drawable.Logo_trans192)
+                .DiskCacheStrategy(DiskCacheStrategy.All)
+                .Into(simpleHolder.mAlbumArt);
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
@@ -108,7 +85,7 @@ namespace DivineVerITies
             {
                 Android.Support.V7.Widget.PopupMenu Popup = new Android.Support.V7.Widget.PopupMenu(simpleHolder.mOptions.Context, simpleHolder.mOptions);
                 Popup.Inflate(Resource.Menu.menu_album);
-                Popup.MenuItemClick +=  (o, args) =>
+                Popup.MenuItemClick += (o, args) =>
                 {
                     switch (args.Item.ItemId)
                     {
@@ -119,7 +96,7 @@ namespace DivineVerITies
                             break;
 
                         case Resource.Id.action_Download:
-                          
+
                             break;
                     }
                 }; Popup.Show();
@@ -152,12 +129,6 @@ namespace DivineVerITies
 
         public Filter Filter { get; private set; }
 
-        //public void NotifyDataSetChanged()
-        //{
-        //    // If you are using cool stuff like sections
-        //    // remember to update the indices here!
-        //    base.NotifyDataSetChanged();
-        //}
     }
 
     class AudioFilter : Filter

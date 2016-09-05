@@ -36,9 +36,9 @@ namespace DivineVerITies
             fab.Click += (o, e) =>
             {
                 View anchor = o as View;
-    
+
                 Intent intent = new Intent(fab.Context, typeof(MainApp));
-                StartActivity(intent);         
+                StartActivity(intent);
             };
 
             ShowWelcomeSelectTopicDialog();
@@ -51,7 +51,7 @@ namespace DivineVerITies
             .SetMessage("Select From The List Of Topics, Podcasts You Want To Be Suscribed To And These Will Be Automatically Added To Your Audio And Video Lists For Quick Access")
             .SetPositiveButton("Got It", delegate { });
             builder.Create().Show();
-            
+
         }
 
         private void SetUpRecyclerView(RecyclerView mRecyclerView)
