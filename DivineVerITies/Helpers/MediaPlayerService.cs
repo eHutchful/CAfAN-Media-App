@@ -262,7 +262,6 @@ namespace DivineVerITies.Helpers
         }
 
         private Bitmap cover;
-
         public object Cover
         {
             get
