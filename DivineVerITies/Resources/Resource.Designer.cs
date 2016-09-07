@@ -2108,20 +2108,26 @@ namespace DivineVerITies
 			// aapt resource value: 0x7f0600c2
 			public const int AudioDescription = 2131099842;
 			
+			// aapt resource value: 0x7f0600c5
+			public const int PlayerVideoView = 2131099845;
+			
+			// aapt resource value: 0x7f0600c6
+			public const int VideoProgressBar = 2131099846;
+			
 			// aapt resource value: 0x7f0600a9
 			public const int action0 = 2131099817;
 			
-			// aapt resource value: 0x7f0600cb
-			public const int action_Download = 2131099851;
-			
-			// aapt resource value: 0x7f0600c9
-			public const int action_add_favourite = 2131099849;
-			
 			// aapt resource value: 0x7f0600cd
-			public const int action_appSettings = 2131099853;
+			public const int action_Download = 2131099853;
 			
-			// aapt resource value: 0x7f0600c5
-			public const int action_audio_list = 2131099845;
+			// aapt resource value: 0x7f0600cb
+			public const int action_add_favourite = 2131099851;
+			
+			// aapt resource value: 0x7f0600cf
+			public const int action_appSettings = 2131099855;
+			
+			// aapt resource value: 0x7f0600c7
+			public const int action_audio_list = 2131099847;
 			
 			// aapt resource value: 0x7f06005a
 			public const int action_bar = 2131099738;
@@ -2165,23 +2171,23 @@ namespace DivineVerITies
 			// aapt resource value: 0x7f06003c
 			public const int action_mode_close_button = 2131099708;
 			
-			// aapt resource value: 0x7f0600ca
-			public const int action_play_next = 2131099850;
+			// aapt resource value: 0x7f0600cc
+			public const int action_play_next = 2131099852;
 			
-			// aapt resource value: 0x7f0600d0
-			public const int action_search = 2131099856;
-			
-			// aapt resource value: 0x7f0600cf
-			public const int action_settings = 2131099855;
-			
-			// aapt resource value: 0x7f0600ce
-			public const int action_signOut = 2131099854;
+			// aapt resource value: 0x7f0600d2
+			public const int action_search = 2131099858;
 			
 			// aapt resource value: 0x7f0600d1
-			public const int action_skip = 2131099857;
+			public const int action_settings = 2131099857;
 			
-			// aapt resource value: 0x7f0600cc
-			public const int action_sort = 2131099852;
+			// aapt resource value: 0x7f0600d0
+			public const int action_signOut = 2131099856;
+			
+			// aapt resource value: 0x7f0600d3
+			public const int action_skip = 2131099859;
+			
+			// aapt resource value: 0x7f0600ce
+			public const int action_sort = 2131099854;
 			
 			// aapt resource value: 0x7f06003d
 			public const int activity_chooser_view_content = 2131099709;
@@ -2450,14 +2456,14 @@ namespace DivineVerITies
 			// aapt resource value: 0x7f060016
 			public const int multiply = 2131099670;
 			
-			// aapt resource value: 0x7f0600c6
-			public const int nav_home = 2131099846;
-			
 			// aapt resource value: 0x7f0600c8
-			public const int nav_liveStream = 2131099848;
+			public const int nav_home = 2131099848;
 			
-			// aapt resource value: 0x7f0600c7
-			public const int nav_recommended = 2131099847;
+			// aapt resource value: 0x7f0600ca
+			public const int nav_liveStream = 2131099850;
+			
+			// aapt resource value: 0x7f0600c9
+			public const int nav_recommended = 2131099849;
 			
 			// aapt resource value: 0x7f0600a4
 			public const int nav_view = 2131099812;
@@ -2991,6 +2997,9 @@ namespace DivineVerITies
 			
 			// aapt resource value: 0x7f030045
 			public const int support_simple_spinner_dropdown_item = 2130903109;
+			
+			// aapt resource value: 0x7f030046
+			public const int video_player = 2130903110;
 			
 			static Layout()
 			{
