@@ -49,9 +49,15 @@ namespace DivineVerITies
             {
                 View anchor = o as View;
                 Android.Content.Intent intent = new Android.Content.Intent(this, typeof(Audio_Player));
-                MediaPlayerService.selectedAudio = selectedAudio;
-                try { StopService(new Intent(this, typeof(MediaPlayerService))); }
-                catch (Exception es) { }
+                if(MediaPlayerService.selectedAudio != selectedAudio)
+                {
+                    MediaPlayerService.selectedAudio = selectedAudio;
+                    try
+                    {
+                        StopService(new Intent(this, typeof(MediaPlayerService)));
+                    }catch(Exception es){ }
+                }
+                              
                 StartActivity(intent);
             };
             TextView mAudioDescription = FindViewById<TextView>(Resource.Id.AudioDescription);
