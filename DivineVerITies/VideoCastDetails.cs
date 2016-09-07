@@ -1,4 +1,3 @@
-
 using Android.App;
 using Android.Graphics;
 using Android.OS;
@@ -16,15 +15,15 @@ using System.Net;
 using SupportActionBar = Android.Support.V7.App.ActionBar;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 
+
 namespace DivineVerITies
 {
-    
     [Activity(Theme = "@style/Theme.DesignDemo")]
-    public class PodcastDetails : AppCompatActivity
+    public class VideoCastDetails: AppCompatActivity
     {
         //bool isVisible = true;
 
-        AudioList selectedAudio;
+        Video selectedVideo;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -32,14 +31,14 @@ namespace DivineVerITies
             // Create your application here
             SetContentView(Resource.Layout.PodcastDetails);
 
-            selectedAudio = JsonConvert.DeserializeObject<AudioList>(Intent.GetStringExtra("selectedItem"));
+            selectedVideo = JsonConvert.DeserializeObject<Video>(Intent.GetStringExtra("selectedItem"));
 
             SupportToolbar toolBar = FindViewById<SupportToolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolBar);
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 
             CollapsingToolbarLayout collapsingToolBar = FindViewById<CollapsingToolbarLayout>(Resource.Id.collapsing_toolbar);
-            collapsingToolBar.Title = selectedAudio.Title;
+            collapsingToolBar.Title = selectedVideo.Title;
             collapsingToolBar.SetExpandedTitleColor(Android.Resource.Color.Transparent);
 
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
@@ -47,12 +46,12 @@ namespace DivineVerITies
             fab.Click += (o, e) =>
             {
                 View anchor = o as View;
-                Android.Content.Intent intent = new Android.Content.Intent(this, typeof(Audio_Player));
-                MediaPlayerService.selectedAudio = selectedAudio;                         
+                Android.Content.Intent intent = new Android.Content.Intent(this, typeof(Video_Player));
+                Video_Player.selectedVideo = selectedVideo;
                 StartActivity(intent);
             };
             TextView mAudioDescription = FindViewById<TextView>(Resource.Id.AudioDescription);
-            mAudioDescription.Text = selectedAudio.Description;
+            mAudioDescription.Text = selectedVideo.Description;
 
         }
 
@@ -74,17 +73,17 @@ namespace DivineVerITies
         }
         protected async override void OnStart()
         {
-            base.OnStart();            
+            base.OnStart();
             ImageView mAlbumArt = FindViewById<ImageView>(Resource.Id.backdrop);
-           
-             Glide.With(this)
-                    .Load(selectedAudio.ImageUrl)
-                    .Placeholder(Resource.Drawable.Logo_trans192)
-                    .Error(Resource.Drawable.Logo_trans192)                   
-                    .DiskCacheStrategy(DiskCacheStrategy.All)
-                    .Into(mAlbumArt);
-                ProgressBar pBar= FindViewById<ProgressBar>(Resource.Id.image_loading);
-                pBar.Visibility = ViewStates.Gone;                
+
+            Glide.With(this)
+                   .Load(selectedVideo.ImageUrl)
+                   .Placeholder(Resource.Drawable.Logo_trans192)
+                   .Error(Resource.Drawable.Logo_trans192)
+                   .DiskCacheStrategy(DiskCacheStrategy.All)
+                   .Into(mAlbumArt);
+            ProgressBar pBar = FindViewById<ProgressBar>(Resource.Id.image_loading);
+            pBar.Visibility = ViewStates.Gone;
         }
 
     }
