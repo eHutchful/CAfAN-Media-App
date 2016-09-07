@@ -3,11 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true">
-    <VideoView
+    <!--<VideoView
         android:id="@+id/PlayerVideoView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true" />-->
+  <VideoView
+        android:id="@+id/PlayerVideoView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        />
     <ProgressBar
         android:id="@+id/VideoProgressBar"
         android:indeterminate="true"
@@ -15,12 +24,12 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_centerInParent="true" />
-  <TextView
-    android:id="@+id/StatusMessageTextView"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_centerInParent="true"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:text="@string/MissingNetworkConnection"/>
+    <TextView
+        android:id="@+id/StatusMessageTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="@string/MissingNetworkConnection" />
 </RelativeLayout>
