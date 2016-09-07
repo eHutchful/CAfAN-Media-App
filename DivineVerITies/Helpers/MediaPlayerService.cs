@@ -431,10 +431,13 @@ namespace DivineVerITies.Helpers
                 Audio_Player.playPauseButton.SetBackgroundColor(Color.Transparent);
                 UpdatePlaybackState(PlaybackStateCompat.StateStopped);
                 mediaPlayer.Reset();
-                StopNotification();
-                StopForeground(true);
-                ReleaseWifiLock();
-                UnregisterMediaSessionCompat();
+                try {
+                    StopNotification();
+                    StopForeground(true);
+                    ReleaseWifiLock();
+                }
+                catch(Exception e) {}
+                finally { UnregisterMediaSessionCompat(); }                
             });
         }
 
@@ -565,7 +568,8 @@ namespace DivineVerITies.Helpers
         public void StopNotification()
         {
             NotificationManagerCompat nm = NotificationManagerCompat.From(ApplicationContext);
-            nm.CancelAll();
+            nm.Cancel(NotificationId);
+           // nm.CancelAll();
         }
 
         /// <summary>
