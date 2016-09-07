@@ -427,7 +427,8 @@ namespace DivineVerITies.Helpers
                 {
                     mediaPlayer.Stop();
                 }
-
+                Audio_Player.playPauseButton.SetImageResource(Android.Resource.Drawable.IcMediaPlay);
+                Audio_Player.playPauseButton.SetBackgroundColor(Color.Transparent);
                 UpdatePlaybackState(PlaybackStateCompat.StateStopped);
                 mediaPlayer.Reset();
                 StopNotification();

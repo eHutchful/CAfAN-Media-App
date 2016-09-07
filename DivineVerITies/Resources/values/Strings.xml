@@ -16,6 +16,9 @@
     May the Lord help you understand further what prayer is and how we can pray for others and achieve results. 
     This is Part One of the message in this series. God bless you richly.
   </string>
+  <string name="MissingNetworkConnection">
+    Please check your network connection.
+  </string>
 
   <string name="enable_background_audio">Play in background</string>
 

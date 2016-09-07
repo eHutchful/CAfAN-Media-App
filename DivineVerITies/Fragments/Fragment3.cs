@@ -25,11 +25,8 @@ namespace DivineVerITies.Fragments
         private SwipeRefreshLayout swipeRefreshLayout;
         private RecyclerView recyclerView;
         private AudioRecyclerViewAdapter mAudioAdapter;
-        public List<AudioList> mAudios;
-        public List<AudioList> SortedAudios;
+        public static List<AudioList> mAudios;
         public List<AudioList> mlist;
-        public List<AudioList> mFilterAudios;
-        List<AudioList> filterlist;
         private View view;
         private Android.Support.V7.Widget.SearchView mSearchView;
         String[] sortitems = { "Title Ascending", "Title Descending", "Date Ascending", "Date Descending" };
@@ -135,41 +132,41 @@ namespace DivineVerITies.Fragments
             switch (args.Which)
             {
                 case 0:
-                    SortedAudios = (from audio in mAudios
+                    mAudios = (from audio in mAudios
                                     orderby audio.Title
                                     select audio).ToList<AudioList>();
 
-                    mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, SortedAudios, Activity.Resources);
+                    mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
                     recyclerView.SetAdapter(mAudioAdapter);
-
+                    //mAudioAdapter.NotifyDataSetChanged();
                     break;
 
                 case 1:
-                    SortedAudios = (from audio in mAudios
+                    mAudios = (from audio in mAudios
                                     orderby audio.Title descending
                                     select audio).ToList<AudioList>();
 
-                    mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, SortedAudios, Activity.Resources);
+                    mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
                     recyclerView.SetAdapter(mAudioAdapter);
 
                     break;
 
                 case 2:
-                    SortedAudios = (from audio in mAudios
+                    mAudios = (from audio in mAudios
                                     orderby audio.PubDate
                                     select audio).ToList<AudioList>();
 
-                    mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, SortedAudios, Activity.Resources);
+                    mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
                     recyclerView.SetAdapter(mAudioAdapter);
 
                     break;
 
                 case 3:
-                    SortedAudios = (from audio in mAudios
+                    mAudios = (from audio in mAudios
                                     orderby audio.PubDate descending
                                     select audio).ToList<AudioList>();
 
-                    mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, SortedAudios, Activity.Resources);
+                    mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
                     recyclerView.SetAdapter(mAudioAdapter);
 
                     break;

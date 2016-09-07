@@ -241,7 +241,7 @@ namespace DivineVerITies.ExoPlayer.Player
                 Directory.CreateDirectory(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + @"/cafan/Podcasts/audio/");
             
             return Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + @"/cafan/Podcasts/audio/"
-                + DivineVerITies.Helpers.AudioService.selectedAudio.Title + ".mp3";
+                + DivineVerITies.Helpers.MediaPlayerService.selectedAudio.Title + ".mp3";
         }
         private void DownLoadItemNotification()
         {

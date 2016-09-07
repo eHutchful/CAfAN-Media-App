@@ -132,7 +132,7 @@ namespace DivineVerITies
 
     }
 
-    class AudioFilter : Filter
+    public class AudioFilter : Filter
     {
         private readonly AudioRecyclerViewAdapter _adapter;
         public AudioFilter(AudioRecyclerViewAdapter adapter)
