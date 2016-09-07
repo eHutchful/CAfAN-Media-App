@@ -208,7 +208,7 @@ namespace DivineVerITies.ExoPlayer.Player
         }
         public void downloadButton_Click(object sender, System.EventArgs e)
         {
-            var builder = new Android.Support.V7.App.AlertDialog.Builder(this);
+            Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(this);
             builder.SetTitle("Confirm Download")
            .SetMessage("Are You Sure You Want To Download" + " " + DivineVerITies.Helpers.AudioService.selectedAudio.SubTitle)
            .SetPositiveButton("Yes", async delegate {                    

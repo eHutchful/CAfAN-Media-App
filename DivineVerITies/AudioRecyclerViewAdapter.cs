@@ -32,6 +32,7 @@ namespace DivineVerITies
             context.Theme.ResolveAttribute(Resource.Attribute.selectableItemBackground, mTypedValue, true);
             mBackground = mTypedValue.ResourceId;
             mAudios = audios;
+            //mFilterAudios = audios;
             mResource = res;
 
             Filter = new AudioFilter(this);
