@@ -9,13 +9,15 @@
     <FrameLayout
         android:foreground="#CC000000"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
         <ImageView
             android:id="@+id/audio_player_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription"
+            android:fitsSystemWindows="true"/>
     </FrameLayout>
     <ProgressBar
         android:id="@+id/audio_player_loading"

@@ -160,6 +160,7 @@
     <Compile Include="Fragments\Fragment5.cs" />
     <Compile Include="Fragments\Fragment6.cs" />
     <Compile Include="Helpers\AudioService.cs" />
+    <Compile Include="Helpers\CircleTransform.cs" />
     <Compile Include="Helpers\Download.cs" />
     <Compile Include="Helpers\DownloadBytesProgress.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />
@@ -648,6 +649,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_pause_circle_outline.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\menu\menu_sort_audios.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Android.Support.Vector.Drawable.23.4.0.1\build\Xamarin.Android.Support.Vector.Drawable.targets" Condition="Exists('..\packages\Xamarin.Android.Support.Vector.Drawable.23.4.0.1\build\Xamarin.Android.Support.Vector.Drawable.targets')" />

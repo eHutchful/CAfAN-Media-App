@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using SupportFragment = Android.Support.V4.App.Fragment;
 using Android.Runtime;
+using System.Linq;
 
 namespace DivineVerITies.Fragments
 {
@@ -25,17 +26,21 @@ namespace DivineVerITies.Fragments
         private RecyclerView recyclerView;
         private AudioRecyclerViewAdapter mAudioAdapter;
         public List<AudioList> mAudios;
+        public List<AudioList> SortedAudios;
         public List<AudioList> mlist;
+        public List<AudioList> mFilterAudios;
+        List<AudioList> filterlist;
         private View view;
         private Android.Support.V7.Widget.SearchView mSearchView;
+        String[] sortitems = { "Title Ascending", "Title Descending", "Date Ascending", "Date Descending" };
+       
         //private XDocument xdoc;
- 
+
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
             // Create your fragment here
-            
         }
 
         public override void OnActivityCreated(Bundle savedInstanceState)
@@ -47,18 +52,14 @@ namespace DivineVerITies.Fragments
             HasOptionsMenu = true;
 
             swipeRefreshLayout.Refresh += swipeRefreshLayout_Refresh;
-            //mAudios = await (new Initialize()).getAudioList();
-            
+
         }
 
         private async void getAudiosAsyc()
         {
             try
             {
-                //var response = await httpClient.GetStringAsync(feed);
-                //xdoc = XDocument.Parse(response);
-                //GetAudios();
-                mAudios = await(new Initialize()).getAudioList();
+                mAudios = await (new Initialize()).getAudioList();
                 mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
                 recyclerView.SetAdapter(mAudioAdapter);
 
@@ -71,11 +72,8 @@ namespace DivineVerITies.Fragments
                 Snackbar.Make(view, "Connection Error", Snackbar.LengthIndefinite)
                  .SetAction("Retry", v =>
                  {
-                     //var response = await httpClient.GetStringAsync(feed);
-                     //xdoc = XDocument.Parse(response);
-                     //GetAudios();
-                     mProgresBar.Visibility = ViewStates.Visible;                    
-                    getAudiosAsyc();
+                     mProgresBar.Visibility = ViewStates.Visible;
+                     getAudiosAsyc();
                  }).Show();
             }
         }
@@ -86,7 +84,7 @@ namespace DivineVerITies.Fragments
 
             swipeRefreshLayout.Refreshing = false;
         }
-        
+
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -96,39 +94,91 @@ namespace DivineVerITies.Fragments
             recyclerView = view.FindViewById<RecyclerView>(Resource.Id.recyclerview);
             mProgresBar = view.FindViewById<ProgressBar>(Resource.Id.audio_player_loading);
             swipeRefreshLayout = view.FindViewById<SwipeRefreshLayout>(Resource.Id.swipe_refresh_layout);
-            swipeRefreshLayout.SetColorSchemeColors(Color.Indigo, Color.Pink, Color.Blue, Color.Yellow);            
+            swipeRefreshLayout.SetColorSchemeColors(Color.Indigo, Color.Pink, Color.Blue, Color.Yellow);
             SetUpAudioRecyclerView(recyclerView);
             return view;
         }
 
         private void SetUpAudioRecyclerView(RecyclerView recyclerView)
         {
-            
             recyclerView.SetLayoutManager(new LinearLayoutManager(recyclerView.Context));
-           // mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, null, Activity.Resources);
-            //recyclerView.SetAdapter(mAudioAdapter);
-            
 
-            recyclerView.SetItemClickListener((rv, position, view) =>
+            recyclerView.SetItemClickListener( (rv, position, view) =>
             {
+                
                 int itemposition = rv.GetChildAdapterPosition(view);
                 //An item has been clicked
                 Context context = view.Context;
                 Intent intent = new Intent(context, typeof(PodcastDetails));
-                var serial= JsonConvert.SerializeObject(mAudios[position]);
-                intent.PutExtra("selectedItem", serial );
+
+                var serial = JsonConvert.SerializeObject(mAudios[position]);
+                intent.PutExtra("selectedItem", serial);
 
                 context.StartActivity(intent);
             });
         }
 
+        public void SortAudios()
+        {
+            
+            base.OnAttach(Activity);
+            Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(Activity);
+            builder.SetTitle("Sort Order")
+                   .SetSingleChoiceItems(sortitems, -1, SortTypeListClicked)
+                   .SetPositiveButton("OK", delegate { builder.Dispose(); })
+                   .SetNegativeButton("Cancel", delegate { builder.Dispose(); });
+            builder.Create().Show();
+        }
+
+        private void SortTypeListClicked(object sender, DialogClickEventArgs args)
+        {
+            switch (args.Which)
+            {
+                case 0:
+                    SortedAudios = (from audio in mAudios
+                                    orderby audio.Title
+                                    select audio).ToList<AudioList>();
+
+                    mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, SortedAudios, Activity.Resources);
+                    recyclerView.SetAdapter(mAudioAdapter);
+
+                    break;
+
+                case 1:
+                    SortedAudios = (from audio in mAudios
+                                    orderby audio.Title descending
+                                    select audio).ToList<AudioList>();
+
+                    mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, SortedAudios, Activity.Resources);
+                    recyclerView.SetAdapter(mAudioAdapter);
+
+                    break;
+
+                case 2:
+                    SortedAudios = (from audio in mAudios
+                                    orderby audio.PubDate
+                                    select audio).ToList<AudioList>();
+
+                    mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, SortedAudios, Activity.Resources);
+                    recyclerView.SetAdapter(mAudioAdapter);
+
+                    break;
+
+                case 3:
+                    SortedAudios = (from audio in mAudios
+                                    orderby audio.PubDate descending
+                                    select audio).ToList<AudioList>();
+
+                    mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, SortedAudios, Activity.Resources);
+                    recyclerView.SetAdapter(mAudioAdapter);
+
+                    break;
+            }
+        }
+
         public override void OnCreateOptionsMenu(IMenu menu, MenuInflater inflater)
         {
-            //base.OnCreateOptionsMenu(menu, inflater);
-           //inflater.Inflate(Resource.Menu.sample_actions, menu);
-
             var item = menu.FindItem(Resource.Id.action_search);
-
             var searchView = MenuItemCompat.GetActionView(item);
             mSearchView = searchView.JavaCast<Android.Support.V7.Widget.SearchView>();
 
@@ -141,10 +191,21 @@ namespace DivineVerITies.Fragments
                 e.Handled = true;
             };
 
+        
             mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
             MenuItemCompat.SetOnActionExpandListener(item, new SearchViewExpandListener(mAudioAdapter));
+        }
 
-            
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+             switch (item.ItemId)
+            {
+                 case Resource.Id.action_sort:
+                    SortAudios();
+                    return true;
+            }
+
+             return base.OnOptionsItemSelected(item);
         }
     }
 

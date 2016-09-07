@@ -1,6 +1,7 @@
 using Android.Support.V7.Widget;
 using Android.Views;
 using System;
+using System.Collections.Generic;
 
 namespace DivineVerITies.Helpers
 {
@@ -16,12 +17,14 @@ namespace DivineVerITies.Helpers
     {
         private RecyclerView mRecyclerview;
         private Action<RecyclerView, int, View> mAction;
+       
 
         public AttachStateChangeListener(RecyclerView rv, Action<RecyclerView, int, View> action)
             : base()
         {
             mRecyclerview = rv;
             mAction = action;
+           
         }
 
         public void OnChildViewAttachedToWindow(View view)

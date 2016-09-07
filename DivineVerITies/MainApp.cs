@@ -1,4 +1,3 @@
-
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -23,8 +22,8 @@ namespace DivineVerITies
             Resource.Drawable.ic_library_music,
             Resource.Drawable.ic_video_library,
             //Resource.Drawable.ic_subscriptions,
-            Resource.Drawable.ic_album};
-    
+            Resource.Drawable.ic_explore};
+
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -40,7 +39,7 @@ namespace DivineVerITies
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 
             mDrawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
-            
+
 
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
             if (navigationView != null)
@@ -64,7 +63,7 @@ namespace DivineVerITies
             {
                 View anchor = o as View;
 
-                if (tabs.SelectedTabPosition == 0 )
+                if (tabs.SelectedTabPosition == 0)
                 {
                     Snackbar.Make(anchor, "No Connection", Snackbar.LengthLong)
                        .SetAction("Retry", v =>
@@ -110,6 +109,15 @@ namespace DivineVerITies
             {
                 case Android.Resource.Id.Home:
                     mDrawerLayout.OpenDrawer((int)GravityFlags.Left);
+                    return true;
+
+                //case Resource.Id.action_sort:
+                //    return true;
+
+                case Resource.Id.action_appSettings:
+                    return true;
+
+                case Resource.Id.action_signOut:
                     return true;
 
                 default:
