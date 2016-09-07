@@ -23,7 +23,7 @@ namespace DivineVerITies
         private TextView statusMessageTextView;
         private void InitializeVideoPlayer()
         {
-            StopService(new Intent(this, typeof(MediaPlayerService)));
+            
             videoPlayer = FindViewById<VideoView>(Resource.Id.PlayerVideoView);
             mediaController = new MediaController(this, true);
             videoProgressBar = FindViewById<ProgressBar>(Resource.Id.VideoProgressBar);
@@ -33,8 +33,7 @@ namespace DivineVerITies
         }
         protected override void OnCreate(Bundle bundle)
         {
-            base.OnCreate(bundle);
-            StopService(new Intent(this, typeof(MediaPlayerService)));
+            base.OnCreate(bundle);            
             SetContentView(Resource.Layout.VidPlayer);
             startingPosition = (bundle != null) ? bundle.GetInt(VideoPositionKey):0;
             InitializeVideoPlayer();                     

@@ -437,7 +437,10 @@ namespace DivineVerITies.Helpers
                     ReleaseWifiLock();
                 }
                 catch(Exception e) {}
-                finally { UnregisterMediaSessionCompat(); }                
+                finally {
+                    UnregisterMediaSessionCompat();
+                    StopSelf();
+                }                
             });
         }
 

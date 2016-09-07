@@ -1,4 +1,5 @@
 using Android.App;
+using Android.Content;
 using Android.Graphics;
 using Android.OS;
 using Android.Support.Design.Widget;
@@ -48,6 +49,8 @@ namespace DivineVerITies
                 View anchor = o as View;
                 Android.Content.Intent intent = new Android.Content.Intent(this, typeof(Video_Player));
                 Video_Player.selectedVideo = selectedVideo;
+                try { StopService(new Intent(this, typeof(MediaPlayerService))); }
+                catch (Exception es) { }
                 StartActivity(intent);
             };
             TextView mAudioDescription = FindViewById<TextView>(Resource.Id.AudioDescription);
