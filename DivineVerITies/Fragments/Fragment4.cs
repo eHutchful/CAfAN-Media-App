@@ -114,7 +114,7 @@ namespace DivineVerITies.Fragments
                 e.Handled = true;
             };
 
-            mVideoAdapter = new VideoRecyclerViewAdapter(recyclerView.Context, mVideos, Activity.Resources);
+            //mVideoAdapter = new VideoRecyclerViewAdapter(recyclerView.Context, mVideos, Activity.Resources);
             MenuItemCompat.SetOnActionExpandListener(item, new SearchViewExpandListener(mVideoAdapter));
 
 
