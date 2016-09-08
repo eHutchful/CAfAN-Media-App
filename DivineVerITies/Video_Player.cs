@@ -31,7 +31,6 @@ namespace DivineVerITies
             videoPlayer.SetMediaController(mediaController);
 
         }
-        //identity
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);            

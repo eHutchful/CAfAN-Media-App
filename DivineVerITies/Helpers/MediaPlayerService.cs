@@ -26,9 +26,7 @@ namespace DivineVerITies.Helpers
     MediaPlayer.IOnSeekCompleteListener
     {
         //Ato Added
-        
         public static AudioList selectedAudio;
-        
 
         //Actions
         public const string ActionPlay = "com.xamarin.action.PLAY";
