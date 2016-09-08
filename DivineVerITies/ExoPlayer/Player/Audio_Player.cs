@@ -17,8 +17,6 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using SupportActionBar = Android.Support.V7.App.ActionBar;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 
@@ -53,13 +51,13 @@ namespace DivineVerITies.ExoPlayer.Player
         public event PlayingEventHandler Playing;
         public event BufferingEventHandler Buffering;
         
-        
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             
             base.OnCreate(savedInstanceState);
            
-            
+
             // Create your application here
             SetContentView(Resource.Layout.newtest);
             toolBar = FindViewById<SupportToolbar>(Resource.Id.toolbar);
@@ -71,10 +69,11 @@ namespace DivineVerITies.ExoPlayer.Player
 
             if (mediaPlayerServiceConnection == null)
                 InitilizeMedia();
-            playPauseButton = FindViewById<ImageButton>(Resource.Id.audio_player_play_pause);            
+            playPauseButton = FindViewById<ImageButton>(Resource.Id.audio_player_play_pause);
             playPauseButton.Click += async (sender, args) =>
             {
-                                
+                loadingBar.Visibility = ViewStates.Visible;
+                
                 if (binder.GetMediaPlayerService().mediaPlayer != null && binder.GetMediaPlayerService().MediaPlayerState == PlaybackStateCompat.StatePlaying)
                 {
                     await binder.GetMediaPlayerService().Pause();
@@ -112,10 +111,6 @@ namespace DivineVerITies.ExoPlayer.Player
                 if (binder.GetMediaPlayerService().mediaPlayer != null &&
                 binder.GetMediaPlayerService().MediaPlayerState != PlaybackStateCompat.StateStopped)
                     await binder.GetMediaPlayerService().Stop();
-                if (mediaPlayerServiceConnection != null)
-                    UnbindService(mediaPlayerServiceConnection);
-                if (binder.GetMediaPlayerService() != null)
-                    binder.GetMediaPlayerService().StopSelf();
             };
             position = FindViewById<TextView>(Resource.Id.audio_player_position);
             duration = FindViewById<TextView>(Resource.Id.audio_player_duration);
@@ -128,7 +123,7 @@ namespace DivineVerITies.ExoPlayer.Player
                     .DiskCacheStrategy(DiskCacheStrategy.All)
                     .Into(artworkView);
             loadingBar = FindViewById<ProgressBar>(Resource.Id.audio_player_loading);
-            
+            loadingBar.Visibility = ViewStates.Invisible;
 
             Playing += (object sender, EventArgs e) => {
                 seekbar.Max = binder.GetMediaPlayerService().Duration;
@@ -136,7 +131,7 @@ namespace DivineVerITies.ExoPlayer.Player
 
                 position.Text = GetFormattedTime(binder.GetMediaPlayerService().Position);
                 duration.Text = GetFormattedTime(binder.GetMediaPlayerService().Duration);
-                loadingBar.Visibility = ViewStates.Gone;
+                loadingBar.Visibility = ViewStates.Invisible;
             };
 
             Buffering += (object sender, EventArgs e) => {
@@ -179,11 +174,7 @@ namespace DivineVerITies.ExoPlayer.Player
         {
             audioServiceIntent = new Intent(ApplicationContext, typeof(MediaPlayerService));
             mediaPlayerServiceConnection = new MediaPlayerServiceConnection(this);
-            new Task(() => {
-                StartService(audioServiceIntent);
-                BindService(audioServiceIntent, mediaPlayerServiceConnection, Bind.AutoCreate);
-            }).Start();
-                       
+            BindService(audioServiceIntent, mediaPlayerServiceConnection, Bind.AutoCreate);
         }
         private class MediaPlayerServiceConnection : Java.Lang.Object, IServiceConnection
         {
@@ -202,9 +193,7 @@ namespace DivineVerITies.ExoPlayer.Player
                     var binder = (MediaPlayerServiceBinder)service;
                     instance.binder = binder;
                     instance.isBound = true;
-                    Audio_Player.playPauseButton.SetImageResource(binder.GetMediaPlayerService().playImage);
-                    Audio_Player.loadingBar.Visibility = binder.GetMediaPlayerService().pbarState;
-                    binder.GetMediaPlayerService().sContext = SynchronizationContext.Current;
+
                     binder.GetMediaPlayerService().CoverReloaded += (object sender, EventArgs e) => { if (instance.CoverReloaded != null) instance.CoverReloaded(sender, e); };
                     binder.GetMediaPlayerService().StatusChanged += (object sender, EventArgs e) => { if (instance.StatusChanged != null) instance.StatusChanged(sender, e); };
                     binder.GetMediaPlayerService().Playing += (object sender, EventArgs e) => { if (instance.Playing != null) instance.Playing(sender, e); };

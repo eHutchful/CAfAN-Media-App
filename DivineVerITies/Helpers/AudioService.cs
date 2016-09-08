@@ -17,7 +17,10 @@ using Android.Support.V4.App;
 
 namespace DivineVerITies.Helpers
 {
-   
+    public delegate void StatusChangedEventHandler(object sender, EventArgs e);
+    public delegate void BufferingEventHandler(object sender, EventArgs e);
+    public delegate void CoverReloadedEventHandler(object sender, EventArgs e);
+    public delegate void PlayingEventHandler(object sender, EventArgs e);
 
     [Service]
     [IntentFilter(new[] { ActionPlay, ActionPause, ActionStop, ActionFastForward, ActionRewind, ActionTogglePlayback })]
