@@ -46,12 +46,6 @@ namespace DivineVerITies
             }
         }
 
-        public void Add(AudioList audio)
-        {
-            mAudios.Add(audio);
-            NotifyDataSetChanged();
-        }
-
         void OnClick(int position)
         {
             if (itemClick != null)
@@ -130,6 +124,13 @@ namespace DivineVerITies
 
         public Filter Filter { get; private set; }
 
+        public new void NotifyDataSetChanged()
+        {
+            // If you are using cool stuff like sections
+            // remember to update the indices here!
+            mAudios.Count();
+            base.NotifyDataSetChanged();
+        }
     }
 
     public class AudioFilter : Filter
@@ -172,6 +173,8 @@ namespace DivineVerITies
             using (var values = results.Values)
                 _adapter.mAudios = values.ToArray<Object>()
                     .Select(r => r.ToNetObject<AudioList>()).ToList();
+
+          
 
             _adapter.NotifyDataSetChanged();
 
