@@ -138,7 +138,7 @@ namespace DivineVerITies.Fragments
 
                     mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
                     recyclerView.SetAdapter(mAudioAdapter);
-                    //mAudioAdapter.NotifyDataSetChanged();
+                   
                     break;
 
                 case 1:
