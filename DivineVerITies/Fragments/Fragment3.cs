@@ -103,9 +103,6 @@ namespace DivineVerITies.Fragments
             recyclerView.SetItemClickListener( (rv, position, view) =>
             {
                 
-                    //mAudios = mAudioAdapter.mAudios;
-                    
-
                 int itemposition = rv.GetChildAdapterPosition(view);
                 //An item has been clicked
                 Context context = view.Context;
@@ -182,12 +179,7 @@ namespace DivineVerITies.Fragments
             var searchView = MenuItemCompat.GetActionView(item);
             mSearchView = searchView.JavaCast<Android.Support.V7.Widget.SearchView>();
 
-
-
-            mSearchView.QueryTextChange += (s, e) => 
-            {
-                mAudioAdapter.Filter.InvokeFilter(e.NewText);
-            };
+            mSearchView.QueryTextChange += (s, e) => mAudioAdapter.Filter.InvokeFilter(e.NewText);
 
             mSearchView.QueryTextSubmit += (s, e) =>
             {
@@ -196,6 +188,8 @@ namespace DivineVerITies.Fragments
                 e.Handled = true;
             };
 
+        
+            mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
             MenuItemCompat.SetOnActionExpandListener(item, new SearchViewExpandListener(mAudioAdapter));
         }
 
