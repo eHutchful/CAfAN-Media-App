@@ -21,8 +21,9 @@ namespace DivineVerITies
         private int[] tabIcons = {
             Resource.Drawable.ic_library_music,
             Resource.Drawable.ic_video_library,
-            //Resource.Drawable.ic_subscriptions,
-            Resource.Drawable.ic_explore};
+            Resource.Drawable.ic_subscriptions
+            //Resource.Drawable.ic_explore
+                                 };
 
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -152,10 +153,10 @@ namespace DivineVerITies
         private void SetUpViewPager(ViewPager viewPager)
         {
             TabAdapter adapter = new TabAdapter(SupportFragmentManager);
-            adapter.AddFragment(new Fragment3(), "MY AUDIOS");
-            adapter.AddFragment(new Fragment4(), "MY VIDEOS");
-            //adapter.AddFragment(new Fragment5(), "SUBSCRIPTIONS");
-            adapter.AddFragment(new Fragment6(), "EXPLORE");
+            adapter.AddFragment(new Fragment3(), "AUDIOS");
+            adapter.AddFragment(new Fragment4(), "VIDEOS");
+            adapter.AddFragment(new Fragment5(), "SUBSCRIPTIONS");
+            //adapter.AddFragment(new Fragment6(), "EXPLORE");
 
             viewPager.Adapter = adapter;
         }

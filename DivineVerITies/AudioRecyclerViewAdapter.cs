@@ -46,11 +46,11 @@ namespace DivineVerITies
             }
         }
 
-        public void Add(AudioList audio)
-        {
-            mAudios.Add(audio);
-            NotifyDataSetChanged();
-        }
+        //public void Add(AudioList audio)
+        //{
+        //    mAudios.Add(audio);
+        //    NotifyDataSetChanged();
+        //}
 
         void OnClick(int position)
         {
@@ -130,6 +130,12 @@ namespace DivineVerITies
 
         public Filter Filter { get; private set; }
 
+        public new void NotifyDataSetChanged()
+        {
+            // If you are using cool stuff like sections
+            // remember to update the indices here!
+            base.NotifyDataSetChanged();
+        }
     }
 
     public class AudioFilter : Filter

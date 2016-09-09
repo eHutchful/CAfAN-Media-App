@@ -49,15 +49,9 @@ namespace DivineVerITies
             {
                 View anchor = o as View;
                 Android.Content.Intent intent = new Android.Content.Intent(this, typeof(Audio_Player));
-                if(MediaPlayerService.selectedAudio != selectedAudio)
-                {
-                    MediaPlayerService.selectedAudio = selectedAudio;
-                    try
-                    {
-                        StopService(new Intent(this, typeof(MediaPlayerService)));
-                    }catch(Exception es){ }
-                }
-                              
+                MediaPlayerService.selectedAudio = selectedAudio;
+                try { StopService(new Intent(this, typeof(MediaPlayerService))); }
+                catch (Exception es) { }
                 StartActivity(intent);
             };
             TextView mAudioDescription = FindViewById<TextView>(Resource.Id.AudioDescription);
@@ -78,7 +72,7 @@ namespace DivineVerITies
         }
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
-            MenuInflater.Inflate(Resource.Menu.options_only, menu);
+            MenuInflater.Inflate(Resource.Menu.menu_album, menu);
             return true;
         }
         protected async override void OnStart()

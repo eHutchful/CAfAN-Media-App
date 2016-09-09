@@ -221,7 +221,7 @@ namespace DivineVerITies.ExoPlayer.Player
         {
             Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(this);
             builder.SetTitle("Confirm Download")
-           .SetMessage("Are You Sure You Want To Download" + " " + DivineVerITies.Helpers.AudioService.selectedAudio.SubTitle)
+           .SetMessage("Are You Sure You Want To Download" + " " + MediaPlayerService.selectedAudio.SubTitle)
            .SetPositiveButton("Yes", async delegate {                    
                Progress<DownloadBytesProgress> progressReporter = new Progress<DownloadBytesProgress>();
                DownLoadItemNotification();
@@ -241,17 +241,18 @@ namespace DivineVerITies.ExoPlayer.Player
                        ChangePBar(per);
                    }
                };
-               int bytesDownloaded = await Download.CreateDownloadTask(selectedAudio.Link, FileCheck(), progressReporter, this);               
+               int bytesDownloaded = await Download.CreateDownloadTask(MediaPlayerService.selectedAudio.Link, FileCheck(), progressReporter, this);
+               builder.Dispose();
            })
-           .SetNegativeButton("No", delegate { });
+           .SetNegativeButton("No", delegate { builder.Dispose(); });
             builder.Create().Show();
         }
         private string FileCheck()
         {
-            if (!Directory.Exists(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + @"/cafan/Podcasts/audio/"))
-                Directory.CreateDirectory(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + @"/cafan/Podcasts/audio/");
+            if (!Directory.Exists(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "@/cafan/Podcasts/audio/"))
+                Directory.CreateDirectory(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "@/cafan/Podcasts/audio/");
             
-            return Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + @"/cafan/Podcasts/audio/"
+            return Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "@/cafan/Podcasts/audio/"
                 + DivineVerITies.Helpers.MediaPlayerService.selectedAudio.Title + ".mp3";
         }
         private void DownLoadItemNotification()
