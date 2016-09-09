@@ -72,7 +72,7 @@ namespace DivineVerITies
         }
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
-            MenuInflater.Inflate(Resource.Menu.options_only, menu);
+            MenuInflater.Inflate(Resource.Menu.menu_album, menu);
             return true;
         }
         protected async override void OnStart()

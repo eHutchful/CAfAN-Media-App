@@ -5,15 +5,18 @@ xmlns:tools="http://schemas.android.com/tools">
 <item
     android:id="@+id/action_add_favourite"
     android:orderInCategory="100"
-    android:title="Favourite" />
+    android:title="Favourite"
+    app:showAsAction="never"/>
 
 <item
     android:id="@+id/action_play_next"
     android:orderInCategory="101"
-    android:title="Play Next" />
+    android:title="Play Next"
+    app:showAsAction="never"/>
 
   <item
     android:id="@+id/action_Download"
     android:orderInCategory="102"
-    android:title="Download" />
+    android:title="Download"
+    app:showAsAction="never"/>
 </menu>
