@@ -9,6 +9,7 @@ using Android.Views;
 using Android.Widget;
 using DivineVerITies.ExoPlayer;
 using DivineVerITies.Fragments;
+using DivineVerITies.Helpers;
 using Java.Interop;
 using SupportActionBar = Android.Support.V7.App.ActionBar;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
@@ -20,6 +21,7 @@ namespace DivineVerITies
     {
         private DrawerLayout mDrawerLayout;
         private TabLayout tabs;
+        private CancelReceiver CR= new CancelReceiver();
         private int[] tabIcons = {
             Resource.Drawable.ic_library_music,
             Resource.Drawable.ic_video_library,
@@ -153,6 +155,10 @@ namespace DivineVerITies
                         break;
                 }
             };
+        }
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();           
         }
 
         private void SetUpViewPager(ViewPager viewPager)

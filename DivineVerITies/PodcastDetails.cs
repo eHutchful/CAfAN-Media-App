@@ -50,6 +50,7 @@ namespace DivineVerITies
                 View anchor = o as View;
                 Android.Content.Intent intent = new Android.Content.Intent(this, typeof(Audio_Player));
                 MediaPlayerService.selectedAudio = selectedAudio;
+                MediaPlayerService.playlist.Insert(0, selectedAudio);
                 Audio_Player.selectedAudio = selectedAudio;
                 try { StopService(new Intent(this, typeof(MediaPlayerService))); }
                 catch (Exception es) { }

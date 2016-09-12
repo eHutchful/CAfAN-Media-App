@@ -14,11 +14,12 @@ namespace DivineVerITies.Helpers
     [IntentFilter(new[] { Cancel, StartD, Resume })]
     public class MyService : Service
     {
+        private static int previousPer=0;
         bool choiceMade = true;
         public static Context contxt;
         public static CancellationTokenSource cts= new CancellationTokenSource();
         public static AudioList selectedAudio;
-        private static int notificationId = 1;
+        private static int notificationId = 1;        
         public static Dictionary<string, int> notificationIds=new Dictionary<string,int>();
         public static Dictionary<string, CancellationTokenSource> cancellations=new Dictionary<string,CancellationTokenSource>();
         public static string filename;
@@ -93,21 +94,38 @@ namespace DivineVerITies.Helpers
                     }
                     else if (cancellations[name].IsCancellationRequested)
                     {
-                        pBarCancelled(name);
+                        if (notificationIds.ContainsKey(name)) 
+                        {
+                            pBarCancelled(name);
+                            cancellations.Remove(name);
+                            if (File.Exists(name))
+                            {
+                                File.Delete(name);
+                            }
+                        }
+                        
                     }
                     else
                     {
+                        
                         int per = (int)(100 * args.PercentComplete);
-                        ChangePBar(per, name);
+                        if ((per - previousPer) >= 2)
+                        {
+                            ChangePBar(per, name);
+                            previousPer = per;
+                        }
                     }
                 };
                 builder.Dispose();
                 if ((await FileCheck()).Equals("yes"))
                 {
-                    notificationIds.Add(filename, notificationId);
-                    notificationId++;
-                    DownLoadItemNotification(filename);
-                    cancellations.Add(filename, dwn.cts);
+                    if (!notificationIds.ContainsKey(filename))
+                    {
+                        notificationIds.Add(filename, notificationId);
+                        notificationId++;
+                        cancellations.Add(filename, dwn.cts);
+                    }                   
+                    DownLoadItemNotification(filename);                    
                     await dwn.CreateDownloadTask(MyService.selectedAudio.Link, filename, progressReporter, contxt);
                    
                 }; 
@@ -117,12 +135,15 @@ namespace DivineVerITies.Helpers
         }
         private async Task<string> FileCheck()
         {
-            string choice="";
+            string choice="yes";
             if (!Directory.Exists(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/cafan/Podcasts/audio/"))
                 Directory.CreateDirectory(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/cafan/Podcasts/audio/");
 
             if (File.Exists(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/cafan/Podcasts/audio/"
-                + DivineVerITies.Helpers.MyService.selectedAudio.Title + ".mp3")) { choiceMade = false;  CreateAndShowDialog(choice); }
+                + DivineVerITies.Helpers.MyService.selectedAudio.Title + ".mp3")) 
+            { 
+                choiceMade = false;
+                CreateAndShowDialog(choice); }
 
             filename = Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/cafan/Podcasts/audio/"
                 + DivineVerITies.Helpers.MyService.selectedAudio.Title + ".mp3";
@@ -147,19 +168,24 @@ namespace DivineVerITies.Helpers
            {
                deleteFile(filename);
                choice = "yes";
+               choiceMade = true;
                builder.Dispose();
                
                
            })
-           .SetNegativeButton("No", delegate { choice = "no"; builder.Dispose(); });
+           .SetNegativeButton("No", delegate { choice = "no";
+           choiceMade = true;
+               builder.Dispose(); });
             builder.Create().Show();
             
         }
         private void DownLoadItemNotification(string name)
         {
-            var intent = new Intent(CancelReceiver.cancel);
+            var intent = new Intent(contxt, typeof(CancelReceiver));
+            
             intent.PutExtra("filename", name);
-            PendingIntent pIntent = PendingIntent.GetBroadcast(contxt, 0, intent, PendingIntentFlags.UpdateCurrent);
+            intent.SetAction(CancelReceiver.cancel);
+            PendingIntent pIntent = PendingIntent.GetBroadcast(contxt, notificationIds[name], intent, PendingIntentFlags.UpdateCurrent);
             
             // Instantiate the builder and set notification elements:
             Android.Support.V4.App.NotificationCompat.Builder builder = new Android.Support.V4.App.NotificationCompat.Builder(contxt)
@@ -173,7 +199,7 @@ namespace DivineVerITies.Helpers
                 //.SetVisibility (NotificationVisibility.Public)
                 .SetVisibility(3)
                 .SetCategory(Notification.CategoryProgress)
-                .AddAction(Resource.Drawable.ic_cancel, "Cancel", pIntent)
+                .AddAction(Resource.Drawable.ic_cancel, "Cancel", pIntent)                
                 //.AddAction()
                 //Initialize the download
                 .SetProgress(0, 0, true);
@@ -188,9 +214,10 @@ namespace DivineVerITies.Helpers
         }
         private void ChangePBar(int per,string name)
         {
-            var intent = new Intent(CancelReceiver.cancel);
+            var intent = new Intent(contxt,typeof(CancelReceiver));
             intent.PutExtra("filename", name);
-            PendingIntent pIntent = PendingIntent.GetBroadcast(contxt, 0, intent, PendingIntentFlags.UpdateCurrent);
+            intent.SetAction(CancelReceiver.cancel);
+            PendingIntent pIntent = PendingIntent.GetBroadcast(contxt, notificationIds[name], intent, PendingIntentFlags.UpdateCurrent);
             // Instantiate the builder and set notification elements:
             Android.Support.V4.App.NotificationCompat.Builder builder = new Android.Support.V4.App.NotificationCompat.Builder(contxt)
             .SetContentTitle("Downloading Podcast")
@@ -211,6 +238,8 @@ namespace DivineVerITies.Helpers
         }
         private void dComplete(string name)
         {
+            cancellations.Remove(name);
+            
             Android.Support.V4.App.NotificationCompat.Builder builder = new Android.Support.V4.App.NotificationCompat.Builder(contxt)
                 .SetContentTitle("Done")
                 .SetContentText("Download complete")
@@ -221,6 +250,7 @@ namespace DivineVerITies.Helpers
                 .SetCategory(Notification.CategoryProgress)
                 .SetDefaults(3)
                 .SetPriority(2)
+                
                 // Removes the progress bar
                 .SetProgress(0, 0, false);
             NotificationManager notificationManager =
@@ -228,6 +258,8 @@ namespace DivineVerITies.Helpers
             // Publish the notification:
             
             notificationManager.Notify(notificationIds[name], builder.Build());
+            notificationIds.Remove(name);
+            cancellations.Remove(name);
         }
         private void pBarCancelled(string name)
         {
@@ -241,12 +273,18 @@ namespace DivineVerITies.Helpers
                 .SetDefaults(3)
                 .SetPriority(2)
                 // Removes the progress bar
+                
                 .SetProgress(0, 0, false);
             NotificationManager notificationManager =
                 GetSystemService(Context.NotificationService) as NotificationManager;
             // Publish the notification:
             
             notificationManager.Notify(notificationIds[name], builder.Build());
+            if (notificationIds.ContainsKey(name) && cancellations.ContainsKey(name))
+            {
+                notificationIds.Remove(name);
+                cancellations.Remove(name);
+            }
         }
     }
 }

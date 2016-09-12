@@ -9,11 +9,12 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using System.IO;
 
 namespace DivineVerITies.Helpers
 {
     [BroadcastReceiver(Enabled=true)]
-    [IntentFilter(new[] { cancel})]
+    [IntentFilter(new[] {cancel})]
     public class CancelReceiver : BroadcastReceiver
     {
         public const string cancel = "com.xamarin.Action.CANCELLED";
@@ -23,12 +24,18 @@ namespace DivineVerITies.Helpers
             try
             {
                 MyService.cancellations[intent.GetStringExtra("filename")].Cancel();
+                //MyService.cancellations.Remove(intent.GetStringExtra("filename"));
+                File.Delete(intent.GetStringExtra("filename"));
             }
             catch (Exception e)
             {
 
             }
-            finally { MyService.cancel(MyService.notificationIds[intent.GetStringExtra("filename")]); }
+            finally 
+            { 
+                MyService.cancel(MyService.notificationIds[intent.GetStringExtra("filename")]);
+                //MyService.notificationIds.Remove(intent.GetStringExtra("filename"));
+            }
      
         }
     }
