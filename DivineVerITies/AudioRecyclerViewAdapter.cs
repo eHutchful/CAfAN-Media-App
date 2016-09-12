@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Object = Java.Lang.Object;
 using DivineVerITies.Helpers;
+using DivineVerITies.Fragments;
 
 
 namespace DivineVerITies
@@ -23,16 +24,13 @@ namespace DivineVerITies
         private readonly TypedValue mTypedValue = new TypedValue();
         private int mBackground;
         Resources mResource;
-        private Context mContext;
         public event EventHandler<int> itemClick;
 
         public AudioRecyclerViewAdapter(Context context, List<AudioList> audios, Resources res)
         {
-            mContext = context;
             context.Theme.ResolveAttribute(Resource.Attribute.selectableItemBackground, mTypedValue, true);
             mBackground = mTypedValue.ResourceId;
             mAudios = audios;
-            //mFilterAudios = audios;
             mResource = res;
 
             Filter = new AudioFilter(this);
@@ -52,11 +50,11 @@ namespace DivineVerITies
         //    NotifyDataSetChanged();
         //}
 
-        void OnClick(int position)
-        {
-            if (itemClick != null)
-                itemClick(this, position);
-        }
+        //void OnClick(int position)
+        //{
+        //    if (itemClick != null)
+        //        itemClick(this, position);
+        //}
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
@@ -66,7 +64,8 @@ namespace DivineVerITies
             simpleHolder.mAudioTitle.Text = mAudios[position].Title;
             simpleHolder.mAudioSubTitle.Text = mAudios[position].SubTitle;
             simpleHolder.mPubDate.Text = mAudios[position].PubDate;
-
+            //simpleHolder.selectedAudio = mAudios[position];
+           
             Glide.With(simpleHolder.mAlbumArt.Context)
                 .Load(mAudios[position].ImageUrl)
                 .Transform(new CircleTransform(simpleHolder.mAlbumArt.Context))
@@ -81,29 +80,36 @@ namespace DivineVerITies
             View view = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.audio_cardview, parent, false);
             view.SetBackgroundResource(mBackground);
 
-            SimpleAudioViewHolder simpleHolder = new SimpleAudioViewHolder(view, OnClick);
-            simpleHolder.mOptions.Click += (s, e) =>
-            {
-                Android.Support.V7.Widget.PopupMenu Popup = new Android.Support.V7.Widget.PopupMenu(simpleHolder.mOptions.Context, simpleHolder.mOptions);
-                Popup.Inflate(Resource.Menu.menu_album);
-                Popup.MenuItemClick += (o, args) =>
-                {
-                    switch (args.Item.ItemId)
-                    {
-                        case Resource.Id.action_add_favourite:
-                            break;
+            //SimpleAudioViewHolder simpleHolder = new SimpleAudioViewHolder(view, OnClick);
+            //simpleHolder.mOptions.Click += (s, e) =>
+            //{
+                
+                //Android.Support.V7.Widget.PopupMenu Popup = new Android.Support.V7.Widget.PopupMenu(simpleHolder.mOptions.Context, simpleHolder.mOptions);
+                //Popup.Inflate(Resource.Menu.menu_album);
+                //Popup.MenuItemClick += (o, args) =>
+                //{
 
-                        case Resource.Id.action_play_next:
-                            break;
+                //    //int position = simpleHolder.;
+                //    switch (args.Item.ItemId)
+                //    {
+                //        case Resource.Id.action_add_favourite:
+                //            break;
 
-                        case Resource.Id.action_Download:
+                //        case Resource.Id.action_play_next:
+                //            break;
 
-                            break;
-                    }
-                }; Popup.Show();
-            };
+                //        case Resource.Id.action_Download:
+                //            MyService.selectedAudio = simpleHolder.selectedAudio;
+                //            MyService.contxt = Fragment3.context;
+                //            var intent = new Intent(Fragment3.context, typeof(MyService));
+                //            intent.SetAction(MyService.StartD);
+                //            Fragment3.context.StartService(intent);
+                //            break;
+                //    }
+                //}; Popup.Show();
+            //};
 
-            return new SimpleAudioViewHolder(view, OnClick);
+            return new SimpleAudioViewHolder(view);
         }
 
         public class SimpleAudioViewHolder : RecyclerView.ViewHolder
@@ -114,8 +120,9 @@ namespace DivineVerITies
             public TextView mPubDate { get; set; }
             public ImageView mAlbumArt { get; set; }
             public ImageButton mOptions { get; set; }
+            //public AudioList selectedAudio { get; set; }
 
-            public SimpleAudioViewHolder(View view, Action<int> listener)
+            public SimpleAudioViewHolder(View view)
                 : base(view)
             {
                 mMainAudioView = view;
@@ -124,7 +131,7 @@ namespace DivineVerITies
                 mPubDate = view.FindViewById<TextView>(Resource.Id.txtRow3);
                 mAlbumArt = view.FindViewById<ImageView>(Resource.Id.avatar);
                 mOptions = view.FindViewById<ImageButton>(Resource.Id.img_options);
-                mMainAudioView.Click += (sender, e) => listener(base.Position);
+               // mMainAudioView.Click += (sender, e) => listener(base.Position);
             }
         }
 
@@ -186,4 +193,5 @@ namespace DivineVerITies
             results.Dispose();
         }
     }
+    
 }

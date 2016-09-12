@@ -7,17 +7,18 @@
     android:paddingRight="16dp"
     android:paddingTop="16dp"
     android:paddingBottom="16dp"
-    android:gravity="center_vertical">
-    <refractored.controls.CircleImageView
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:divider="#fff"
+    android:dividerPadding="16dp">
+    <ImageView
         android:id="@+id/avatar"
         android:layout_width="@dimen/list_item_avatar_size"
         android:layout_height="@dimen/list_item_avatar_size"
         android:layout_marginRight="16dp" />
-<!--app:civ_border_width="1dp"
-        app:civ_border_color="#FF000000"-->
     <TextView
         android:id="@+id/txtTopic"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?attr/textAppearanceListItem" />
     <CheckBox

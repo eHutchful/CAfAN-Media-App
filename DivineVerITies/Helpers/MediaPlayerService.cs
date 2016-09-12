@@ -67,7 +67,7 @@ namespace DivineVerITies.Helpers
         private WifiManager wifiManager;
         private WifiManager.WifiLock wifiLock;
         private ComponentName remoteComponentName;
-        private const int NotificationId = 1;
+        private const int NotificationId = 0;
         public event StatusChangedEventHandler StatusChanged;
         public event CoverReloadedEventHandler CoverReloaded;
         public event PlayingEventHandler Playing;

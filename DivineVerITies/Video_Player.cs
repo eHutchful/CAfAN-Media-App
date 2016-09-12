@@ -1,19 +1,21 @@
-using System;
-
 using Android.App;
 using Android.OS;
+using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
+using DivineVerITies.Helpers;
 using Plugin.Connectivity;
 using Plugin.Connectivity.Abstractions;
-using DivineVerITies.Helpers;
-using Android.Content;
+using System;
+using SupportActionBar = Android.Support.V7.App.ActionBar;
+using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace DivineVerITies
 {
-    [Activity(Label = "VideoPlayer")]
-    public class Video_Player : Activity
+    [Activity(Theme = "@style/Theme.DesignDemo")]
+    public class Video_Player : AppCompatActivity
     {
+        private SupportToolbar toolBar;
         private const string VideoPositionKey = "VideoPosition";
         private int startingPosition;
         public static Video selectedVideo;
@@ -35,6 +37,13 @@ namespace DivineVerITies
         {
             base.OnCreate(bundle);            
             SetContentView(Resource.Layout.VidPlayer);
+            toolBar = FindViewById<SupportToolbar>(Resource.Id.toolbar);
+            SetSupportActionBar(toolBar);
+            // Change To SubTitle Later
+            SupportActionBar.Title = Video_Player.selectedVideo.Title;
+            SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+            SupportActionBar.SetHomeButtonEnabled(true);
+
             startingPosition = (bundle != null) ? bundle.GetInt(VideoPositionKey):0;
             InitializeVideoPlayer();                     
             
@@ -69,6 +78,7 @@ namespace DivineVerITies
             mediaController.SetAnchorView(videoPlayer);
             //show media controls for 3 seconds when video starts to play
             mediaController.Show(3000);
+           
         }
 
         protected override void OnSaveInstanceState(Bundle outState)
@@ -120,8 +130,24 @@ namespace DivineVerITies
         {
             UpdateVideoPlayerState(false);
             LaunchVideo();
-        }        
+        }
+
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            MenuInflater.Inflate(Resource.Menu.video_list, menu);
+            return true;
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch (item.ItemId)
+            {
+                case Android.Resource.Id.Home:
+                    Finish();
+                    return true;
+            }
+
+            return base.OnOptionsItemSelected(item);
+        }
     }
-
-
 }

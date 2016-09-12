@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:scaleType="fitXY"
             tools:ignore="ContentDescription"
-            android:fitsSystemWindows="true"/>
+            android:fitsSystemWindows="true" />
     </FrameLayout>
     <ProgressBar
         android:id="@+id/audio_player_loading"

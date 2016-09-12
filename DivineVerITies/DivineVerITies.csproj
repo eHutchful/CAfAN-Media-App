@@ -91,10 +91,6 @@
       <HintPath>..\packages\Xam.Plugin.Connectivity.2.2.12\lib\MonoAndroid10\Plugin.Connectivity.Abstractions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Refractored.Controls.CircleImageView, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Refractored.Controls.CircleImageView.1.0.1\lib\MonoAndroid10\Refractored.Controls.CircleImageView.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="SQLitePCL, Version=3.8.7.2, Culture=neutral, PublicKeyToken=bddade01e9c850c5, processorArchitecture=MSIL">
       <HintPath>..\packages\SQLitePCL.3.8.7.2\lib\MonoAndroid\SQLitePCL.dll</HintPath>
       <Private>True</Private>
@@ -168,6 +164,7 @@
     <Compile Include="Fragments\Fragment5.cs" />
     <Compile Include="Fragments\Fragment6.cs" />
     <Compile Include="Helpers\AudioService.cs" />
+    <Compile Include="Helpers\CancelReceiver.cs" />
     <Compile Include="Helpers\CircleTransform.cs" />
     <Compile Include="Helpers\Download.cs" />
     <Compile Include="Helpers\DownloadBytesProgress.cs" />
@@ -266,6 +263,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\VidPlayer.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\menu\video_list.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

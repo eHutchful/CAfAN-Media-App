@@ -3,19 +3,21 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DivineVerITies.Helpers
 {
     public class Download
     {
-        static Context mContext;
-        public static async Task<int> CreateDownloadTask(string urlToDownload,
+        Context mContext;
+        public CancellationTokenSource cts = new CancellationTokenSource();
+        public  async Task CreateDownloadTask(string urlToDownload,
             string fullPath, IProgress<DownloadBytesProgress> progressReporter, Context context)
         {
             mContext = context;
                 WebClient client = new WebClient();
-                MyService.cts.Token.Register(client.CancelAsync);
+                cts.Token.Register(client.CancelAsync);
                 int receivedBytes = 0;
                 int totalBytes = 0;
                 List<byte> file = new List<byte>();
@@ -26,16 +28,16 @@ namespace DivineVerITies.Helpers
                 {
                     byte[] buffer = new byte[4096];
                     totalBytes = Int32.Parse(client.ResponseHeaders[HttpRequestHeader.ContentLength]);
-                    if (File.Exists(fullPath))
-                    {
-                        var builder = new Android.Support.V7.App.AlertDialog.Builder(context);
-                        builder.SetTitle("File already exists")
-                            .SetMessage("The podcast you are trying to download already exists on your device.\nWould you like to overwrite it?")
-                            .SetPositiveButton("Yes", delegate { builder.Dispose(); }).SetNegativeButton("No", delegate { client.CancelAsync();
-                                //put notification changing code here
-                                builder.Dispose(); });
-                        builder.Create().Show();
-                    }
+                    //if (File.Exists(fullPath))
+                    //{
+                    //    var builder = new Android.Support.V7.App.AlertDialog.Builder(context);
+                    //    builder.SetTitle("File already exists")
+                    //        .SetMessage("The podcast you are trying to download already exists on your device.\nWould you like to overwrite it?")
+                    //        .SetPositiveButton("Yes", delegate { builder.Dispose(); }).SetNegativeButton("No", delegate { client.CancelAsync();
+                    //            //put notification changing code here
+                    //            builder.Dispose(); });
+                    //    builder.Create().Show();
+                    //}
                     var filestream = File.Create(fullPath, totalBytes);
                     for (; ; )
                     {
@@ -59,24 +61,24 @@ namespace DivineVerITies.Helpers
             }
             catch (ObjectDisposedException e)
             {
-                CreateAndShowDownloadError("Podcast Download Was Cancelled By User", "Download Cancelled");
+                CreateAndShowDownloadError("Podcast Download Was Cancelled By User", "Download Cancelled",mContext);
             }
 
             catch(Exception b)
             {
-                CreateAndShowDownloadError(b, "Download Error");
+                CreateAndShowDownloadError(b, "Download Error",mContext);
             }
             
-            return receivedBytes;
+           
            
         }
 
-        private static void CreateAndShowDownloadError(Exception e, string title)
+        private static void CreateAndShowDownloadError(Exception e, string title,Context mContext)
         {
-            CreateAndShowDownloadError(e.Message, title);
+            CreateAndShowDownloadError(e.Message, title,mContext);
         }
 
-        private static void CreateAndShowDownloadError(string message, string title)
+        private static void CreateAndShowDownloadError(string message, string title, Context mContext)
         {
             Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(mContext);
 

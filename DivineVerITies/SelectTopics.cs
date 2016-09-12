@@ -49,7 +49,7 @@ namespace DivineVerITies
             var builder = new Android.Support.V7.App.AlertDialog.Builder(this);
             builder.SetTitle("Welcome!")
             .SetMessage("Select From The List Of Topics, Podcasts You Want To Be Suscribed To And These Will Be Automatically Added To Your Audio And Video Lists For Quick Access")
-            .SetPositiveButton("Got It", delegate { });
+            .SetPositiveButton("Got It", delegate { builder.Dispose(); });
             builder.Create().Show();
 
         }

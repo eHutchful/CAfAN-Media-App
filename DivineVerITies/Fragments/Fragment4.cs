@@ -15,6 +15,7 @@ using System;
 using Android.Support.Design.Widget;
 using Android.Support.V4.View;
 using Android.Runtime;
+using System.Linq;
 
 namespace DivineVerITies.Fragments
 {
@@ -28,6 +29,8 @@ namespace DivineVerITies.Fragments
         public List<Video> mlist;
         private View view;
         private Android.Support.V7.Widget.SearchView mSearchView;
+        private Android.Support.V7.App.AlertDialog.Builder builder;
+        String[] sortitems = { "Title Ascending", "Title Descending", "Date Ascending", "Date Descending" };
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -42,6 +45,7 @@ namespace DivineVerITies.Fragments
             view = inflater.Inflate(Resource.Layout.Fragment4, container, false) as View;
             recyclerView = view.FindViewById<RecyclerView>(Resource.Id.recyclerview);
             mProgresBar = view.FindViewById<ProgressBar>(Resource.Id.audio_player_loading);
+            mProgresBar.Animate();
             swipeRefreshLayout = view.FindViewById<SwipeRefreshLayout>(Resource.Id.swipe_refresh_layout);
             swipeRefreshLayout.SetColorSchemeColors(Color.Indigo, Color.Pink, Color.Blue, Color.Yellow);
             SetUpVideoRecyclerView(recyclerView);
@@ -51,10 +55,10 @@ namespace DivineVerITies.Fragments
         {
 
             recyclerView.SetLayoutManager(new LinearLayoutManager(recyclerView.Context));
-           
+
             recyclerView.SetItemClickListener((rv, position, view) =>
             {
-                int itemposition = rv.GetChildAdapterPosition(view);               
+                int itemposition = rv.GetChildAdapterPosition(view);
                 Context context = view.Context;
                 Intent intent = new Intent(context, typeof(VideoCastDetails));
                 var serial = JsonConvert.SerializeObject(mVideos[position]);
@@ -84,7 +88,7 @@ namespace DivineVerITies.Fragments
                  }).Show();
             }
         }
-        public  override async void OnActivityCreated(Bundle savedInstanceState)
+        public override async void OnActivityCreated(Bundle savedInstanceState)
         {
             base.OnActivityCreated(savedInstanceState);
 
@@ -93,7 +97,7 @@ namespace DivineVerITies.Fragments
             HasOptionsMenu = true;
 
             swipeRefreshLayout.Refresh += swipeRefreshLayout_Refresh;
-            
+
 
         }
         private async void swipeRefreshLayout_Refresh(object sender, EventArgs e)
@@ -114,10 +118,74 @@ namespace DivineVerITies.Fragments
                 e.Handled = true;
             };
 
-            //mVideoAdapter = new VideoRecyclerViewAdapter(recyclerView.Context, mVideos, Activity.Resources);
             MenuItemCompat.SetOnActionExpandListener(item, new SearchViewExpandListener(mVideoAdapter));
+        }
 
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch (item.ItemId)
+            {
+                case Resource.Id.action_sort:
+                    SortVideos();
+                    return true;
+            }
+            return base.OnOptionsItemSelected(item);
+        }
 
+        private void SortVideos()
+        {
+            base.OnAttach(Activity);
+            builder = new Android.Support.V7.App.AlertDialog.Builder(Activity);
+            builder.SetTitle("Sort Order")
+                   .SetSingleChoiceItems(sortitems, -1, SortTypeListClicked)
+                   .SetNegativeButton("Cancel", delegate { builder.Dispose(); });
+            builder.Create().Show();
+        }
+
+        private void SortTypeListClicked(object sender, DialogClickEventArgs e)
+        {
+            switch (e.Which)
+            {
+                case 0:
+                    mVideos = (from video in mVideos
+                               orderby video.Title
+                               select video).ToList<Video>();
+
+                    mVideoAdapter = new VideoRecyclerViewAdapter(recyclerView.Context, mVideos, Activity.Resources);
+                    recyclerView.SetAdapter(mVideoAdapter);
+                    builder.Dispose();
+                    break;
+
+                case 1:
+                    mVideos = (from video in mVideos
+                               orderby video.Title descending
+                               select video).ToList<Video>();
+
+                    mVideoAdapter = new VideoRecyclerViewAdapter(recyclerView.Context, mVideos, Activity.Resources);
+                    recyclerView.SetAdapter(mVideoAdapter);
+                    builder.Dispose();
+                    break;
+
+                case 2:
+                    mVideos = (from video in mVideos
+                               orderby video.PubDate
+                               select video).ToList<Video>();
+
+                    mVideoAdapter = new VideoRecyclerViewAdapter(recyclerView.Context, mVideos, Activity.Resources);
+                    recyclerView.SetAdapter(mVideoAdapter);
+                    builder.Dispose();
+                    break;
+
+                case 3:
+                    mVideos = (from video in mVideos
+                               orderby video.PubDate descending
+                               select video).ToList<Video>();
+
+                    mVideoAdapter = new VideoRecyclerViewAdapter(recyclerView.Context, mVideos, Activity.Resources);
+                    recyclerView.SetAdapter(mVideoAdapter);
+                    builder.Dispose();
+                    break;
+            }
         }
     }
 }

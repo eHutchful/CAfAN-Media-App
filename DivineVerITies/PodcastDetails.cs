@@ -50,6 +50,7 @@ namespace DivineVerITies
                 View anchor = o as View;
                 Android.Content.Intent intent = new Android.Content.Intent(this, typeof(Audio_Player));
                 MediaPlayerService.selectedAudio = selectedAudio;
+                Audio_Player.selectedAudio = selectedAudio;
                 try { StopService(new Intent(this, typeof(MediaPlayerService))); }
                 catch (Exception es) { }
                 StartActivity(intent);
@@ -66,6 +67,14 @@ namespace DivineVerITies
                 case Android.Resource.Id.Home:
                     Finish();
                     return true;
+
+                case Resource.Id.action_Download:
+                    MyService.selectedAudio = selectedAudio;
+                    MyService.contxt = this;
+                    var intent = new Intent(this, typeof(MyService));
+                    intent.SetAction(MyService.StartD);
+                    StartService(intent);
+                    return true;
             }
 
             return base.OnOptionsItemSelected(item);
@@ -75,7 +84,7 @@ namespace DivineVerITies
             MenuInflater.Inflate(Resource.Menu.menu_album, menu);
             return true;
         }
-        protected async override void OnStart()
+        protected override void OnStart()
         {
             base.OnStart();            
             ImageView mAlbumArt = FindViewById<ImageView>(Resource.Id.backdrop);

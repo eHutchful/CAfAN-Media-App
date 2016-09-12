@@ -31,7 +31,7 @@ namespace DivineVerITies.ExoPlayer.Player
         public static AudioList selectedAudio;
         public static ProgressBar loadingBar;
         private ImageView artworkView;
-
+        public string filename;
         private View audio_player_view;
         private SupportToolbar toolBar;
         private TextView position;
@@ -58,8 +58,8 @@ namespace DivineVerITies.ExoPlayer.Player
         {
             
             base.OnCreate(savedInstanceState);
-           
-            
+
+            MyService.contxt = this;
             // Create your application here
             SetContentView(Resource.Layout.newtest);
             toolBar = FindViewById<SupportToolbar>(Resource.Id.toolbar);
@@ -219,132 +219,14 @@ namespace DivineVerITies.ExoPlayer.Player
         }
         public void downloadButton_Click(object sender, System.EventArgs e)
         {
-            Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(this);
-            builder.SetTitle("Confirm Download")
-           .SetMessage("Are You Sure You Want To Download" + " " + MediaPlayerService.selectedAudio.SubTitle)
-           .SetPositiveButton("Yes", async delegate {                    
-               Progress<DownloadBytesProgress> progressReporter = new Progress<DownloadBytesProgress>();
-               DownLoadItemNotification();
-               progressReporter.ProgressChanged += (s, args) =>
-               {
-                   if (args.IsFinished)
-                   {
-                       dComplete();
-                   }
-                   else if (MyService.cts.IsCancellationRequested)
-                   {
-                       pBarCancelled();
-                   }
-                   else
-                   {
-                       int per = (int)(100 * args.PercentComplete);
-                       ChangePBar(per);
-                   }
-               };
-               int bytesDownloaded = await Download.CreateDownloadTask(MediaPlayerService.selectedAudio.Link, FileCheck(), progressReporter, this);
-               builder.Dispose();
-           })
-           .SetNegativeButton("No", delegate { builder.Dispose(); });
-            builder.Create().Show();
-        }
-        private string FileCheck()
-        {
-            if (!Directory.Exists(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "@/cafan/Podcasts/audio/"))
-                Directory.CreateDirectory(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "@/cafan/Podcasts/audio/");
+            MyService.selectedAudio = selectedAudio;
+            var intent = new Intent(ApplicationContext, typeof(MyService));
+            intent.SetAction(MyService.StartD);
+            StartService(intent);
             
-            return Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "@/cafan/Podcasts/audio/"
-                + DivineVerITies.Helpers.MediaPlayerService.selectedAudio.Title + ".mp3";
         }
-        private void DownLoadItemNotification()
-        {
-            var intent = new Intent(MyService.Cancel);
-            PendingIntent pIntent = PendingIntent.GetService(this, 0, intent, PendingIntentFlags.UpdateCurrent);
-            // Instantiate the builder and set notification elements:
-            Android.Support.V4.App.NotificationCompat.Builder builder = new Android.Support.V4.App.NotificationCompat.Builder(this)
-                .SetContentTitle("Downloading Podcast")
-                .SetContentText("Download Starting")
-                .SetLargeIcon(BitmapFactory.DecodeResource(Resources, Resource.Drawable.Logo_trans192))
-                .SetSmallIcon(Resource.Drawable.ic_cloud_download)
-                //.SetDefaults(NotificationDefaults.Sound | NotificationDefaults.Vibrate)
-                .SetDefaults(3)
-                .SetPriority(2)
-                //.SetVisibility (NotificationVisibility.Public)
-                .SetVisibility(3)
-                .SetCategory(Notification.CategoryProgress)
-                .AddAction(Resource.Drawable.ic_cancel,"Cancel",pIntent)
-                //.AddAction()
-                //Initialize the download
-                .SetProgress(0, 0, true);
-            // Build the notification:
-            Notification notification = builder.Build();
-            // Get the notification manager:
-            NotificationManager notificationManager =
-                GetSystemService(Context.NotificationService) as NotificationManager;
-            // Publish the notification:
-            const int notificationId = 0;
-            notificationManager.Notify(notificationId, notification);
-        }
-        private void ChangePBar(int per)
-        {
-            var intent = new Intent(MyService.Cancel);
-            PendingIntent pIntent = PendingIntent.GetService(this, 0, intent, PendingIntentFlags.UpdateCurrent);
-            // Instantiate the builder and set notification elements:
-           Android.Support.V4.App. NotificationCompat.Builder builder = new Android.Support.V4.App.NotificationCompat.Builder(this)
-           .SetContentTitle("Downloading Podcast")
-           .SetContentText("Downloaded (" + per + "/100")
-           .SetLargeIcon(BitmapFactory.DecodeResource(Resources, Resource.Drawable.Logo_trans192))
-           .SetSmallIcon(Resource.Drawable.ic_cloud_download)
-           .SetPriority(0)
-           .SetVisibility(3)
-           .SetCategory(Notification.CategoryProgress)
-           .AddAction(Resource.Drawable.ic_cancel, "Cancel", pIntent)
-           .SetProgress(100, per, false);             
-            // Get the notification manager:
-            NotificationManager notificationManager =
-                GetSystemService(Context.NotificationService) as NotificationManager;
-            // Publish the notification:
-            const int notificationId = 0;
-            notificationManager.Notify(notificationId, builder.Build());            
-        }
-        private void dComplete()
-        {
-            Android.Support.V4.App.NotificationCompat.Builder builder = new Android.Support.V4.App.NotificationCompat.Builder(this)
-                .SetContentTitle("Done")
-                .SetContentText("Download complete")
-                //.SetDefaults(NotificationDefaults.Sound | NotificationDefaults.Vibrate)
-                .SetLargeIcon(BitmapFactory.DecodeResource(Resources, Resource.Drawable.Logo_trans192))
-                .SetSmallIcon(Resource.Drawable.ic_cloud_download)
-                .SetVisibility(3)
-                .SetCategory(Notification.CategoryProgress)
-                .SetDefaults(3)
-                .SetPriority(2)
-                // Removes the progress bar
-                .SetProgress(0, 0, false);
-            NotificationManager notificationManager =
-                GetSystemService(Context.NotificationService) as NotificationManager;
-            // Publish the notification:
-            const int notificationId = 0;
-            notificationManager.Notify(notificationId, builder.Build());
-        }
-        private void pBarCancelled()
-        {
-            Android.Support.V4.App.NotificationCompat.Builder builder = new Android.Support.V4.App.NotificationCompat.Builder(this)
-                .SetContentTitle("Download Interrupted")
-                .SetContentText("Download was Cancelled")               
-                .SetLargeIcon(BitmapFactory.DecodeResource(Resources, Resource.Drawable.Logo_trans192))
-                .SetSmallIcon(Resource.Drawable.ic_cloud_download)
-                .SetVisibility(3)
-                .SetCategory(Notification.CategoryProgress)
-                .SetDefaults(3)
-                .SetPriority(2)
-                // Removes the progress bar
-                .SetProgress(0, 0, false);
-            NotificationManager notificationManager =
-                GetSystemService(Context.NotificationService) as NotificationManager;
-            // Publish the notification:
-            const int notificationId = 0;
-            notificationManager.Notify(notificationId, builder.Build());
-        }
+
+        
         private void ShowAudioSnackBar()
         {
             //var text = "";

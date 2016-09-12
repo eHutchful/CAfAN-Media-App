@@ -45,6 +45,8 @@ namespace DivineVerITies.ExoPlayer
 		VideoPlayer.IListener, VideoPlayer.ICaptionListener, VideoPlayer.ID3MetadataListener,
 		AudioCapabilitiesReceiver.IListener
 	{
+        public static Video selectedVideo;
+        public ProgressBar mProgressBar;
 		// For use within demo app code.
 		public const string ContentIdExtra = "content_id";
 		public const string ContentTypeExtra = "content_type";
@@ -87,7 +89,7 @@ namespace DivineVerITies.ExoPlayer
 		private Button _retryButton;
 
 		public VideoPlayer _player;
-		//private DebugTextViewHelper _debugViewHelper;
+		private DebugTextViewHelper _debugViewHelper;
 		private bool _playerNeedsPrepare;
 
 		public long _playerPosition;
@@ -109,7 +111,7 @@ namespace DivineVerITies.ExoPlayer
 
             toolBar = FindViewById<SupportToolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolBar);
-            SupportActionBar.Title = "Now Playing";
+            SupportActionBar.Title = selectedVideo.Title;
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 
 			var root = FindViewById(Resource.Id.root);
@@ -170,12 +172,12 @@ namespace DivineVerITies.ExoPlayer
 			_audioCapabilitiesReceiver = new AudioCapabilitiesReceiver(this, this);
 			_audioCapabilitiesReceiver.Register();
 
-             
+            mProgressBar = FindViewById<ProgressBar>(Resource.Id.video_player_loading);
 		}
 
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
-            MenuInflater.Inflate(Resource.Menu.audio_list, menu);
+            MenuInflater.Inflate(Resource.Menu.video_list, menu);
             return true;
         }
 
@@ -186,11 +188,6 @@ namespace DivineVerITies.ExoPlayer
                 case Android.Resource.Id.Home:
                     Finish();
                     return true;
-
-                case Resource.Id.action_audio_list:
-                    Intent intent = new Intent(this, typeof(MainApp));
-                    StartActivity(intent);
-                    break;
             }
 
             return base.OnOptionsItemSelected(item);
@@ -350,35 +347,37 @@ namespace DivineVerITies.ExoPlayer
 			{
 				ShowControls();
 			}
-			var text = "playWhenReady=" + playWhenReady + ", playbackState=";
+
+            if (playbackState == Exoplayer1.StateReady)
+            {
+                mProgressBar.Visibility = ViewStates.Gone;
+            }
+			string text ;
 			switch (playbackState)
 			{
                 case Exoplayer1.StateBuffering:
-					text += "buffering";
+					text = "Buffering";
 					break;
                 case Exoplayer1.StateEnded:
-					text += "ended";
+					text = "Ended";
 					break;
                 case Exoplayer1.StateIdle:
-					text += "idle";
+					text = "Idle";
 					break;
                 case Exoplayer1.StatePreparing:
-					text += "preparing";
+					text = "Preparing";
 					break;
                 case Exoplayer1.StateReady:
-					text += "ready";
+					text = "Ready";
 					break;
 				default:
-					text += "unknown";
+					text = "Unknown";
 					break;
 			}
 			_playerState = text;
 			UpdateButtonVisibilities();
+            ShowTheSnackBar(_shutterView);
             
-            //if(playbackState != Exoplayer1.StateReady)
-            //{
-                ShowTheSnackBar(_shutterView);
-            //}
 		}
 
         private void ShowTheSnackBar(View o)
@@ -402,8 +401,19 @@ namespace DivineVerITies.ExoPlayer
 			}
 			_playerNeedsPrepare = true;
 			UpdateButtonVisibilities();
+            ShowRetrySnackbar();
 			ShowControls();
 		}
+
+        private void ShowRetrySnackbar()
+        {
+            Snackbar.Make(_shutterView, "Connection Error", Snackbar.LengthIndefinite)
+                 .SetAction("Retry", v =>
+                 {
+                     mProgressBar.Visibility = ViewStates.Visible;
+                     PreparePlayer(true);
+                 }).Show();
+        }
 
 		public void OnVideoSizeChanged(
 			int width,
@@ -588,7 +598,7 @@ namespace DivineVerITies.ExoPlayer
 		{
 			return format.TrackId == null
 				? ""
-				: String.Format(Locale.Us, " (%d)", format.TrackId);
+				: String.Format(Locale.Us, " (%d)", int.Parse(format.TrackId));
 		}
 
 		private bool OnTrackItemClick(IMenuItem item, int type)

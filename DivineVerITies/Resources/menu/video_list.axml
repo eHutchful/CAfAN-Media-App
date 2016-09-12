@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto">
+  <item
+   android:id="@+id/action_download"
+   android:icon="@drawable/ic_cloud_download"
+   android:title="Download Videos"
+   app:showAsAction="always" />
+<item
+   android:id="@+id/action_video_list"
+   android:icon="@drawable/ic_video_library"
+   android:title="My Videos"
+   app:showAsAction="always" />
+</menu>

@@ -29,14 +29,13 @@ namespace DivineVerITies.Fragments
         public List<AudioList> mlist;
         private View view;
         private Android.Support.V7.Widget.SearchView mSearchView;
+        private Android.Support.V7.App.AlertDialog.Builder builder;
         String[] sortitems = { "Title Ascending", "Title Descending", "Date Ascending", "Date Descending" };
-       
-        //private XDocument xdoc;
+        private ImageButton mOptions;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
             // Create your fragment here
         }
 
@@ -90,8 +89,11 @@ namespace DivineVerITies.Fragments
             view = inflater.Inflate(Resource.Layout.Fragment3, container, false) as View;
             recyclerView = view.FindViewById<RecyclerView>(Resource.Id.recyclerview);
             mProgresBar = view.FindViewById<ProgressBar>(Resource.Id.audio_player_loading);
+            mProgresBar.Animate();
             swipeRefreshLayout = view.FindViewById<SwipeRefreshLayout>(Resource.Id.swipe_refresh_layout);
             swipeRefreshLayout.SetColorSchemeColors(Color.Indigo, Color.Pink, Color.Blue, Color.Yellow);
+            mOptions = view.FindViewById<ImageButton>(Resource.Id.img_options);
+            mOptions.Click += (s, args) => { ShowAudioOptionsPopup(); };
             SetUpAudioRecyclerView(recyclerView);
             return view;
         }
@@ -115,14 +117,39 @@ namespace DivineVerITies.Fragments
             });
         }
 
+        public void ShowAudioOptionsPopup()
+        {
+            int position = recyclerView.GetChildAdapterPosition(mOptions);
+            Android.Support.V7.Widget.PopupMenu Popup = new Android.Support.V7.Widget.PopupMenu(mOptions.Context, mOptions);
+            Popup.Inflate(Resource.Menu.menu_album);
+            Popup.MenuItemClick += (o, args) =>
+            {
+                switch (args.Item.ItemId)
+                {
+                    case Resource.Id.action_add_favourite:
+                        break;
+
+                    case Resource.Id.action_play_next:
+                        break;
+
+                    case Resource.Id.action_Download:
+                        MyService.selectedAudio = mAudios[position];
+                        MyService.contxt = this.Context;
+                        var intent = new Intent(this.Context, typeof(MyService));
+                        intent.SetAction(MyService.StartD);
+                        this.Context.StartService(intent);
+                        break;
+                }
+            }; Popup.Show();
+        }
+        
         public void SortAudios()
         {
             
             base.OnAttach(Activity);
-            Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(Activity);
+            builder = new Android.Support.V7.App.AlertDialog.Builder(Activity);
             builder.SetTitle("Sort Order")
                    .SetSingleChoiceItems(sortitems, -1, SortTypeListClicked)
-                   .SetPositiveButton("OK", delegate { builder.Dispose(); })
                    .SetNegativeButton("Cancel", delegate { builder.Dispose(); });
             builder.Create().Show();
         }
@@ -138,7 +165,7 @@ namespace DivineVerITies.Fragments
 
                     mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
                     recyclerView.SetAdapter(mAudioAdapter);
-                   
+                    builder.Dispose();
                     break;
 
                 case 1:
@@ -148,7 +175,7 @@ namespace DivineVerITies.Fragments
 
                     mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
                     recyclerView.SetAdapter(mAudioAdapter);
-
+                    builder.Dispose();
                     break;
 
                 case 2:
@@ -158,7 +185,7 @@ namespace DivineVerITies.Fragments
 
                     mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
                     recyclerView.SetAdapter(mAudioAdapter);
-
+                    builder.Dispose();
                     break;
 
                 case 3:
@@ -168,7 +195,7 @@ namespace DivineVerITies.Fragments
 
                     mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
                     recyclerView.SetAdapter(mAudioAdapter);
-
+                    builder.Dispose();
                     break;
             }
         }
@@ -188,8 +215,6 @@ namespace DivineVerITies.Fragments
                 e.Handled = true;
             };
 
-        
-            //mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
             MenuItemCompat.SetOnActionExpandListener(item, new SearchViewExpandListener(mAudioAdapter));
         }
 

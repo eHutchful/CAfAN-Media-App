@@ -1,35 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true">
-    <!--<VideoView
+    android:keepScreenOn="true"
+    android:focusable="true"
+    android:animateLayoutChanges="true"
+    android:fitsSystemWindows="true">
+  <VideoView
+       android:id="@+id/PlayerVideoView"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:layout_gravity="center" />
+<!--<VideoView
         android:id="@+id/PlayerVideoView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true" />-->
-  <VideoView
-        android:id="@+id/PlayerVideoView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        />
-    <ProgressBar
-        android:id="@+id/VideoProgressBar"
-        android:indeterminate="true"
-        android:indeterminateBehavior="repeat"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_centerInParent="true" />
-    <TextView
-        android:id="@+id/StatusMessageTextView"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="@string/MissingNetworkConnection" />
-</RelativeLayout>
+        android:fitsSystemWindows="true">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            android:fitsSystemWindows="true"/>
+            <!--android:background="#33000000"-->
+            
+    </RelativeLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+        <ProgressBar
+            android:id="@+id/VideoProgressBar"
+            android:indeterminate="true"
+            android:indeterminateBehavior="repeat"
+            style="?android:progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" />
+        <TextView
+            android:id="@+id/StatusMessageTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/MissingNetworkConnection"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+</FrameLayout>

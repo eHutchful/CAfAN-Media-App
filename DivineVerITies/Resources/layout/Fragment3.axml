@@ -3,20 +3,6 @@
     android:animateLayoutChanges="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<!--<FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha="0.4"
-        android:background="#000000"
-        android:id="@+id/progressBarHolder"
-        android:animateLayoutChanges="true">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">-->
     <ProgressBar
         android:id="@+id/audio_player_loading"
         style="?android:progressBarStyleLarge"
@@ -24,21 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_gravity="center" />
-<!--</RelativeLayout>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <TextView
-                    android:id="@+id/loading_data_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:textSize="20sp"
-                    android:text="Loading..."
-                    android:layout_gravity="center" />
-            </RelativeLayout>
-        </LinearLayout>
-    </FrameLayout>-->
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"

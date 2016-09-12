@@ -8,6 +8,7 @@ using Android.Views;
 using Android.Widget;
 using Com.Bumptech.Glide;
 using Com.Bumptech.Glide.Load.Engine;
+using DivineVerITies.ExoPlayer;
 using DivineVerITies.ExoPlayer.Player;
 using DivineVerITies.Helpers;
 using Newtonsoft.Json;
@@ -47,11 +48,16 @@ namespace DivineVerITies
             fab.Click += (o, e) =>
             {
                 View anchor = o as View;
-                Android.Content.Intent intent = new Android.Content.Intent(this, typeof(Video_Player));
-                Video_Player.selectedVideo = selectedVideo;
+              
+                PlayerActivity.selectedVideo = selectedVideo;
+                var mpdIntent = new Intent(this, typeof(PlayerActivity))
+                    .SetData(Android.Net.Uri.Parse(selectedVideo.Link))
+                    .PutExtra(PlayerActivity.ContentIdExtra, 3)
+                    .PutExtra(PlayerActivity.ContentTypeExtra, PlayerActivity.TypeOther);
+                StartActivity(mpdIntent);
                 try { StopService(new Intent(this, typeof(MediaPlayerService))); }
                 catch (Exception es) { }
-                StartActivity(intent);
+                StartActivity(mpdIntent);
             };
             TextView mAudioDescription = FindViewById<TextView>(Resource.Id.AudioDescription);
             mAudioDescription.Text = selectedVideo.Description;

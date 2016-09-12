@@ -6,8 +6,10 @@ using Android.Support.V4.View;
 using Android.Support.V4.Widget;
 using Android.Support.V7.App;
 using Android.Views;
+using Android.Widget;
 using DivineVerITies.ExoPlayer;
 using DivineVerITies.Fragments;
+using Java.Interop;
 using SupportActionBar = Android.Support.V7.App.ActionBar;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 
@@ -21,10 +23,11 @@ namespace DivineVerITies
         private int[] tabIcons = {
             Resource.Drawable.ic_library_music,
             Resource.Drawable.ic_video_library,
-            Resource.Drawable.ic_subscriptions
+            Resource.Drawable.ic_favorite_border
+            //Resource.Drawable.ic_subscriptions
             //Resource.Drawable.ic_explore
                                  };
-
+        //private ImageButton mOptions;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -94,6 +97,8 @@ namespace DivineVerITies
                     StartActivity(intent);
                 }
             };
+
+            //mOptions = FindViewById<ImageButton>(Resource.Id.img_options);
         }
 
         private void setupTabIcons()
@@ -155,7 +160,7 @@ namespace DivineVerITies
             TabAdapter adapter = new TabAdapter(SupportFragmentManager);
             adapter.AddFragment(new Fragment3(), "AUDIOS");
             adapter.AddFragment(new Fragment4(), "VIDEOS");
-            adapter.AddFragment(new Fragment5(), "SUBSCRIPTIONS");
+            adapter.AddFragment(new Fragment5(), "FAVOURITES");
             //adapter.AddFragment(new Fragment6(), "EXPLORE");
 
             viewPager.Adapter = adapter;
