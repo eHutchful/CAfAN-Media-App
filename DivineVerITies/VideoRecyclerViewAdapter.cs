@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Object = Java.Lang.Object;
 using DivineVerITies.Helpers;
+using Android.Media;
+using Android.Graphics;
 
 namespace DivineVerITies
 {
@@ -25,7 +27,6 @@ namespace DivineVerITies
         private Context mContext;
         public event EventHandler<int> itemClick;
         public Filter Filter { get; private set; }
-
         public VideoRecyclerViewAdapter(Context context, List<Video> videos, Resources res)
         {
             // mFilterAudios = audios;
@@ -54,14 +55,14 @@ namespace DivineVerITies
             if (itemClick != null)
                 itemClick(this, position);
         }
-        public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
+        public override async void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
            
             var simpleHolder = holder as SimpleVideoViewHolder;           
             simpleHolder.mAudioTitle.Text = mVideos[position].Title;
             simpleHolder.mAudioSubTitle.Text = mVideos[position].SubTitle;
             simpleHolder.mPubDate.Text = mVideos[position].PubDate;
-
+           
             Glide.With(simpleHolder.mAlbumArt.Context)
                 .Load("")
                 .Placeholder(Resource.Drawable.Logo_trans192)
