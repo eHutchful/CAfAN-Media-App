@@ -35,6 +35,8 @@ namespace DivineVerITies
 
             tabs.SetupWithViewPager(viewPager);
 
+           
+
         }
 
         private void SetUpViewPager(ViewPager viewPager)
