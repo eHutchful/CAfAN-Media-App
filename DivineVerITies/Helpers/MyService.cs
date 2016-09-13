@@ -19,6 +19,7 @@ namespace DivineVerITies.Helpers
         public static Context contxt;
         public static CancellationTokenSource cts= new CancellationTokenSource();
         public static AudioList selectedAudio;
+        public static Video selectedVideo;
         private static int notificationId = 1;        
         public static Dictionary<string, int> notificationIds=new Dictionary<string,int>();
         public static Dictionary<string, CancellationTokenSource> cancellations=new Dictionary<string,CancellationTokenSource>();

@@ -31,9 +31,8 @@ namespace DivineVerITies.Fragments
         private Android.Support.V7.Widget.SearchView mSearchView;
         private Android.Support.V7.App.AlertDialog.Builder builder;
         String[] sortitems = { "Title Ascending", "Title Descending", "Date Ascending", "Date Descending" };
-        private ImageButton mOptions;
-        private CardView audiocardview;
         public static Context context;
+
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -44,15 +43,10 @@ namespace DivineVerITies.Fragments
         public override void OnActivityCreated(Bundle savedInstanceState)
         {
             base.OnActivityCreated(savedInstanceState);
-
-            getAudiosAsyc();
-
-            HasOptionsMenu = true;
-
-            swipeRefreshLayout.Refresh += swipeRefreshLayout_Refresh;
-
             
-
+            getAudiosAsyc();
+            HasOptionsMenu = true;
+            swipeRefreshLayout.Refresh += swipeRefreshLayout_Refresh;
         }
 
         private async void getAudiosAsyc()
@@ -61,9 +55,8 @@ namespace DivineVerITies.Fragments
             {
                 mAudios = await (new Initialize()).getAudioList();
                 mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
-                
                 recyclerView.SetAdapter(mAudioAdapter);
-                //mAudioAdapter.simpleHolder.mOptions.Click += (s, args) => { ShowAudioOptionsPopup(); };
+                
                 recyclerView.Visibility = ViewStates.Visible;
                 mProgresBar.Visibility = ViewStates.Gone;
             }
@@ -83,7 +76,6 @@ namespace DivineVerITies.Fragments
         private void swipeRefreshLayout_Refresh(object sender, EventArgs e)
         {
             getAudiosAsyc();
-
             swipeRefreshLayout.Refreshing = false;
         }
 
@@ -113,44 +105,20 @@ namespace DivineVerITies.Fragments
                 //An item has been clicked
                 Context context = view.Context;
                 Intent intent = new Intent(context, typeof(PodcastDetails));
+                
                 if(mAudioAdapter.mAudios==null)
                 { serial = JsonConvert.SerializeObject(mAudios[position]);}
+                
                 else if (mAudioAdapter.mAudios.Count == mAudios.Count)
                 {  serial = JsonConvert.SerializeObject(mAudios[position]); }
+                
                 else
                 { serial = JsonConvert.SerializeObject(mAudioAdapter.mAudios[position]); }
+                
                 intent.PutExtra("selectedItem", serial);
-
                 context.StartActivity(intent);
             });
         }
-
-        //public void ShowAudioOptionsPopup()
-        //{
-        //    int position = recyclerView.GetChildAdapterPosition(mAudioAdapter.simpleHolder.mOptions);
-        //    Android.Support.V7.Widget.PopupMenu Popup = new Android.Support.V7.Widget.PopupMenu(
-        //        mAudioAdapter.simpleHolder.mOptions.Context, mAudioAdapter.simpleHolder.mOptions);
-        //    Popup.Inflate(Resource.Menu.menu_album);
-        //    Popup.MenuItemClick += (o, args) =>
-        //    {
-        //        switch (args.Item.ItemId)
-        //        {
-        //            case Resource.Id.action_add_favourite:
-        //                break;
-
-        //            case Resource.Id.action_play_next:
-        //                break;
-
-        //            case Resource.Id.action_Download:
-        //                MyService.selectedAudio = mAudios[position];
-        //                MyService.contxt = this.Context;
-        //                var intent = new Intent(this.Context, typeof(MyService));
-        //                intent.SetAction(MyService.StartD);
-        //                this.Context.StartService(intent);
-        //                break;
-        //        }
-        //    }; Popup.Show();
-        //}
         
         public void SortAudios()
         {

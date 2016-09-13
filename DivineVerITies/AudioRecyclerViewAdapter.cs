@@ -58,8 +58,7 @@ namespace DivineVerITies
         }
         
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
-        {
-            
+        {            
             var simpleHolder = holder as SimpleAudioViewHolder;
             //int indexPosition = (mAudios.Count - 1) - position;
 
@@ -93,7 +92,6 @@ namespace DivineVerITies
                     }
                 }; Popup.Show();
             };
-            //simpleHolder.selectedAudio = mAudios[position];
            
             Glide.With(simpleHolder.mAlbumArt.Context)
                 .Load(mAudios[position].ImageUrl)
@@ -110,34 +108,7 @@ namespace DivineVerITies
             view.SetBackgroundResource(mBackground);
             
             SimpleAudioViewHolder simpleHolder = new SimpleAudioViewHolder(view, OnClick);
-            //simpleHolder.mOptions.Click += (s, e) =>
-            //{
-
-            //    Android.Support.V7.Widget.PopupMenu Popup = new Android.Support.V7.Widget.PopupMenu(simpleHolder.mOptions.Context, simpleHolder.mOptions);
-            //    Popup.Inflate(Resource.Menu.menu_album);
-            //    Popup.MenuItemClick += (o, args) =>
-            //    {
-
-            //        //int position = simpleHolder.;
-            //        switch (args.Item.ItemId)
-            //        {
-            //            case Resource.Id.action_add_favourite:
-            //                break;
-
-            //            case Resource.Id.action_play_next:
-            //                break;
-
-            //            case Resource.Id.action_Download:
-            //                MyService.selectedAudio = mAudios[this.position];
-            //                MyService.contxt = Fragment3.context;
-            //                var intent = new Intent(Fragment3.context, typeof(MyService));
-            //                intent.SetAction(MyService.StartD);
-            //                Fragment3.context.StartService(intent);
-            //                break;
-            //        }
-            //    }; Popup.Show();
-            //};
-            //this.position++;
+  
             return simpleHolder;//new SimpleAudioViewHolder(view, OnClick);
         }
 
@@ -149,7 +120,6 @@ namespace DivineVerITies
             public TextView mPubDate { get; set; }
             public ImageView mAlbumArt { get; set; }
             public ImageButton mOptions { get; set; }
-            //public AudioList selectedAudio { get; set; }
 
             public SimpleAudioViewHolder(View view, Action<int> listener)
                 : base(view)
@@ -193,12 +163,19 @@ namespace DivineVerITies
 
             if(_adapter.mFilterAudios != null && _adapter.mFilterAudios.Any())
             {
-                if (constraint == null) return returnObj;
-                // Compare constraint to all names lowercased. 
-                // It they are contained they are added to results.
-                results.AddRange(
-                    _adapter.mFilterAudios.Where(
-                    audio => audio.Title.ToLower().Contains(constraint==null ? "":constraint.ToString())));
+                try
+                {
+                    // Compare constraint to all names lowercased. 
+                    // It they are contained they are added to results.
+                    results.AddRange(
+                        _adapter.mFilterAudios.Where(
+                        audio => audio.Title.ToLower().Contains(constraint.ToString())));
+                }
+
+                catch(ArgumentNullException)
+                {
+                    return returnObj;
+                }
             }
 
             // Nasty piece of .NET to Java wrapping, be careful with this!

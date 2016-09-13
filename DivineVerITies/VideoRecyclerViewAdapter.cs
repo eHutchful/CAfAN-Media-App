@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Object = Java.Lang.Object;
 using DivineVerITies.Helpers;
+using DivineVerITies.Fragments;
 
 namespace DivineVerITies
 {
@@ -28,7 +29,6 @@ namespace DivineVerITies
 
         public VideoRecyclerViewAdapter(Context context, List<Video> videos, Resources res)
         {
-            // mFilterAudios = audios;
             mContext = context;
             context.Theme.ResolveAttribute(Resource.Attribute.selectableItemBackground, mTypedValue, true);
             mBackground = mTypedValue.ResourceId;
@@ -37,6 +37,7 @@ namespace DivineVerITies
 
             Filter = new VideoFilter(this);
         }
+
         public override int ItemCount
         {
             get
@@ -44,23 +45,50 @@ namespace DivineVerITies
                 return mVideos.Count;
             }
         }
-        public void Add(Video video)
-        {
-            mVideos.Add(video);
-            NotifyDataSetChanged();
-        }
+
+        //public void Add(Video video)
+        //{
+        //    mVideos.Add(video);
+        //    NotifyDataSetChanged();
+        //}
+
         void OnClick(int position)
         {
             if (itemClick != null)
                 itemClick(this, position);
         }
+
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
-           
             var simpleHolder = holder as SimpleVideoViewHolder;           
             simpleHolder.mAudioTitle.Text = mVideos[position].Title;
             simpleHolder.mAudioSubTitle.Text = mVideos[position].SubTitle;
             simpleHolder.mPubDate.Text = mVideos[position].PubDate;
+            simpleHolder.mOptions.Click += (s, e) =>
+            {
+                Android.Support.V7.Widget.PopupMenu Popup = new Android.Support.V7.Widget.PopupMenu(
+                    simpleHolder.mOptions.Context, simpleHolder.mOptions);
+                Popup.Inflate(Resource.Menu.menu_album);
+                Popup.MenuItemClick += (o, args) =>
+                {
+                    switch (args.Item.ItemId)
+                    {
+                        case Resource.Id.action_add_favourite:
+                            break;
+
+                        case Resource.Id.action_play_next:
+                            break;
+
+                        case Resource.Id.action_Download:
+                            MyService.selectedVideo = mVideos[position];
+                            MyService.contxt = Fragment4.context;
+                            var intent = new Intent(Fragment4.context, typeof(MyService));
+                            intent.SetAction(MyService.StartD);
+                            Fragment4.context.StartService(intent);
+                            break;
+                    }
+                }; Popup.Show();
+            };
 
             Glide.With(simpleHolder.mAlbumArt.Context)
                 .Load("")
@@ -76,28 +104,8 @@ namespace DivineVerITies
             view.SetBackgroundResource(mBackground);
 
             SimpleVideoViewHolder simpleHolder = new SimpleVideoViewHolder(view, OnClick);
-            simpleHolder.mOptions.Click += (s, e) =>
-            {
-                Android.Support.V7.Widget.PopupMenu Popup = new Android.Support.V7.Widget.PopupMenu(simpleHolder.mOptions.Context, simpleHolder.mOptions);
-                Popup.Inflate(Resource.Menu.menu_album);
-                Popup.MenuItemClick += (o, args) =>
-                {
-                    switch (args.Item.ItemId)
-                    {
-                        case Resource.Id.action_add_favourite:
-                            break;
-
-                        case Resource.Id.action_play_next:
-                            break;
-
-                        case Resource.Id.action_Download:
-
-                            break;
-                    }
-                }; Popup.Show();
-            };
-
-            return new SimpleVideoViewHolder(view, OnClick);
+ 
+            return simpleHolder;
         }
         public class SimpleVideoViewHolder : RecyclerView.ViewHolder
         {
@@ -139,11 +147,19 @@ namespace DivineVerITies
 
                 if (_adapter.mFilterVideos != null && _adapter.mFilterVideos.Any())
                 {
-                    // Compare constraint to all names lowercased. 
-                    // It they are contained they are added to results.
-                    results.AddRange(
-                        _adapter.mFilterVideos.Where(
-                            video => video.Title.ToLower().Contains(constraint.ToString())));
+                    try
+                    {
+                        // Compare constraint to all names lowercased. 
+                        // It they are contained they are added to results.
+                        results.AddRange(
+                            _adapter.mFilterVideos.Where(
+                                video => video.Title.ToLower().Contains(constraint.ToString())));
+                    }
+                    catch (ArgumentNullException)
+                    {
+                        
+                        return returnObj;
+                    }
                 }
 
                 // Nasty piece of .NET to Java wrapping, be careful with this!
