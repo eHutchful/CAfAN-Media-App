@@ -61,13 +61,35 @@ namespace DivineVerITies.ExoPlayer.Player
 
             MyService.contxt = this;
             // Create your application here
-            SetContentView(Resource.Layout.newtest);
+            SetContentView(Resource.Layout.BottomSheetPlayer);
+
             toolBar = FindViewById<SupportToolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolBar);
             // Change To SubTitle Later
-            SupportActionBar.Title = MediaPlayerService.selectedAudio.Title;
+            SupportActionBar.Title = "Audio Playlist"; //MediaPlayerService.selectedAudio.Title;
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
             SupportActionBar.SetHomeButtonEnabled(true);
+
+            FrameLayout AudioPlayerLayout = FindViewById<FrameLayout>(Resource.Id.audioPlayerView);
+            BottomSheetBehavior BSB = BottomSheetBehavior.From(AudioPlayerLayout);
+            BSB.PeekHeight = 300;
+            BSB.Hideable = false;
+            BSB.SetBottomSheetCallback(new MyBottomSheetCallBack());
+
+            FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
+            fab.Click += (o, e) =>
+            {
+                if (BSB.State == BottomSheetBehavior.StateCollapsed)
+                {
+                    BSB.State = BottomSheetBehavior.StateExpanded;
+                    fab.SetImageResource(Resource.Drawable.ic_expand_more);
+                }
+                else
+                {
+                    BSB.State = BottomSheetBehavior.StateCollapsed;
+                    fab.SetImageResource(Resource.Drawable.ic_expand_more);
+                }
+            };
 
             if (mediaPlayerServiceConnection == null)
                 InitilizeMedia();
@@ -163,6 +185,20 @@ namespace DivineVerITies.ExoPlayer.Player
            
             //ShowAudioSnackBar();
         }
+
+        public class MyBottomSheetCallBack : BottomSheetBehavior.BottomSheetCallback
+        {
+            public override void OnSlide(View bottomSheet, float slideOffset)
+            {
+                //Sliding
+            }
+
+            public override void OnStateChanged(View bottomSheet, int newState)
+            {
+                //State changed
+            }
+        }
+
         private string GetFormattedTime(int value)
         {
             var span = TimeSpan.FromMilliseconds(value);
@@ -262,11 +298,11 @@ namespace DivineVerITies.ExoPlayer.Player
         {
             base.OnStart();
         }
-        public override bool OnCreateOptionsMenu(IMenu menu)
-        {
-            MenuInflater.Inflate(Resource.Menu.audio_list, menu);
-            return true;
-        }
+        //public override bool OnCreateOptionsMenu(IMenu menu)
+        //{
+        //    MenuInflater.Inflate(Resource.Menu.audio_list, menu);
+        //    return true;
+        //}
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
             switch (item.ItemId)
@@ -275,10 +311,10 @@ namespace DivineVerITies.ExoPlayer.Player
                     Finish();
                     return true;
 
-                case Resource.Id.action_audio_list:
-                    Intent intent = new Intent(this, typeof(MainApp));
-                    StartActivity(intent);
-                    break;
+                //case Resource.Id.action_audio_list:
+                //    Intent intent = new Intent(this, typeof(MainApp));
+                //    StartActivity(intent);
+                //    break;
             }
 
             return base.OnOptionsItemSelected(item);
