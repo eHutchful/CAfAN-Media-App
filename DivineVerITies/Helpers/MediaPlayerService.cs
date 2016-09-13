@@ -35,8 +35,9 @@ namespace DivineVerITies.Helpers
     {
         //Ato Added
         public static AudioList selectedAudio;
-
+        public static List<AudioList> playlist = new List<AudioList>();
         //Actions
+        public int position = 0;
         public const string ActionPlay = "com.xamarin.action.PLAY";
         public const string ActionPause = "com.xamarin.action.PAUSE";
         public const string ActionStop = "com.xamarin.action.STOP";
@@ -391,7 +392,9 @@ namespace DivineVerITies.Helpers
             }
 
             UpdatePlaybackState(PlaybackStateCompat.StateSkippingToNext);
-
+            if (position < playlist.Count && playlist[position++]!=null) {
+                MediaPlayerService.selectedAudio = playlist[position++];
+            }  
             await Play();
         }
         public async Task PlayPrevious()
@@ -411,7 +414,10 @@ namespace DivineVerITies.Helpers
                 }
 
                 UpdatePlaybackState(PlaybackStateCompat.StateSkippingToPrevious);
-
+                if (position >=0 && playlist[position--] != null)
+                {
+                    MediaPlayerService.selectedAudio = playlist[position--];
+                }  
                 await Play();
             }
         }
@@ -452,7 +458,7 @@ namespace DivineVerITies.Helpers
                 UpdatePlaybackState(PlaybackStateCompat.StateStopped);
                 mediaPlayer.Reset();
                 try {
-                    //StopNotification();
+                    StopNotification();
                     StopForeground(true);
                     ReleaseWifiLock();
                     sContext.Post(x => toPlay(), null);
@@ -554,8 +560,13 @@ namespace DivineVerITies.Helpers
             builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaNext, "", ActionNext));
             style.SetShowActionsInCompactView(0, 1, 2);
             builder.SetStyle(style);
+            NotificationManager notificationManager =
+                GetSystemService(Context.NotificationService) as NotificationManager;
+            // Publish the notification:
+
+            notificationManager.Notify(NotificationId, builder.Build());
             //NotificationManagerCompat.From(ApplicationContext).Notify(NotificationId, builder.Build());
-            StartForeground(NotificationId, builder.Build());
+            //StartForeground(NotificationId, builder.Build());
         }
 
         private Android.Support.V7.App.NotificationCompat.Action GenerateActionCompat(int icon, String title, String intentAction)
@@ -726,7 +737,7 @@ namespace DivineVerITies.Helpers
                 mediaPlayer.Release();
                 mediaPlayer = null;
 
-                //StopNotification();
+                StopNotification();
                 StopForeground(true);
                 ReleaseWifiLock();
                 UnregisterMediaSessionCompat();

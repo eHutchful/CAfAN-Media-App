@@ -173,6 +173,7 @@
     <Compile Include="Helpers\MediaPlayerService.cs" />
     <Compile Include="Helpers\MyService.cs" />
     <Compile Include="Helpers\ObjectExtensions.cs" />
+    <Compile Include="Helpers\Test.cs" />
     <Compile Include="Helpers\Topics.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MainApp.cs" />

@@ -25,19 +25,21 @@ namespace DivineVerITies.Fragments
         private SwipeRefreshLayout swipeRefreshLayout;
         private RecyclerView recyclerView;
         private VideoRecyclerViewAdapter mVideoAdapter;
-        public List<Video> mVideos;
+        public static List<Video> mVideos;
         public List<Video> mlist;
         private View view;
         private Android.Support.V7.Widget.SearchView mSearchView;
         private Android.Support.V7.App.AlertDialog.Builder builder;
         String[] sortitems = { "Title Ascending", "Title Descending", "Date Ascending", "Date Descending" };
+        public static Context context;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+            context = this.Context;
             // Create your fragment here
         }
+
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             // Use this to return your custom view for this Fragment
@@ -51,6 +53,7 @@ namespace DivineVerITies.Fragments
             SetUpVideoRecyclerView(recyclerView);
             return view;
         }
+
         private void SetUpVideoRecyclerView(RecyclerView recyclerView)
         {
 
@@ -58,14 +61,25 @@ namespace DivineVerITies.Fragments
 
             recyclerView.SetItemClickListener((rv, position, view) =>
             {
+                string serial;
                 int itemposition = rv.GetChildAdapterPosition(view);
                 Context context = view.Context;
                 Intent intent = new Intent(context, typeof(VideoCastDetails));
-                var serial = JsonConvert.SerializeObject(mVideos[position]);
+
+                if (mVideoAdapter.mVideos == null)
+                { serial = JsonConvert.SerializeObject(mVideos[position]); }
+
+                else if (mVideoAdapter.mVideos.Count == mVideos.Count)
+                { serial = JsonConvert.SerializeObject(mVideos[position]); }
+
+                else
+                { serial = JsonConvert.SerializeObject(mVideoAdapter.mVideos[position]); }
+                
                 intent.PutExtra("selectedItem", serial);
                 context.StartActivity(intent);
             });
         }
+
         private async Task getVideosAsync()
         {
             try
@@ -88,24 +102,22 @@ namespace DivineVerITies.Fragments
                  }).Show();
             }
         }
+
         public override async void OnActivityCreated(Bundle savedInstanceState)
         {
             base.OnActivityCreated(savedInstanceState);
 
             await getVideosAsync();
-
             HasOptionsMenu = true;
-
             swipeRefreshLayout.Refresh += swipeRefreshLayout_Refresh;
-
-
         }
+
         private async void swipeRefreshLayout_Refresh(object sender, EventArgs e)
         {
             await getVideosAsync();
-
             swipeRefreshLayout.Refreshing = false;
         }
+
         public override void OnCreateOptionsMenu(IMenu menu, MenuInflater inflater)
         {
             var item = menu.FindItem(Resource.Id.action_search);

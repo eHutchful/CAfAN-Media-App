@@ -22,10 +22,11 @@ namespace DivineVerITies
         public List<AudioList> mAudios;
         public List<AudioList> mFilterAudios;
         private readonly TypedValue mTypedValue = new TypedValue();
+        private ICharSequence Constraint;
         private int mBackground;
         Resources mResource;
         public event EventHandler<int> itemClick;
-
+      
         public AudioRecyclerViewAdapter(Context context, List<AudioList> audios, Resources res)
         {
             context.Theme.ResolveAttribute(Resource.Attribute.selectableItemBackground, mTypedValue, true);
@@ -50,21 +51,47 @@ namespace DivineVerITies
         //    NotifyDataSetChanged();
         //}
 
-        //void OnClick(int position)
-        //{
-        //    if (itemClick != null)
-        //        itemClick(this, position);
-        //}
-
-        public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
+        void OnClick(int position)
         {
+            if (itemClick != null)
+                itemClick(this, position);
+        }
+        
+        public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
+        {            
             var simpleHolder = holder as SimpleAudioViewHolder;
             //int indexPosition = (mAudios.Count - 1) - position;
 
             simpleHolder.mAudioTitle.Text = mAudios[position].Title;
             simpleHolder.mAudioSubTitle.Text = mAudios[position].SubTitle;
             simpleHolder.mPubDate.Text = mAudios[position].PubDate;
-            //simpleHolder.selectedAudio = mAudios[position];
+            simpleHolder.mOptions.Click += (sender, argss) =>
+            {
+
+                Android.Support.V7.Widget.PopupMenu Popup = new Android.Support.V7.Widget.PopupMenu(
+                    simpleHolder.mOptions.Context, simpleHolder.mOptions);
+                Popup.Inflate(Resource.Menu.menu_album);
+                Popup.MenuItemClick += (o, args) =>
+                {
+                    switch (args.Item.ItemId)
+                    {
+                        case Resource.Id.action_add_favourite:
+                            break;
+
+                        case Resource.Id.action_play_next:
+                            MediaPlayerService.playlist.Add(mAudios[position]);
+                            break;
+
+                        case Resource.Id.action_Download:
+                            MyService.selectedAudio = mAudios[position];
+                            MyService.contxt = Fragment3.context;
+                            var intent = new Intent(Fragment3.context, typeof(MyService));
+                            intent.SetAction(MyService.StartD);
+                            Fragment3.context.StartService(intent);
+                            break;
+                    }
+                }; Popup.Show();
+            };
            
             Glide.With(simpleHolder.mAlbumArt.Context)
                 .Load(mAudios[position].ImageUrl)
@@ -79,37 +106,10 @@ namespace DivineVerITies
         {
             View view = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.audio_cardview, parent, false);
             view.SetBackgroundResource(mBackground);
-
-            //SimpleAudioViewHolder simpleHolder = new SimpleAudioViewHolder(view, OnClick);
-            //simpleHolder.mOptions.Click += (s, e) =>
-            //{
-                
-                //Android.Support.V7.Widget.PopupMenu Popup = new Android.Support.V7.Widget.PopupMenu(simpleHolder.mOptions.Context, simpleHolder.mOptions);
-                //Popup.Inflate(Resource.Menu.menu_album);
-                //Popup.MenuItemClick += (o, args) =>
-                //{
-
-                //    //int position = simpleHolder.;
-                //    switch (args.Item.ItemId)
-                //    {
-                //        case Resource.Id.action_add_favourite:
-                //            break;
-
-                //        case Resource.Id.action_play_next:
-                //            break;
-
-                //        case Resource.Id.action_Download:
-                //            MyService.selectedAudio = simpleHolder.selectedAudio;
-                //            MyService.contxt = Fragment3.context;
-                //            var intent = new Intent(Fragment3.context, typeof(MyService));
-                //            intent.SetAction(MyService.StartD);
-                //            Fragment3.context.StartService(intent);
-                //            break;
-                //    }
-                //}; Popup.Show();
-            //};
-
-            return new SimpleAudioViewHolder(view);
+            
+            SimpleAudioViewHolder simpleHolder = new SimpleAudioViewHolder(view, OnClick);
+  
+            return simpleHolder;//new SimpleAudioViewHolder(view, OnClick);
         }
 
         public class SimpleAudioViewHolder : RecyclerView.ViewHolder
@@ -120,9 +120,8 @@ namespace DivineVerITies
             public TextView mPubDate { get; set; }
             public ImageView mAlbumArt { get; set; }
             public ImageButton mOptions { get; set; }
-            //public AudioList selectedAudio { get; set; }
 
-            public SimpleAudioViewHolder(View view)
+            public SimpleAudioViewHolder(View view, Action<int> listener)
                 : base(view)
             {
                 mMainAudioView = view;
@@ -131,7 +130,7 @@ namespace DivineVerITies
                 mPubDate = view.FindViewById<TextView>(Resource.Id.txtRow3);
                 mAlbumArt = view.FindViewById<ImageView>(Resource.Id.avatar);
                 mOptions = view.FindViewById<ImageButton>(Resource.Id.img_options);
-               // mMainAudioView.Click += (sender, e) => listener(base.Position);
+                mMainAudioView.Click += (sender, e) => listener(base.Position);
             }
         }
 
@@ -162,13 +161,21 @@ namespace DivineVerITies
 
             if (constraint == null) return returnObj;
 
-            if (_adapter.mFilterAudios != null && _adapter.mFilterAudios.Any())
+            if(_adapter.mFilterAudios != null && _adapter.mFilterAudios.Any())
             {
-                // Compare constraint to all names lowercased. 
-                // It they are contained they are added to results.
-                results.AddRange(
-                    _adapter.mFilterAudios.Where(
+                try
+                {
+                    // Compare constraint to all names lowercased. 
+                    // It they are contained they are added to results.
+                    results.AddRange(
+                        _adapter.mFilterAudios.Where(
                         audio => audio.Title.ToLower().Contains(constraint.ToString())));
+                }
+
+                catch(ArgumentNullException)
+                {
+                    return returnObj;
+                }
             }
 
             // Nasty piece of .NET to Java wrapping, be careful with this!
