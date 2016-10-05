@@ -86,6 +86,26 @@ namespace DivineVerITies.Fragments
             // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
             view = inflater.Inflate(Resource.Layout.Fragment3, container, false) as View;
             recyclerView = view.FindViewById<RecyclerView>(Resource.Id.recyclerview);
+            recyclerView.HasFixedSize = true;
+            var layoutManager = new LinearLayoutManager(Activity);
+            var onScrollListener = new XamarinRecyclerViewOnScrollListener(layoutManager);
+            onScrollListener.LoadMoreEvent += (object sender, EventArgs e) =>
+            {
+                mAudios.Add(mAudios[0]);
+                recyclerView.GetAdapter().NotifyItemInserted(mAudios.Count - 1);
+                mAudios.RemoveAt(0);
+                recyclerView.GetAdapter().NotifyItemRemoved(0);
+            };
+            onScrollListener.LoadMoreReverseEvent += (object sender, EventArgs e) =>
+            {
+                mAudios.Insert(0, mAudios[mAudios.Count - 1]);                
+                recyclerView.GetAdapter().NotifyItemInserted(0);
+                mAudios.RemoveAt(mAudios.Count - 1);
+                recyclerView.GetAdapter().NotifyItemRemoved(mAudios.Count - 1);
+            };
+            recyclerView.AddOnScrollListener(onScrollListener);
+
+            recyclerView.SetLayoutManager(layoutManager);
             mProgresBar = view.FindViewById<ProgressBar>(Resource.Id.audio_player_loading);
             mProgresBar.Animate();
             swipeRefreshLayout = view.FindViewById<SwipeRefreshLayout>(Resource.Id.swipe_refresh_layout);
@@ -100,23 +120,27 @@ namespace DivineVerITies.Fragments
 
             recyclerView.SetItemClickListener( (rv, position, view) =>
             {
-                string serial;
+               
                 int itemposition = rv.GetChildAdapterPosition(view);
-                //An item has been clicked
                 Context context = view.Context;
                 Intent intent = new Intent(context, typeof(PodcastDetails));
-                
                 if(mAudioAdapter.mAudios==null)
-                { serial = JsonConvert.SerializeObject(mAudios[position]);}
-                
+                {
+                    MediaPlayerService.selectedAudio = mAudios[position];
+                    MainApp.visibility = ViewStates.Visible;
+                    
+                }                
                 else if (mAudioAdapter.mAudios.Count == mAudios.Count)
-                {  serial = JsonConvert.SerializeObject(mAudios[position]); }
-                
+                {
+                    MediaPlayerService.selectedAudio = mAudios[position];
+                    MainApp.visibility = ViewStates.Visible;
+                }                
                 else
-                { serial = JsonConvert.SerializeObject(mAudioAdapter.mAudios[position]); }
+                {
+                    MediaPlayerService.selectedAudio = mAudios[position];
+                    MainApp.visibility = ViewStates.Visible;
+                }
                 
-                intent.PutExtra("selectedItem", serial);
-                context.StartActivity(intent);
             });
         }
         
@@ -228,4 +252,5 @@ namespace DivineVerITies.Fragments
             return true;
         }
     }
+
 }

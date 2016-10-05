@@ -48,10 +48,10 @@ namespace DivineVerITies
             var simpleHolder = holder as SimpleViewHolder;
 
             Glide.With(simpleHolder.mImageView.Context)
-               .Load("")
+               .Load(Resource.Drawable.ChurchLogo)
                .Transform(new CircleTransform(simpleHolder.mImageView.Context))
-               .Placeholder(Resource.Drawable.Logo_trans192)
-               .Error(Resource.Drawable.Logo_trans192)
+               .Placeholder(Resource.Drawable.ChurchLogo_Gray)
+               .Error(Resource.Drawable.ChurchLogo_Gray)
                .DiskCacheStrategy(DiskCacheStrategy.All)
                .Into(simpleHolder.mImageView);
 

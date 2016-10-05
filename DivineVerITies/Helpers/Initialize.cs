@@ -43,7 +43,7 @@ namespace DivineVerITies.Helpers
                         Title = (string)item.Element("title"),
                         Description = (string)item.Element("description"),
                         ImageUrl = "http://www.blubrry.com/coverart/orig/379169-504006.png",
-                        Link = (string)item.Element("enclosure").Attribute("url"),
+                        Link = (string)item.Element("link")+(string)item.Element("enclosure").Attribute("url"),
                         SubTitle = (string)item.Elements().Where(y => y.Name.LocalName == "subtitle").FirstOrDefault(),
                         PubDate = (string)item.Element("pubDate")
                     }).ToList<Video>();

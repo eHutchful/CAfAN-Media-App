@@ -19,7 +19,7 @@
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary">
             <ImageView
-                android:src="@drawable/Logo_trans192"
+                android:src="@drawable/ChurchLogo"
                 android:id="@+id/backdrop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

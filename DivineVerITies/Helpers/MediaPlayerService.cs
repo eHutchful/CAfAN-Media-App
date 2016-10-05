@@ -17,6 +17,7 @@ using Android.Views;
 using System.Threading;
 using ModernHttpClient;
 using System.Net.Http;
+using DivineVerITies.Fragments;
 
 namespace DivineVerITies.Helpers
 {
@@ -222,7 +223,7 @@ namespace DivineVerITies.Helpers
 
         public void OnPrepared(MediaPlayer mp)
         {
-            Audio_Player.loadingBar.Visibility = Android.Views.ViewStates.Gone;
+            MainApp.loadingBar.Visibility = Android.Views.ViewStates.Gone;
             pbarState = ViewStates.Gone;
             //Mediaplayer is prepared start track playback
             mp.Start();
@@ -321,7 +322,7 @@ namespace DivineVerITies.Helpers
 
             try
             {
-                sContext.Post(x => { Audio_Player.loadingBar.Visibility = ViewStates.Visible; }, null);
+                sContext.Post(x => { MainApp.loadingBar.Visibility = ViewStates.Visible; }, null);
                 pbarState = ViewStates.Visible;
                 var Client = new HttpClient();
                 MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
@@ -364,13 +365,13 @@ namespace DivineVerITies.Helpers
         }
         public void toPlay()
         {
-            Audio_Player.playPauseButton.SetImageResource(Android.Resource.Drawable.IcMediaPlay);
-            Audio_Player.playPauseButton.SetBackgroundColor(Color.Transparent);
+            MainApp.playPauseButton.SetImageResource(Android.Resource.Drawable.IcMediaPlay);
+            MainApp.playPauseButton.SetBackgroundColor(Color.Transparent);
         }
         public void toPause()
         {
-            Audio_Player.playPauseButton.SetImageResource(Android.Resource.Drawable.IcMediaPause);
-            Audio_Player.playPauseButton.SetBackgroundColor(Color.Transparent);
+            MainApp.playPauseButton.SetImageResource(Android.Resource.Drawable.IcMediaPause);
+            MainApp.playPauseButton.SetBackgroundColor(Color.Transparent);
         }
         public async Task Seek(int position)
         {
@@ -392,10 +393,18 @@ namespace DivineVerITies.Helpers
             }
 
             UpdatePlaybackState(PlaybackStateCompat.StateSkippingToNext);
-            if (position < playlist.Count && playlist[position++]!=null) {
-                MediaPlayerService.selectedAudio = playlist[position++];
+            if (Fragment6.mAudios.Contains(selectedAudio)) 
+            {
+                if (Fragment6.mAudios.IndexOf(selectedAudio) < Fragment6.mAudios.Count - 1)
+                {
+                    selectedAudio = Fragment6.mAudios[Fragment6.mAudios.IndexOf(selectedAudio) + 1];
+                    MainApp.visibility = ViewStates.Visible;
+                    await Stop();
+                    mediaPlayer = null;
+                    await Play();
+                }
             }  
-            await Play();
+            
         }
         public async Task PlayPrevious()
         {
@@ -413,12 +422,18 @@ namespace DivineVerITies.Helpers
                     mediaPlayer = null;
                 }
 
-                UpdatePlaybackState(PlaybackStateCompat.StateSkippingToPrevious);
-                if (position >=0 && playlist[position--] != null)
+                if (Fragment6.mAudios.Contains(selectedAudio))
                 {
-                    MediaPlayerService.selectedAudio = playlist[position--];
+                    if (Fragment6.mAudios.IndexOf(selectedAudio) >0)
+                    {
+                        selectedAudio = Fragment6.mAudios[Fragment6.mAudios.IndexOf(selectedAudio)-1];
+                        MainApp.visibility = ViewStates.Visible;
+                        await Stop();
+                        mediaPlayer = null;
+                        await Play();
+                    }
                 }  
-                await Play();
+            
             }
         }
         public async Task PlayPause()
@@ -462,6 +477,7 @@ namespace DivineVerITies.Helpers
                     StopForeground(true);
                     ReleaseWifiLock();
                     sContext.Post(x => toPlay(), null);
+                    MainApp.loadingBar.Visibility = ViewStates.Gone;
                     playImage = Android.Resource.Drawable.IcMediaPlay;
                 }
                 catch(Exception e) {}
@@ -531,7 +547,7 @@ namespace DivineVerITies.Helpers
             if (mediaSessionCompat == null)
                 return;
 
-            var pendingIntent = PendingIntent.GetActivity(ApplicationContext, 0, new Intent(ApplicationContext, typeof(Audio_Player)), PendingIntentFlags.UpdateCurrent);
+            var pendingIntent = PendingIntent.GetActivity(ApplicationContext, 0, new Intent(ApplicationContext, typeof(MainApp)), PendingIntentFlags.UpdateCurrent);
             MediaMetadataCompat currentTrack = mediaControllerCompat.Metadata;
 
             Android.Support.V7.App.NotificationCompat.MediaStyle style = new Android.Support.V7.App.NotificationCompat.MediaStyle();

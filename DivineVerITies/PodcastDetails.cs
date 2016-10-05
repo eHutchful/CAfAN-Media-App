@@ -47,11 +47,10 @@ namespace DivineVerITies
 
             fab.Click += (o, e) =>
             {
-                View anchor = o as View;
-                Android.Content.Intent intent = new Android.Content.Intent(this, typeof(Audio_Player));
+                MainApp.visibility = ViewStates.Visible;
+               // View anchor = o as View;
+                Android.Content.Intent intent = new Android.Content.Intent(this, typeof(MainApp));
                 MediaPlayerService.selectedAudio = selectedAudio;
-                MediaPlayerService.playlist.Insert(0, selectedAudio);
-                Audio_Player.selectedAudio = selectedAudio;
                 try { StopService(new Intent(this, typeof(MediaPlayerService))); }
                 catch (Exception es) { }
                 StartActivity(intent);
@@ -92,8 +91,8 @@ namespace DivineVerITies
            
              Glide.With(this)
                     .Load(selectedAudio.ImageUrl)
-                    .Placeholder(Resource.Drawable.Logo_trans192)
-                    .Error(Resource.Drawable.Logo_trans192)                   
+                    .Placeholder(Resource.Drawable.ChurchLogo_Gray)
+                    .Error(Resource.Drawable.ChurchLogo_Gray)                   
                     .DiskCacheStrategy(DiskCacheStrategy.All)
                     .Into(mAlbumArt);
                 ProgressBar pBar= FindViewById<ProgressBar>(Resource.Id.image_loading);

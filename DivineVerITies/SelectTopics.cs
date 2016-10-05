@@ -35,7 +35,7 @@ namespace DivineVerITies
 
             fab.Click += (o, e) =>
             {
-                View anchor = o as View;
+                //View anchor = o as View;
 
                 Intent intent = new Intent(fab.Context, typeof(MainApp));
                 StartActivity(intent);
@@ -48,7 +48,7 @@ namespace DivineVerITies
         {
             var builder = new Android.Support.V7.App.AlertDialog.Builder(this);
             builder.SetTitle("Welcome!")
-            .SetMessage("Select From The List Of Topics, Podcasts You Want To Be Suscribed To And These Will Be Automatically Added To Your Audio And Video Lists For Quick Access")
+            .SetMessage("Select From The List Of Topics, Podcasts You Would Love To Hear About And These Will Be Automatically Added To Your Favourites List For Quick Access")
             .SetPositiveButton("Got It", delegate { builder.Dispose(); });
             builder.Create().Show();
 

@@ -80,15 +80,15 @@ namespace DivineVerITies
             MenuInflater.Inflate(Resource.Menu.options_only, menu);
             return true;
         }
-        protected async override void OnStart()
+        protected override void OnStart()
         {
             base.OnStart();
             ImageView mAlbumArt = FindViewById<ImageView>(Resource.Id.backdrop);
 
             Glide.With(this)
                    .Load(selectedVideo.ImageUrl)
-                   .Placeholder(Resource.Drawable.Logo_trans192)
-                   .Error(Resource.Drawable.Logo_trans192)
+                   .Placeholder(Resource.Drawable.ChurchLogo_Gray)
+                   .Error(Resource.Drawable.ChurchLogo_Gray)
                    .DiskCacheStrategy(DiskCacheStrategy.All)
                    .Into(mAlbumArt);
             ProgressBar pBar = FindViewById<ProgressBar>(Resource.Id.image_loading);

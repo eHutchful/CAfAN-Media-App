@@ -9,7 +9,6 @@
     android:keepScreenOn="true"
     android:fitsSystemWindows="true"
     android:background="#000000">
-   
     <com.google.android.exoplayer.AspectRatioFrameLayout
         android:id="@+id/video_frame"
         android:layout_width="match_parent"
@@ -30,20 +29,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </com.google.android.exoplayer.AspectRatioFrameLayout>
-  <RelativeLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:fitsSystemWindows="true">
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:background="#33000000"
-        android:fitsSystemWindows="true" />
-  </RelativeLayout>
-  <ProgressBar
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            android:background="#33000000"
+            android:fitsSystemWindows="true" />
+    </RelativeLayout>
+    <ProgressBar
         android:id="@+id/video_player_loading"
         style="?android:progressBarStyleLarge"
         android:layout_width="wrap_content"
@@ -102,13 +101,13 @@
                 style="@style/DemoButton"
                 android:visibility="gone"
                 android:onClick="showTextPopup" />
-            <Button
+            <!--<Button
                 android:id="@+id/verbose_log_controls"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/logging"
                 style="@style/DemoButton"
-                android:onClick="showVerboseLogPopup" />
+                android:onClick="showVerboseLogPopup" />-->
             <Button
                 android:id="@+id/retry_button"
                 android:layout_width="wrap_content"

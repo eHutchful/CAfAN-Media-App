@@ -5,8 +5,33 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true">
-    <include
-        layout="@layout/include_list_viewpager" />
+    <com.sothree.slidinguppanel.SlidingUpPanelLayout
+        android:id="@+id/sliding_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        app:umanoPanelHeight="0dp"
+        app:umanoShadowHeight="4dp"
+        app:umanoOverlay="true">
+    <!--sothree:umanoParalaxOffset="100dp"-->
+    <!--sothree:umanoDragView="@+id/dragView"-->
+      
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/include_list_viewpager" />
+      <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/slide_player"
+        android:clickable="true"
+        android:focusable="false">
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/newtest" />
+      </RelativeLayout>
+    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
         android:layout_height="match_parent"

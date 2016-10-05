@@ -61,6 +61,7 @@ namespace DivineVerITies.Fragments
 
             recyclerView.SetItemClickListener((rv, position, view) =>
             {
+
                 string serial;
                 int itemposition = rv.GetChildAdapterPosition(view);
                 Context context = view.Context;
@@ -74,7 +75,7 @@ namespace DivineVerITies.Fragments
 
                 else
                 { serial = JsonConvert.SerializeObject(mVideoAdapter.mVideos[position]); }
-                
+
                 intent.PutExtra("selectedItem", serial);
                 context.StartActivity(intent);
             });

@@ -346,11 +346,13 @@ namespace DivineVerITies.ExoPlayer
             if (playbackState == Exoplayer1.StateEnded)
 			{
 				ShowControls();
+                
 			}
 
             if (playbackState == Exoplayer1.StateReady)
             {
                 mProgressBar.Visibility = ViewStates.Gone;
+                
             }
 			string text ;
 			switch (playbackState)

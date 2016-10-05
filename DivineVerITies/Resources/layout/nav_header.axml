@@ -8,7 +8,7 @@
         android:id="@+id/imgViewHeader"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/Logo_trans192"
+        android:src="@drawable/ChurchLogo"
         android:background="?attr/colorPrimary"
         android:scaleType="centerInside" />
     <TextView

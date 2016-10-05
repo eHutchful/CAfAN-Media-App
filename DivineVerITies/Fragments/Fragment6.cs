@@ -1,55 +1,78 @@
+using Android.Content;
 using Android.OS;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Widget;
 using Android.Support.V7.Widget;
 using Android.Views;
+using Android.Widget;
+using DivineVerITies.Helpers;
 using System;
+using System.Collections.Generic;
 using SupportFragment = Android.Support.V4.App.Fragment;
 
 namespace DivineVerITies.Fragments
 {
     public class Fragment6 : SupportFragment
     {
+        private RecyclerView recyclerView;
+        private AudioRecyclerViewAdapter mAudioAdapter;
+        public static List<AudioList> mAudios=new List<AudioList>();
+        //private View view;
+        //private Android.Support.V7.Widget.SearchView mSearchView;
+        //private Android.Support.V7.App.AlertDialog.Builder builder;
+        public static Context context;
+
         //private SwipeRefreshLayout swipeRefreshLayout;
         private RecyclerView mRecyclerView;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+            context = this.Context;
             // Create your fragment here
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            // Use this to return your custom view for this Fragment
-            // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
-
+            
             mRecyclerView = inflater.Inflate(Resource.Layout.Fragment6, container, false) as RecyclerView;
-
-            //swipeRefreshLayout = mRecyclerView.FindViewById<SwipeRefreshLayout>(Resource.Id.swipe_refresh_layout);
-            //swipeRefreshLayout.SetColorSchemeColors(Color.Indigo, Color.Pink, Color.Blue, Color.Yellow);
-            //swipeRefreshLayout.Refresh += swipeRefreshLayout_Refresh;
-
+            recyclerView = mRecyclerView.FindViewById<RecyclerView>(Resource.Id.recyclerview1);
+            recyclerView.HasFixedSize = true;
+            SetUpRecyclerView(recyclerView);
             return mRecyclerView;
         }
 
         private void SetUpRecyclerView(RecyclerView mRecyclerView)
         {
-            throw new NotImplementedException();
+            recyclerView.SetLayoutManager(new LinearLayoutManager(recyclerView.Context)); 
+            mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
+            recyclerView.SetAdapter(mAudioAdapter);
+            recyclerView.SetItemClickListener((rv, position, view) =>
+            {
+                
+                int itemposition = rv.GetChildAdapterPosition(view);
+                Context context = view.Context;
+                Intent intent = new Intent(context, typeof(PodcastDetails));
+                if (mAudioAdapter.mAudios == null)
+                {
+                    MediaPlayerService.selectedAudio = mAudios[position];
+                    MainApp.visibility = ViewStates.Visible;
+
+                }
+                else if (mAudioAdapter.mAudios.Count == mAudios.Count)
+                {
+                    MediaPlayerService.selectedAudio = mAudios[position];
+                    MainApp.visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    MediaPlayerService.selectedAudio = mAudios[position];
+                    MainApp.visibility = ViewStates.Visible;
+                }
+
+            });
         }
 
-        void swipeRefreshLayout_Refresh(object sender, EventArgs e)
-        {
-            View anchor = sender as View;
-            Snackbar.Make(anchor, "No Connection", Snackbar.LengthLong)
-                        .SetAction("Retry", v =>
-                        {
-                            //Do something here
-                            //Intent intent = new Intent(fab.Context, typeof(BottomSheetActivity));
-                            //StartActivity(intent);
-                        })
-                        .Show();
-        }
+        
     }
 }

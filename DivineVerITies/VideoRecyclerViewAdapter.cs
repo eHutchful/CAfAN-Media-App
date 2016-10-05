@@ -83,7 +83,7 @@ namespace DivineVerITies
                             MyService.selectedVideo = mVideos[position];
                             MyService.contxt = Fragment4.context;
                             var intent = new Intent(Fragment4.context, typeof(MyService));
-                            intent.SetAction(MyService.StartD);
+                            intent.SetAction(MyService.Startvd);
                             Fragment4.context.StartService(intent);
                             break;
                     }
@@ -91,9 +91,9 @@ namespace DivineVerITies
             };
 
             Glide.With(simpleHolder.mAlbumArt.Context)
-                .Load("")
-                .Placeholder(Resource.Drawable.Logo_trans192)
-                .Error(Resource.Drawable.Logo_trans192)                
+                .Load(mVideos[position].ImageUrl)
+                .Placeholder(Resource.Drawable.ChurchLogo_Gray)
+                .Error(Resource.Drawable.ChurchLogo_Gray)                
                 .DiskCacheStrategy(DiskCacheStrategy.All)
                 .Into(simpleHolder.mAlbumArt);
         }

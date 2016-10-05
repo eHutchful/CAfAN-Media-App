@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,11 +11,13 @@ namespace DivineVerITies.Helpers
 {
     public class Download
     {
+
         Context mContext;
         public CancellationTokenSource cts = new CancellationTokenSource();
         public  async Task CreateDownloadTask(string urlToDownload,
             string fullPath, IProgress<DownloadBytesProgress> progressReporter, Context context)
         {
+            
             mContext = context;
                 WebClient client = new WebClient();
                 cts.Token.Register(client.CancelAsync);
@@ -24,20 +27,12 @@ namespace DivineVerITies.Helpers
 
             try
             {
-                using (var stream = await client.OpenReadTaskAsync(urlToDownload))
-                {
+
+                ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => { return true; };   
+                var stream = await client.OpenReadTaskAsync(urlToDownload);
+                
                     byte[] buffer = new byte[4096];
-                    totalBytes = Int32.Parse(client.ResponseHeaders[HttpRequestHeader.ContentLength]);
-                    //if (File.Exists(fullPath))
-                    //{
-                    //    var builder = new Android.Support.V7.App.AlertDialog.Builder(context);
-                    //    builder.SetTitle("File already exists")
-                    //        .SetMessage("The podcast you are trying to download already exists on your device.\nWould you like to overwrite it?")
-                    //        .SetPositiveButton("Yes", delegate { builder.Dispose(); }).SetNegativeButton("No", delegate { client.CancelAsync();
-                    //            //put notification changing code here
-                    //            builder.Dispose(); });
-                    //    builder.Create().Show();
-                    //}
+                    totalBytes = Int32.Parse(client.ResponseHeaders[HttpRequestHeader.ContentLength]);                   
                     var filestream = File.Create(fullPath, totalBytes);
                     for (; ; )
                     {
@@ -57,8 +52,9 @@ namespace DivineVerITies.Helpers
                     }
                     filestream.Write(file.ToArray(), 0, (file.ToArray()).Length);
                     filestream.Close();
+                    stream.Close();
                 }
-            }
+            
             catch (ObjectDisposedException e)
             {
                 CreateAndShowDownloadError("Podcast Download Was Cancelled By User", "Download Cancelled",mContext);
@@ -67,12 +63,10 @@ namespace DivineVerITies.Helpers
             catch(Exception b)
             {
                 CreateAndShowDownloadError(b, "Download Error",mContext);
+                
             }
-            
-           
-           
         }
-
+       
         private static void CreateAndShowDownloadError(Exception e, string title,Context mContext)
         {
             CreateAndShowDownloadError(e.Message, title,mContext);
@@ -86,5 +80,14 @@ namespace DivineVerITies.Helpers
             builder.SetTitle(title);
             builder.Create().Show();
         }
+    }
+    public class test : ICertificatePolicy
+    {
+        public bool CheckValidationResult(ServicePoint sp,
+        X509Certificate certificate, WebRequest request, int error)
+        {
+            return true;
+        }
+ 
     }
 }

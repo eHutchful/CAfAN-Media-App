@@ -13,6 +13,7 @@ using System.Linq;
 using Object = Java.Lang.Object;
 using DivineVerITies.Helpers;
 using DivineVerITies.Fragments;
+using Newtonsoft.Json;
 
 
 namespace DivineVerITies
@@ -70,7 +71,8 @@ namespace DivineVerITies
 
                 Android.Support.V7.Widget.PopupMenu Popup = new Android.Support.V7.Widget.PopupMenu(
                     simpleHolder.mOptions.Context, simpleHolder.mOptions);
-                Popup.Inflate(Resource.Menu.menu_album);
+                Popup.Inflate(Resource.Menu.audio_menu_album);
+                
                 Popup.MenuItemClick += (o, args) =>
                 {
                     switch (args.Item.ItemId)
@@ -79,7 +81,7 @@ namespace DivineVerITies
                             break;
 
                         case Resource.Id.action_play_next:
-                            MediaPlayerService.playlist.Add(mAudios[position]);
+                            Fragment6.mAudios.Add(mAudios[position]);
                             break;
 
                         case Resource.Id.action_Download:
@@ -89,6 +91,15 @@ namespace DivineVerITies
                             intent.SetAction(MyService.StartD);
                             Fragment3.context.StartService(intent);
                             break;
+
+                        case Resource.Id.action_details:
+                            string serial;
+                            intent = new Intent(Fragment3.context, typeof(PodcastDetails));                            
+                            serial = JsonConvert.SerializeObject(mAudios[position]);                            
+                            intent.PutExtra("selectedItem", serial);
+                            Fragment3.context.StartActivity(intent);
+                            break;
+
                     }
                 }; Popup.Show();
             };
@@ -96,8 +107,8 @@ namespace DivineVerITies
             Glide.With(simpleHolder.mAlbumArt.Context)
                 .Load(mAudios[position].ImageUrl)
                 .Transform(new CircleTransform(simpleHolder.mAlbumArt.Context))
-                .Placeholder(Resource.Drawable.Logo_trans192)
-                .Error(Resource.Drawable.Logo_trans192)
+                .Placeholder(Resource.Drawable.ChurchLogo_Gray)
+                .Error(Resource.Drawable.ChurchLogo_Gray)
                 .DiskCacheStrategy(DiskCacheStrategy.All)
                 .Into(simpleHolder.mAlbumArt);
         }

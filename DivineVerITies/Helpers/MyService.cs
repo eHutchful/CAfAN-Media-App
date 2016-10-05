@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace DivineVerITies.Helpers
 {
     [Service]
-    [IntentFilter(new[] { Cancel, StartD, Resume })]
+    [IntentFilter(new[] { Cancel, StartD, Startvd })]
     public class MyService : Service
     {
         private static int previousPer=0;
@@ -24,9 +24,10 @@ namespace DivineVerITies.Helpers
         public static Dictionary<string, int> notificationIds=new Dictionary<string,int>();
         public static Dictionary<string, CancellationTokenSource> cancellations=new Dictionary<string,CancellationTokenSource>();
         public static string filename;
+        
         public const string Cancel = "com.xamarin.action.CANCEL";
         public const string StartD = "com.xamarin.action.STARTD";
-        public const string Resume = "com.xamarin.action.RESUME";
+        public const string Startvd = "com.xamarin.action.STARTVD";
         public override IBinder OnBind(Intent intent)
         {
             return null;
@@ -50,10 +51,70 @@ namespace DivineVerITies.Helpers
                 case StartD:
                     startDownload();
                     break;
-                case Resume:
+                case Startvd:
+                    startVideoDownload();
                     break;
             }
             return StartCommandResult.Sticky;
+        }
+
+        private void startVideoDownload()
+        {
+            var dwn = new Download();
+
+            Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(contxt);
+            builder.SetTitle("Confirm Download")
+           .SetMessage("Are You Sure You Want To Download" + " " + MyService.selectedVideo.Title)
+           .SetPositiveButton("Yes", async delegate
+           {
+               Progress<DownloadBytesProgress> progressReporter = new Progress<DownloadBytesProgress>();
+               progressReporter.ProgressChanged += (s, args) =>
+               {
+                   var name = filename;
+                   if (args.IsFinished)
+                   {
+                       dComplete(name);
+                   }
+                   else if (cancellations[name].IsCancellationRequested)
+                   {
+                       if (notificationIds.ContainsKey(name))
+                       {
+                           pBarCancelled(name);
+                           cancellations.Remove(name);
+                           if (File.Exists(name))
+                           {
+                               File.Delete(name);
+                           }
+                       }
+
+                   }
+                   else
+                   {
+
+                       int per = (int)(100 * args.PercentComplete);
+                       if ((per - previousPer) >= 2)
+                       {
+                           ChangePBar(per, name);
+                           previousPer = per;
+                       }
+                   }
+               };
+               builder.Dispose();
+               if ((await videoFileCheck()).Equals("yes"))
+               {
+                   if (!notificationIds.ContainsKey(filename))
+                   {
+                       notificationIds.Add(filename, notificationId);
+                       notificationId++;
+                       cancellations.Add(filename, dwn.cts);
+                   }
+                   DownLoadItemNotification(filename);
+                   await dwn.CreateDownloadTask(MyService.selectedVideo.Link, filename, progressReporter, contxt);
+
+               };
+           })
+           .SetNegativeButton("No", delegate { builder.Dispose(); });
+            builder.Create().Show();
         }
         private void cancel()
         {
@@ -154,6 +215,28 @@ namespace DivineVerITies.Helpers
             }
             return choice;
         }
+        private async Task<string> videoFileCheck()
+        {
+            string choice = "yes";
+            if (!Directory.Exists(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/cafan/Podcasts/audio/"))
+                Directory.CreateDirectory(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/cafan/Podcasts/audio/");
+
+            if (File.Exists(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/cafan/Podcasts/audio/"
+                + DivineVerITies.Helpers.MyService.selectedVideo.Title + ".mp4"))
+            {
+                choiceMade = false;
+                videoCreateAndShowDialog(choice);
+            }
+
+            filename = Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/cafan/Podcasts/audio/"
+                + DivineVerITies.Helpers.MyService.selectedVideo.Title + ".mp4";
+            while (!choiceMade)
+            {
+                await Task.Delay(1000);
+            }
+            return choice;
+        }
+
         private void deleteFile(string filename)
         {
             if (File.Exists(filename))
@@ -164,7 +247,7 @@ namespace DivineVerITies.Helpers
             choice=string.Empty;
             Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(contxt);
             builder.SetTitle("Confirm Download")
-           .SetMessage(MyService.selectedAudio.SubTitle + " already exists. Do you wish to overwrite the existing file?")
+           .SetMessage(MyService.selectedAudio.Title + " already exists. Do you wish to overwrite the existing file?")
            .SetPositiveButton("Yes", delegate
            {
                deleteFile(filename);
@@ -179,6 +262,30 @@ namespace DivineVerITies.Helpers
                builder.Dispose(); });
             builder.Create().Show();
             
+        }
+        private void videoCreateAndShowDialog(string choice)
+        {
+            choice = string.Empty;
+            Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(contxt);
+            builder.SetTitle("Confirm Download")
+           .SetMessage(MyService.selectedVideo.Title + " already exists. Do you wish to overwrite the existing file?")
+           .SetPositiveButton("Yes", delegate
+           {
+               deleteFile(filename);
+               choice = "yes";
+               choiceMade = true;
+               builder.Dispose();
+
+
+           })
+           .SetNegativeButton("No", delegate
+            {
+                choice = "no";
+                choiceMade = true;
+                builder.Dispose();
+            });
+            builder.Create().Show();
+
         }
         private void DownLoadItemNotification(string name)
         {
