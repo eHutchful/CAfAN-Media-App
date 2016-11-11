@@ -8,5 +8,5 @@
 	<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<application android:label="DivineVerITies"></application>
+	<application android:label="DivineVerITies" android:icon="@drawable/ChurchLogo"></application>
 </manifest>

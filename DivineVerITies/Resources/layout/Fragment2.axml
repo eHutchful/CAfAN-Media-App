@@ -9,13 +9,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_gravity="center"
         android:focusable="true"
         android:clickable="true">
         <android.support.design.widget.TextInputLayout
             android:id="@+id/txtInputLayoutEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp">
             <android.support.design.widget.TextInputEditText
@@ -51,6 +51,7 @@
             android:textColor="#4A6EA9"
             android:button="@drawable/checkbox_style"
             android:paddingLeft="50dp" />
+        
         <CheckBox
             android:text="Forgot My Password"
             android:layout_width="match_parent"
@@ -71,5 +72,42 @@
             android:text="SIGN IN!"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp" />
+      <TextView
+            android:text="Or Sign In With Social Media"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:textColor="#4A6EA9"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/textView1" />
+      <Button
+            android:id="@+id/btnFacebookSignIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Facebook"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp" />
+      <Button
+            android:id="@+id/btnTwitterSignIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Twitter"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"/>
+      <Button
+            android:id="@+id/btnGoogleSignIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Google+"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp" />
+      <Button
+            android:id="@+id/btnMicrosoftSignIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Microsoft Account"
+            android:layout_margin="20dp" />
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

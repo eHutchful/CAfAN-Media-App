@@ -23,7 +23,6 @@ namespace DivineVerITies
         public List<AudioList> mAudios;
         public List<AudioList> mFilterAudios;
         private readonly TypedValue mTypedValue = new TypedValue();
-        private ICharSequence Constraint;
         private int mBackground;
         Resources mResource;
         public event EventHandler<int> itemClick;
@@ -34,7 +33,7 @@ namespace DivineVerITies
             mBackground = mTypedValue.ResourceId;
             mAudios = audios;
             mResource = res;
-
+            
             Filter = new AudioFilter(this);
         }
 
@@ -66,6 +65,8 @@ namespace DivineVerITies
             simpleHolder.mAudioTitle.Text = mAudios[position].Title;
             simpleHolder.mAudioSubTitle.Text = mAudios[position].SubTitle;
             simpleHolder.mPubDate.Text = mAudios[position].PubDate;
+            simpleHolder.mPlayed.Text = "Played";
+           
             simpleHolder.mOptions.Click += (sender, argss) =>
             {
 
@@ -131,6 +132,7 @@ namespace DivineVerITies
             public TextView mPubDate { get; set; }
             public ImageView mAlbumArt { get; set; }
             public ImageButton mOptions { get; set; }
+            public TextView mPlayed {get; set;}
 
             public SimpleAudioViewHolder(View view, Action<int> listener)
                 : base(view)
@@ -141,6 +143,7 @@ namespace DivineVerITies
                 mPubDate = view.FindViewById<TextView>(Resource.Id.txtRow3);
                 mAlbumArt = view.FindViewById<ImageView>(Resource.Id.avatar);
                 mOptions = view.FindViewById<ImageButton>(Resource.Id.img_options);
+                mPlayed = view.FindViewById<TextView>(Resource.Id.txtPlayed);
                 mMainAudioView.Click += (sender, e) => listener(base.Position);
             }
         }

@@ -46,6 +46,17 @@
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <BundleAssemblies>False</BundleAssemblies>
+    <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
+    <AndroidSupportedAbis>armeabi,armeabi-v7a,x86,x86_64,arm64-v8a</AndroidSupportedAbis>
+    <Debugger>Xamarin</Debugger>
+    <AotAssemblies>False</AotAssemblies>
+    <EnableLLVM>False</EnableLLVM>
+    <AndroidEnableMultiDex>False</AndroidEnableMultiDex>
+    <EnableProguard>False</EnableProguard>
+    <DebugSymbols>False</DebugSymbols>
+    <JavaMaximumHeapSize>400m</JavaMaximumHeapSize>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ExoPlayer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -153,6 +164,7 @@
     <Compile Include="AudioAlbumRecyclerAdapter.cs" />
     <Compile Include="AudioList.cs" />
     <Compile Include="AudioRecyclerViewAdapter.cs" />
+    <Compile Include="AuthenticationToken.cs" />
     <Compile Include="ExoPlayer\EventLogger.cs" />
     <Compile Include="ExoPlayer\PlayerActivity.cs" />
     <Compile Include="ExoPlayer\Player\Audio_Player.cs" />
@@ -172,6 +184,7 @@
     <Compile Include="Fragments\Fragment5.cs" />
     <Compile Include="Fragments\Fragment6.cs" />
     <Compile Include="Helpers\AudioService.cs" />
+    <Compile Include="Helpers\AzureService.cs" />
     <Compile Include="Helpers\CancelReceiver.cs" />
     <Compile Include="Helpers\CircleTransform.cs" />
     <Compile Include="Helpers\XamarinRecyclerViewOnScrollListener.cs" />

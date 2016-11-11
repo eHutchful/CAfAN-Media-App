@@ -32,7 +32,7 @@ namespace DivineVerITies.Fragments
         private Android.Support.V7.App.AlertDialog.Builder builder;
         String[] sortitems = { "Title Ascending", "Title Descending", "Date Ascending", "Date Descending" };
         public static Context context;
-
+        TextView mPlayedText;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -110,6 +110,7 @@ namespace DivineVerITies.Fragments
             mProgresBar.Animate();
             swipeRefreshLayout = view.FindViewById<SwipeRefreshLayout>(Resource.Id.swipe_refresh_layout);
             swipeRefreshLayout.SetColorSchemeColors(Color.Indigo, Color.Pink, Color.Blue, Color.Yellow);
+            mPlayedText = view.FindViewById<TextView>(Resource.Id.txtPlayed);
             SetUpAudioRecyclerView(recyclerView);
             return view;
         }
@@ -117,10 +118,10 @@ namespace DivineVerITies.Fragments
         private void SetUpAudioRecyclerView(RecyclerView recyclerView)
         {
             recyclerView.SetLayoutManager(new LinearLayoutManager(recyclerView.Context));
-
+            
             recyclerView.SetItemClickListener( (rv, position, view) =>
             {
-               
+                var text = view.FindViewById<TextView>(Resource.Id.txtPlayed);
                 int itemposition = rv.GetChildAdapterPosition(view);
                 Context context = view.Context;
                 Intent intent = new Intent(context, typeof(PodcastDetails));
@@ -140,13 +141,12 @@ namespace DivineVerITies.Fragments
                     MediaPlayerService.selectedAudio = mAudios[position];
                     MainApp.visibility = ViewStates.Visible;
                 }
-                
+                text.Visibility = ViewStates.Visible;
             });
         }
         
         public void SortAudios()
-        {
-            
+        { 
             base.OnAttach(Activity);
             builder = new Android.Support.V7.App.AlertDialog.Builder(Activity);
             builder.SetTitle("Sort Order")

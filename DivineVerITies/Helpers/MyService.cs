@@ -198,17 +198,18 @@ namespace DivineVerITies.Helpers
         private async Task<string> FileCheck()
         {
             string choice="yes";
-            if (!Directory.Exists(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/cafan/Podcasts/audio/"))
-                Directory.CreateDirectory(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/cafan/Podcasts/audio/");
+            const string filetype = ".mp3";
+            const string specificDir = "cafan/Podcasts/audio/";
+            string path = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.Path, specificDir);
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
 
-            if (File.Exists(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/cafan/Podcasts/audio/"
-                + DivineVerITies.Helpers.MyService.selectedAudio.Title + ".mp3")) 
+            if (File.Exists(path + DivineVerITies.Helpers.MyService.selectedAudio.Title + filetype)) 
             { 
                 choiceMade = false;
                 CreateAndShowDialog(choice); }
 
-            filename = Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/cafan/Podcasts/audio/"
-                + DivineVerITies.Helpers.MyService.selectedAudio.Title + ".mp3";
+            filename = path + DivineVerITies.Helpers.MyService.selectedAudio.Title + filetype;
             while (!choiceMade)
             {
                 await Task.Delay(1000);

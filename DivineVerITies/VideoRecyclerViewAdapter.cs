@@ -26,6 +26,7 @@ namespace DivineVerITies
         private Context mContext;
         public event EventHandler<int> itemClick;
         public Filter Filter { get; private set; }
+        private List<int> test = new List<int>();
 
         public VideoRecyclerViewAdapter(Context context, List<Video> videos, Resources res)
         {
@@ -64,6 +65,15 @@ namespace DivineVerITies
             simpleHolder.mAudioTitle.Text = mVideos[position].Title;
             simpleHolder.mAudioSubTitle.Text = mVideos[position].SubTitle;
             simpleHolder.mPubDate.Text = mVideos[position].PubDate;
+            simpleHolder.mMainAudioView.Click += (sender, er) =>
+            {
+                if (!simpleHolder.mMainAudioView.Selected)
+                    test.Remove(position);
+            };
+            simpleHolder.mMainAudioView.LongClick += (sender, er) =>
+            {
+               test.Add(position);
+            };
             simpleHolder.mOptions.Click += (s, e) =>
             {
                 Android.Support.V7.Widget.PopupMenu Popup = new Android.Support.V7.Widget.PopupMenu(
