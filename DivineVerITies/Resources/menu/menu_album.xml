@@ -8,11 +8,11 @@ xmlns:tools="http://schemas.android.com/tools">
     android:title="Favourite"
     app:showAsAction="never"/>
 
-<item
+<!--<item
     android:id="@+id/action_play_next"
     android:orderInCategory="101"
     android:title="Play Next"
-    app:showAsAction="never"/>
+    app:showAsAction="never"/>-->
 
   <item
     android:id="@+id/action_Download"

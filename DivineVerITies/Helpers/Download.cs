@@ -28,7 +28,7 @@ namespace DivineVerITies.Helpers
             try
             {
 
-                ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => { return true; };   
+                  
                 var stream = await client.OpenReadTaskAsync(urlToDownload);
                 
                     byte[] buffer = new byte[4096];
@@ -80,14 +80,5 @@ namespace DivineVerITies.Helpers
             builder.SetTitle(title);
             builder.Create().Show();
         }
-    }
-    public class test : ICertificatePolicy
-    {
-        public bool CheckValidationResult(ServicePoint sp,
-        X509Certificate certificate, WebRequest request, int error)
-        {
-            return true;
-        }
- 
     }
 }

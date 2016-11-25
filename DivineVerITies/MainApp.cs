@@ -73,7 +73,7 @@ namespace DivineVerITies
             Resource.Drawable.ic_library_music,
             Resource.Drawable.ic_video_library,
             Resource.Drawable.ic_favorite_border,
-            Resource.Drawable.ic_queue_music
+            //Resource.Drawable.ic_queue_music
             //Resource.Drawable.ic_explore
                                  };
         //private ImageButton mOptions;
@@ -357,7 +357,7 @@ namespace DivineVerITies
             tabs.GetTabAt(0).SetIcon(tabIcons[0]);
             tabs.GetTabAt(1).SetIcon(tabIcons[1]);
             tabs.GetTabAt(2).SetIcon(tabIcons[2]);
-            tabs.GetTabAt(3).SetIcon(tabIcons[3]);
+            //tabs.GetTabAt(3).SetIcon(tabIcons[3]);
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
@@ -417,7 +417,7 @@ namespace DivineVerITies
             adapter.AddFragment(new Fragment3(), "AUDIOS");
             adapter.AddFragment(new Fragment4(), "VIDEOS");
             adapter.AddFragment(new Fragment5(), "FAVOURITES");
-            adapter.AddFragment(new Fragment6(), "PLAYLIST");
+            //adapter.AddFragment(new Fragment6(), "PLAYLIST");
 
             viewPager.Adapter = adapter;
         }
