@@ -32,6 +32,7 @@ namespace DivineVerITies.Fragments
         private Android.Support.V7.App.AlertDialog.Builder builder;
         String[] sortitems = { "Title Ascending", "Title Descending", "Date Ascending", "Date Descending" };
         public static Context context;
+        public static TextView chosenView;
         TextView mPlayedText;
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -141,7 +142,8 @@ namespace DivineVerITies.Fragments
                     MediaPlayerService.selectedAudio = mAudios[position];
                     MainApp.visibility = ViewStates.Visible;
                 }
-                text.Visibility = ViewStates.Visible;
+                chosenView = text;
+                //text.Visibility = ViewStates.Visible;
             });
         }
         

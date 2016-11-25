@@ -60,7 +60,7 @@ namespace DivineVerITies.Helpers
 
         private void startVideoDownload()
         {
-            var dwn = new Download();
+            var dwn = new VideoDownloader();
 
             Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(contxt);
             builder.SetTitle("Confirm Download")
@@ -109,7 +109,7 @@ namespace DivineVerITies.Helpers
                        cancellations.Add(filename, dwn.cts);
                    }
                    DownLoadItemNotification(filename);
-                   await dwn.CreateDownloadTask(MyService.selectedVideo.Link, filename, progressReporter, contxt);
+                   await dwn.DownloadFileAsync(MyService.selectedVideo.Link, filename, progressReporter, contxt);
 
                };
            })

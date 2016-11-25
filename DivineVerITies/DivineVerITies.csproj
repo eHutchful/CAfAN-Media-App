@@ -187,6 +187,7 @@
     <Compile Include="Helpers\AzureService.cs" />
     <Compile Include="Helpers\CancelReceiver.cs" />
     <Compile Include="Helpers\CircleTransform.cs" />
+    <Compile Include="Helpers\VideoDownloader.cs" />
     <Compile Include="Helpers\XamarinRecyclerViewOnScrollListener.cs" />
     <Compile Include="Helpers\Download.cs" />
     <Compile Include="Helpers\DownloadBytesProgress.cs" />

@@ -81,9 +81,9 @@ namespace DivineVerITies
                         case Resource.Id.action_add_favourite:
                             break;
 
-                        case Resource.Id.action_play_next:
-                            Fragment6.mAudios.Add(mAudios[position]);
-                            break;
+                        //case Resource.Id.action_play_next:
+                        //    Fragment6.mAudios.Add(mAudios[position]);
+                        //    break;
 
                         case Resource.Id.action_Download:
                             MyService.selectedAudio = mAudios[position];

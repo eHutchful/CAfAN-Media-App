@@ -14,6 +14,7 @@ using Android.Support.V4.Media.Session;
 using Android.Support.V4.Media;
 using System.Collections.Generic;
 using Android.Support.V4.App;
+using DivineVerITies.Fragments;
 
 namespace DivineVerITies.Helpers
 {
@@ -241,6 +242,7 @@ namespace DivineVerITies.Helpers
         {
             //await PlayNext();
             Stop();
+            Fragment3.chosenView.Visibility = ViewStates.Visible;
         }
         public bool OnError(MediaPlayer mp, MediaError what, int extra)
         {
