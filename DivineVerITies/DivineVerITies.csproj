@@ -183,10 +183,12 @@
     <Compile Include="Fragments\Fragment4.cs" />
     <Compile Include="Fragments\Fragment5.cs" />
     <Compile Include="Fragments\Fragment6.cs" />
+    <Compile Include="Helpers\AlarmReceiver.cs" />
     <Compile Include="Helpers\AudioService.cs" />
     <Compile Include="Helpers\AzureService.cs" />
     <Compile Include="Helpers\CancelReceiver.cs" />
     <Compile Include="Helpers\CircleTransform.cs" />
+    <Compile Include="Helpers\ReminderService.cs" />
     <Compile Include="Helpers\VideoDownloader.cs" />
     <Compile Include="Helpers\XamarinRecyclerViewOnScrollListener.cs" />
     <Compile Include="Helpers\Download.cs" />

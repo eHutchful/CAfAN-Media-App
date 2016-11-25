@@ -30,7 +30,7 @@ namespace DivineVerITies
     {
 
         #region playerFields
-        private static Context context;
+        public static Context context;
         public static AudioList selectedAudio;
         public static ProgressBar loadingBar;
         private static ImageView artworkView;
@@ -284,8 +284,11 @@ namespace DivineVerITies
             downloadButton = FindViewById<ImageButton>(Resource.Id.audio_download);
             downloadButton.Click += downloadButton_Click;
             audio_player_view = FindViewById(Resource.Id.audioPlayerView);
-           
+
             #endregion
+            ReminderService reminder = new ReminderService();
+
+            //reminder.Remind(ApplicationContext, new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 3, 10, 1), "Reminder", "YOU HAVE NOT LISTENED TO A SERMON TODAY!!!!");
         }
 
         private string GetFormattedTime(int value)
