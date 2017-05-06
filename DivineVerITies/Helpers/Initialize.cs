@@ -1,4 +1,5 @@
 using Android.Graphics;
+using ModernHttpClient;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,8 +14,8 @@ namespace DivineVerITies.Helpers
     {
         public async Task<List<AudioList>> getAudioList()
         {
-            string feed = "http://feeds.soundcloud.com/users/soundcloud:users:247218071/sounds.rss";
-            var httpClient = new HttpClient();
+            string feed = "https://versolstore.blob.core.windows.net/verity/audios/audio.rss";
+            var httpClient = new HttpClient(new NativeMessageHandler());
             httpClient.Timeout = TimeSpan.FromSeconds(30);
             string response = await httpClient.GetStringAsync(feed);               
             var xdoc = XDocument.Parse(response);
@@ -32,8 +33,8 @@ namespace DivineVerITies.Helpers
 
         public async Task<List<Video>> getVideoList()
         {
-            string feed = "http://www.blubrry.com/feeds/thegreenpasture.xml";
-            var httpClient = new HttpClient();
+            string feed = "https://versolstore.blob.core.windows.net/verity/audios/audio.rss";
+            var httpClient = new HttpClient(new NativeMessageHandler());
             httpClient.Timeout = TimeSpan.FromSeconds(30);
             string response = await httpClient.GetStringAsync(feed);
             var xdoc = XDocument.Parse(response);
@@ -42,8 +43,10 @@ namespace DivineVerITies.Helpers
                     {
                         Title = (string)item.Element("title"),
                         Description = (string)item.Element("description"),
-                        ImageUrl = "http://www.blubrry.com/coverart/orig/379169-504006.png",
-                        Link = (string)item.Element("link")+(string)item.Element("enclosure").Attribute("url"),
+                        ImageUrl = (string)item.Elements().Where(y => y.Name.LocalName == "image").FirstOrDefault().Attribute("href"),
+                        Link = (string)item.Element("enclosure").Attribute("url"),
+                        //ImageUrl = "http://www.blubrry.com/coverart/orig/379169-504006.png",
+                        //Link = (string)item.Element("link")+(string)item.Element("enclosure").Attribute("url"),
                         SubTitle = (string)item.Elements().Where(y => y.Name.LocalName == "subtitle").FirstOrDefault(),
                         PubDate = (string)item.Element("pubDate")
                     }).ToList<Video>();

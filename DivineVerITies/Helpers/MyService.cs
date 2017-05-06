@@ -139,8 +139,8 @@ namespace DivineVerITies.Helpers
         }
         public void startDownload()
         {
-            var dwn = new Download();
-            
+            var dwn = new VideoDownloader();
+            //var dwn = new Download();
             Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(contxt);
             builder.SetTitle("Confirm Download")
            .SetMessage("Are You Sure You Want To Download" + " " + MyService.selectedAudio.SubTitle)
@@ -188,8 +188,9 @@ namespace DivineVerITies.Helpers
                         cancellations.Add(filename, dwn.cts);
                     }                   
                     DownLoadItemNotification(filename);                    
-                    await dwn.CreateDownloadTask(MyService.selectedAudio.Link, filename, progressReporter, contxt);
-                   
+                    //await dwn.CreateDownloadTask(MyService.selectedAudio.Link, filename, progressReporter, contxt);
+                    await dwn.DownloadFileAsync(MyService.selectedAudio.Link, filename, progressReporter, contxt);
+
                 }; 
             })
            .SetNegativeButton("No", delegate { builder.Dispose(); });
