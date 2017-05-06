@@ -17,9 +17,10 @@ namespace DivineVerITies.Fragments
     {
         SupportEditText mtxtEmail;
         SupportEditText mtxtPassword;
-        CheckBox mCbxFgtPassword;
+        TextView mtxtFgtPassword;
         CheckBox mCbxRemmeberMe;
         public static Context SignInContext;
+
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -38,30 +39,53 @@ namespace DivineVerITies.Fragments
 
             mtxtPassword = View.FindViewById<SupportEditText>(Resource.Id.txtInputLayoutPassword);
 
-            mCbxFgtPassword = View.FindViewById<CheckBox>(Resource.Id.chkBoxFgtPasword);
+            mtxtFgtPassword = View.FindViewById<TextView>(Resource.Id.txtFgtPassword);
+            mtxtFgtPassword.Click += mtxtFgtPassword_Click;
             mCbxRemmeberMe = View.FindViewById<CheckBox>(Resource.Id.chkBoxRemmemberMe);
+            mCbxRemmeberMe.Click += mCbxRemmeberMe_Click;
 
             Button mButtonSignIn = View.FindViewById<Button>(Resource.Id.btnSignIn);
             mButtonSignIn.Click += mButtonSignIn_Click;
 
-            Button mFacebookSignIn = View.FindViewById<Button>(Resource.Id.btnFacebookSignIn);
-            mFacebookSignIn.Click += mFacebookSignIn_Click;
+            ImageView mFacebook = View.FindViewById<ImageView>(Resource.Id.imgFacebook);
+            mFacebook.Click += mFacebookSignIn_Click;
 
-            Button mTwitterSignIn = View.FindViewById<Button>(Resource.Id.btnTwitterSignIn);
+            ImageView mTwitterSignIn = View.FindViewById<ImageView>(Resource.Id.imgTwitter);
             mTwitterSignIn.Click += mTwitterSignIn_Click;
 
-            Button mGoogleSignIn = View.FindViewById<Button>(Resource.Id.btnGoogleSignIn);
+            ImageView mGoogleSignIn = View.FindViewById<ImageView>(Resource.Id.imgGoogle);
             mGoogleSignIn.Click += mGoogleSignIn_Click;
 
-            Button mMicrosoftSignIn = View.FindViewById<Button>(Resource.Id.btnMicrosoftSignIn);
+            ImageView mMicrosoftSignIn = View.FindViewById<ImageView>(Resource.Id.imgMicrosoft);
             mMicrosoftSignIn.Click += mMicrosoftSignIn_Click;
 
             return View;  
         }
 
+        void mtxtFgtPassword_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        void mCbxRemmeberMe_Click(object sender, EventArgs e)
+        {
+            ISharedPreferences pref = Application.Context.GetSharedPreferences("UserInfo", FileCreationMode.Private);
+            ISharedPreferencesEditor edit = pref.Edit();
+
+            if (mCbxRemmeberMe.Checked)
+            {
+                edit.PutBoolean("RememberMe", true);
+            }
+            else
+            {
+                edit.PutBoolean("RememberMe", false);
+            }
+
+            edit.Apply();
+        }
+
         async void mMicrosoftSignIn_Click(object sender, EventArgs e)
         {
-            await AzureService.DefaultService.MicrosoftAuthenticate();
             if (await AzureService.DefaultService.MicrosoftAuthenticate())
             {
                 Intent intent = new Intent(Activity, typeof(SelectTopics));
@@ -72,7 +96,6 @@ namespace DivineVerITies.Fragments
 
         async void mGoogleSignIn_Click(object sender, EventArgs e)
         {
-            await AzureService.DefaultService.GoogleAuthenticate();
             if (await AzureService.DefaultService.GoogleAuthenticate())
             {
                 Intent intent = new Intent(Activity, typeof(SelectTopics));
@@ -83,7 +106,6 @@ namespace DivineVerITies.Fragments
 
         async void mTwitterSignIn_Click(object sender, EventArgs e)
         {
-            await AzureService.DefaultService.TwitterAuthenticate();
             if (await AzureService.DefaultService.TwitterAuthenticate())
             {
                 Intent intent = new Intent(Activity, typeof(SelectTopics));
@@ -94,7 +116,6 @@ namespace DivineVerITies.Fragments
 
         async void mFacebookSignIn_Click(object sender, EventArgs e)
         {
-            await AzureService.DefaultService.FacebookAuthenticate();
             if (await AzureService.DefaultService.FacebookAuthenticate())
             {
                 Intent intent = new Intent(Activity, typeof(SelectTopics));
@@ -115,7 +136,7 @@ namespace DivineVerITies.Fragments
 
         private void mLinearLayout_Click(object sender, EventArgs e)
         {
-            InputMethodManager inputManager = (InputMethodManager)Activity.GetSystemService(Android.App.Activity.InputMethodService);
+            InputMethodManager inputManager = (InputMethodManager)Activity.GetSystemService(Context.InputMethodService);
             inputManager.HideSoftInputFromWindow(Activity.CurrentFocus.WindowToken, HideSoftInputFlags.None);
         }
 
@@ -133,6 +154,11 @@ namespace DivineVerITies.Fragments
             if (mtxtPassword.EditText.Text.Length == 0)
             {
                 mtxtPassword.Error = "Password is required!";
+                return;
+            }
+            if (new NetworkStatusMonitor().State == NetworkState.Disconnected)
+            {
+                CreateAndShowDialog("Your device is currently not connected to the internet. Please checkyour data or WiFi connection and try again.", "Network Connectivity Error");
                 return;
             }
             
@@ -156,17 +182,18 @@ namespace DivineVerITies.Fragments
                 mtxtPassword.Error = "Wrong Username or Password. Please try again.";
             }
         }
-        private void CreateAndShowDialog(Exception exception, String title)
+        private void CreateAndShowDialog(Exception exception, string title)
         {
             CreateAndShowDialog(exception.Message, title);
         }
 
         private void CreateAndShowDialog(string message, string title)
         {
-            Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(this.Context);
+            Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(Activity);
 
             builder.SetMessage(message);
             builder.SetTitle(title);
+            builder.SetPositiveButton("Okay", delegate { builder.Dispose(); });
             builder.Create().Show();
         }
     }

@@ -135,7 +135,7 @@ namespace DivineVerITies
                 mPubDate = view.FindViewById<TextView>(Resource.Id.txtRow3);
                 mAlbumArt = view.FindViewById<ImageView>(Resource.Id.avatar);
                 mOptions = view.FindViewById<ImageButton>(Resource.Id.img_options);
-                mMainAudioView.Click += (sender, e) => listener(base.Position);
+                mMainAudioView.Click += (sender, e) => listener(base.AdapterPosition);
             }
         }
         class VideoFilter : Filter
@@ -182,9 +182,17 @@ namespace DivineVerITies
             }
             protected override void PublishResults(ICharSequence constraint, FilterResults results)
             {
-                using (var values = results.Values)
+                try
+                {
+                    using (var values = results.Values)
                     _adapter.mVideos = values.ToArray<Object>()
                         .Select(r => r.ToNetObject<Video>()).ToList();
+                }
+                catch (NullReferenceException)
+                {
+
+                    Thread.Sleep(500);
+                }
 
                 _adapter.NotifyDataSetChanged();
 

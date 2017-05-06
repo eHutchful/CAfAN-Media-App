@@ -15,6 +15,7 @@ using Com.Sothree.Slidinguppanel;
 using DivineVerITies.ExoPlayer;
 using DivineVerITies.Fragments;
 using DivineVerITies.Helpers;
+using Gcm.Client;
 using Java.Interop;
 using System;
 using System.Threading;
@@ -30,7 +31,6 @@ namespace DivineVerITies
     {
 
         #region playerFields
-        private static Context context;
         public static AudioList selectedAudio;
         public static ProgressBar loadingBar;
         private static ImageView artworkView;
@@ -73,18 +73,39 @@ namespace DivineVerITies
             Resource.Drawable.ic_library_music,
             Resource.Drawable.ic_video_library,
             Resource.Drawable.ic_favorite_border,
-            //Resource.Drawable.ic_queue_music
+            Resource.Drawable.ic_cloud_download
             //Resource.Drawable.ic_explore
                                  };
-        //private ImageButton mOptions;
+        
+        static MainApp instance = new MainApp();
+
+        // Return the current activity instance.
+        public static MainApp CurrentActivity
+        {
+            get
+            {
+                return instance;
+            }
+        }
+
+        ViewPager viewPager;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             #region original
             base.OnCreate(savedInstanceState);
-           
+
+            // Set the current instance of 
+            instance = this;
+
+            // Make sure the GCM client is set up correctly. 
+            GcmClient.CheckDevice(this);
+            GcmClient.CheckManifest(this);
+
+            // Register the app for push notifications. 
+            GcmClient.Register(this, PushBroadcastReceiver.senderIDs);
+
             // Create your application here
-            context = ApplicationContext;
             SetContentView(Resource.Layout.MainApp);
             SupportToolbar toolBar = FindViewById<SupportToolbar>(Resource.Id.toolBar);
             SetSupportActionBar(toolBar);
@@ -101,13 +122,15 @@ namespace DivineVerITies
 
             tabs = FindViewById<TabLayout>(Resource.Id.tabs);
 
-            ViewPager viewPager = FindViewById<ViewPager>(Resource.Id.viewpager);
+            viewPager = FindViewById<ViewPager>(Resource.Id.viewpager);
 
             SetUpViewPager(viewPager);
 
             tabs.SetupWithViewPager(viewPager);
 
             setupTabIcons();
+            setSelectedTab();
+
             visibilityChanged += (sender, args) =>
             {
                 if (MediaPlayerService.selectedAudio != null)
@@ -118,13 +141,13 @@ namespace DivineVerITies
                     var txtrow2 = FindViewById<TextView>(Resource.Id.txtRow21);
                     txtrow2.Text = MediaPlayerService.selectedAudio.SubTitle;
                     var avatar = FindViewById<ImageView>(Resource.Id.avatar1);
-                    Glide.With(context)
+                    Glide.With(this)
                         .Load(MediaPlayerService.selectedAudio.ImageUrl)
                         .Placeholder(Resource.Drawable.ChurchLogo_Gray)
                         .Error(Resource.Drawable.ChurchLogo_Gray)
                         .DiskCacheStrategy(DiskCacheStrategy.All)
                         .Into(artworkView);
-                    Glide.With(context)
+                    Glide.With(this)
                         .Load(MediaPlayerService.selectedAudio.ImageUrl)
                         .Placeholder(Resource.Drawable.ChurchLogo_Gray)
                         .Error(Resource.Drawable.ChurchLogo_Gray )
@@ -288,6 +311,14 @@ namespace DivineVerITies
             #endregion
         }
 
+        private void setSelectedTab()
+        {
+            // Fetch the selected tab index with default
+            int selectedTabIndex = Intent.GetIntExtra("SELECTED_TAB_EXTRA_KEY", 0);
+            // Switch to page based on index
+            viewPager.SetCurrentItem(selectedTabIndex, true);
+        }
+
         private string GetFormattedTime(int value)
         {
             var span = TimeSpan.FromMilliseconds(value);
@@ -357,7 +388,7 @@ namespace DivineVerITies
             tabs.GetTabAt(0).SetIcon(tabIcons[0]);
             tabs.GetTabAt(1).SetIcon(tabIcons[1]);
             tabs.GetTabAt(2).SetIcon(tabIcons[2]);
-            //tabs.GetTabAt(3).SetIcon(tabIcons[3]);
+            tabs.GetTabAt(3).SetIcon(tabIcons[3]);
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
@@ -375,6 +406,14 @@ namespace DivineVerITies
                     return true;
 
                 case Resource.Id.action_signOut:
+                    ISharedPreferences pref = Application.Context.GetSharedPreferences("UserInfo", FileCreationMode.Private);
+                    ISharedPreferencesEditor edit = pref.Edit();
+                    edit.Clear();
+                    edit.Apply();
+
+                    Intent intent = new Intent(this, typeof(MainActivity));
+                    StartActivity(intent);
+                    Finish();
                     return true;
 
                 default:
@@ -402,6 +441,11 @@ namespace DivineVerITies
                         Intent intent = new Intent(this, typeof(SelectTopics));
                         StartActivity(intent);
                         break;
+
+                    case Resource.Id.nav_password:
+                        intent = new Intent(this, typeof(ChangePassword));
+                        StartActivity(intent);
+                        break;
                 }
             };
         }
@@ -417,15 +461,9 @@ namespace DivineVerITies
             adapter.AddFragment(new Fragment3(), "AUDIOS");
             adapter.AddFragment(new Fragment4(), "VIDEOS");
             adapter.AddFragment(new Fragment5(), "FAVOURITES");
-            //adapter.AddFragment(new Fragment6(), "PLAYLIST");
+            adapter.AddFragment(new Fragment7(), "DOWNLOADED");
 
             viewPager.Adapter = adapter;
         }
-        protected override void OnStart()
-        {
-            base.OnStart();
-            
-        }
-        
     }
 }

@@ -39,31 +39,25 @@
                 android:inputType="textPassword"
                 android:hint="Password" />
         </android.support.design.widget.TextInputLayout>
+      <TextView
+            android:text="Forgot Your Password?"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:textColor="#4A6EA9"
+            android:layout_gravity="right"
+            android:id="@+id/txtFgtPassword" />
         <CheckBox
             android:text="Remember Me"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/chkBoxRemmemberMe"
-            android:layout_marginTop="20dp"
             android:layout_marginLeft="40dp"
-            android:layout_marginRight="50dp"
+            android:layout_marginRight="20dp"
             android:gravity="left"
             android:textColor="#4A6EA9"
-            android:button="@drawable/checkbox_style"
-            android:paddingLeft="50dp" />
-        
-        <CheckBox
-            android:text="Forgot My Password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/chkBoxFgtPasword"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="50dp"
-            android:gravity="left"
-            android:textColor="#4A6EA9"
-            android:button="@drawable/checkbox_style"
-            android:paddingLeft="50dp" />
+            android:paddingLeft="20dp"
+            android:button="@drawable/checkbox_style"/>
         <Button
             android:id="@+id/btnSignIn"
             android:layout_marginTop="20dp"
@@ -78,36 +72,38 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:textColor="#4A6EA9"
-            android:layout_gravity="center_horizontal"
-            android:id="@+id/textView1" />
-      <Button
-            android:id="@+id/btnFacebookSignIn"
-            android:layout_width="match_parent"
+            android:layout_gravity="center_horizontal" />
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+      <ImageView
+            android:id="@+id/imgFacebook"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Facebook"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp" />
-      <Button
-            android:id="@+id/btnTwitterSignIn"
-            android:layout_width="match_parent"
+            android:layout_weight="25"
+            android:src="@drawable/square_facebook"/>
+      <ImageView
+            android:id="@+id/imgTwitter"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Twitter"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"/>
-      <Button
-            android:id="@+id/btnGoogleSignIn"
-            android:layout_width="match_parent"
+            android:layout_weight="25"
+            android:src="@drawable/square_twitter"/>
+      <ImageView
+            android:id="@+id/imgGoogle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Google+"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp" />
-      <Button
-            android:id="@+id/btnMicrosoftSignIn"
-            android:layout_width="match_parent"
+            android:layout_weight="25"
+            android:src="@drawable/social_square_google_plus"/>
+      <ImageView
+            android:id="@+id/imgMicrosoft"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Microsoft Account"
-            android:layout_margin="20dp" />
+            android:layout_weight="25"
+            android:src="@drawable/Microsoft" />
+      </LinearLayout>
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

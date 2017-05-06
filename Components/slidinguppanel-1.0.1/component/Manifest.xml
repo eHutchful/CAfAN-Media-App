@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<component format="1" id="slidinguppanel">
+  <name>SlidingUpPanel</name>
+  <publisher>Cheesebaron</publisher>
+  <publisher-url>https://github.com/Cheesebaron/SlidingUpPanel</publisher-url>
+  <version>1.0.1</version>
+  <summary>A panel that slides out from the bottom or top of the screen.</summary>
+  <samples>
+    <sample id="SlidingUpPanel">
+      <name>Android Sample.</name>
+      <summary>Demonstrates SlidingUpPanel</summary>
+    </sample>
+  </samples>
+</component>

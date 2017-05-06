@@ -25,6 +25,9 @@ namespace DivineVerITies.Helpers
         public static AzureService DefaultService { get { return azureServiceInstance; } }
         public MobileServiceClient client { get; set; }
         private static MobileServiceUser user;
+        public static string tempToken;
+        ISharedPreferences pref { get; set; }
+        ISharedPreferencesEditor edit { get; set; }
         public MobileServiceUser User { get { return user; } }
 
         public AzureService()
@@ -33,7 +36,7 @@ namespace DivineVerITies.Helpers
             // Initialize the Mobile Service client with your URL and key
             client = new MobileServiceClient(
                 "https://divineveritiestrial.azurewebsites.net",
-                new NativeMessageHandler())
+                new CustomMessageHandler())
             {
                 SerializerSettings = new MobileServiceJsonSerializerSettings()
                 {
@@ -41,7 +44,7 @@ namespace DivineVerITies.Helpers
                 }
             };
 
-            client.CurrentUser = User;
+            //client.CurrentUser = User;
         }
 
         public async Task<AuthenticationToken> GetAuthenticationToken(string email, string password)
@@ -75,9 +78,83 @@ namespace DivineVerITies.Helpers
             // get the token
             var token = await GetAuthenticationToken(email, password);
 
-            // authenticate: create and use a mobile service user
-            user = new MobileServiceUser(token.UserID);
-            user.MobileServiceAuthenticationToken = token.Access_Token;
+            if (token != null)
+            {
+                // authenticate: create and use a mobile service user
+                user = new MobileServiceUser(token.UserID.ToString());
+                user.MobileServiceAuthenticationToken = token.Access_Token;
+                client.CurrentUser = user;
+
+                pref = Application.Context.GetSharedPreferences("UserInfo", FileCreationMode.Private);
+                edit = pref.Edit();
+
+                if (pref.GetBoolean("RememberMe", false))
+                {
+                    // store settings
+
+                    edit.PutString("UserId", token.UserID.ToString());
+                    edit.PutString("Token", token.Access_Token);
+                    edit.PutString("TokenExpirationDate", token.Expires.Ticks.ToString());
+                    edit.PutString("Username", token.UserName);
+                    edit.PutString("Password", StringCipher.Encrypt(password.Trim(), token.UserName));
+                    edit.Apply();
+                }
+                else
+                {
+                    edit.PutString("Username", token.UserName);
+                    
+                    edit.Apply();
+                }
+            }       
+        }
+
+        public async Task<bool> AutoAuthenticate()
+        {
+            ISharedPreferences pref = Application.Context.GetSharedPreferences("UserInfo", FileCreationMode.Private);
+            string userName = pref.GetString("Username", string.Empty);
+            string password = pref.GetString("Password", string.Empty);
+            string userID = pref.GetString("UserId", string.Empty);
+            string token = pref.GetString("Token", string.Empty);
+            string expirationDateTicks = pref.GetString("TokenExpirationDate", string.Empty);
+
+            if (userID != string.Empty && token != string.Empty && expirationDateTicks != string.Empty && password != string.Empty)
+            {
+
+                DateTime expirationDate = new DateTime(long.Parse(expirationDateTicks));
+
+                if (expirationDate < DateTime.Now)
+                {
+                    try
+                    {
+                        await Authenticate(userName, StringCipher.Decrypt(password, userName));
+                    }
+                    catch (MobileServiceInvalidOperationException)
+                    {
+                        return false;
+                    }
+                    catch (NullReferenceException)
+                    {
+                        return false;
+                    }
+
+                }
+                else
+                {
+                    user = new MobileServiceUser(userID);
+                    user.MobileServiceAuthenticationToken = token;
+                    client.CurrentUser = user;
+                }
+
+                return true;
+            }
+            else if (userID != string.Empty)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public async Task<bool> FacebookAuthenticate()
@@ -88,8 +165,20 @@ namespace DivineVerITies.Helpers
                 // Sign in with Facebook login using a server-managed flow.
                 user = await client.LoginAsync(Fragment2.SignInContext,
                     MobileServiceAuthenticationProvider.Facebook);
+
+                pref = Application.Context.GetSharedPreferences("UserInfo", FileCreationMode.Private);
+                edit = pref.Edit();
+                
+                // store settings
+                edit.PutString("UserId", user.UserId);
+                edit.PutString("Token", user.MobileServiceAuthenticationToken);
+
                 CreateAndShowDialog(string.Format("you are now logged in - {0}",
-                    user.UserId), "Logged in!");
+                user.UserId), "Logged in!");
+
+                var userinfo = await client.InvokeApiAsync("/api/userinfo/getfacebookuserinfo", HttpMethod.Get, null);
+                edit.PutString("Username", (userinfo.ElementAt(0)).ToString());
+                edit.Apply();
 
                 success = true;
             }
@@ -108,8 +197,17 @@ namespace DivineVerITies.Helpers
                 // Sign in with Facebook login using a server-managed flow.
                 user = await client.LoginAsync(Fragment2.SignInContext,
                     MobileServiceAuthenticationProvider.Twitter);
+
+                pref = Application.Context.GetSharedPreferences("UserInfo", FileCreationMode.Private);
+                edit = pref.Edit();
+
+                // store settings
+                edit.PutString("UserId", user.UserId);
+                edit.PutString("Token", user.MobileServiceAuthenticationToken);
+                edit.Apply();
+
                 CreateAndShowDialog(string.Format("you are now logged in - {0}",
-                    user.UserId), "Logged in!");
+                user.UserId), "Logged in!");
 
                 success = true;
             }
@@ -128,8 +226,20 @@ namespace DivineVerITies.Helpers
                 // Sign in with Facebook login using a server-managed flow.
                 user = await client.LoginAsync(Fragment2.SignInContext,
                     MobileServiceAuthenticationProvider.Google);
+
+                pref = Application.Context.GetSharedPreferences("UserInfo", FileCreationMode.Private);
+                edit = pref.Edit();
+
+                // store settings
+                edit.PutString("UserId", user.UserId);
+                edit.PutString("Token", user.MobileServiceAuthenticationToken);
+
                 CreateAndShowDialog(string.Format("you are now logged in - {0}",
-                    user.UserId), "Logged in!");
+                user.UserId), "Logged in!");
+
+                var userinfo = await client.InvokeApiAsync("/api/userinfo/getgoogleuserinfo", HttpMethod.Get, null);
+                edit.PutString("Username", (userinfo.ElementAt(1)).ToString());
+                edit.Apply();
 
                 success = true;
             }
@@ -148,9 +258,18 @@ namespace DivineVerITies.Helpers
                 // Sign in with Facebook login using a server-managed flow.
                 user = await client.LoginAsync(Fragment2.SignInContext,
                     MobileServiceAuthenticationProvider.MicrosoftAccount);
+
+                // store settings
+                edit.PutString("UserId", user.UserId);
+                edit.PutString("Token", user.MobileServiceAuthenticationToken);
+
                 CreateAndShowDialog(string.Format("you are now logged in - {0}",
                     user.UserId), "Logged in!");
-                
+
+                var userinfo = await client.InvokeApiAsync("/api/userinfo/getmicrosoftuserinfo", HttpMethod.Get, null);
+                edit.PutString("Username", (userinfo.ElementAt(0)).ToString());
+                edit.Apply();
+
                 success = true;
             }
             catch (Exception ex)
@@ -162,7 +281,7 @@ namespace DivineVerITies.Helpers
 
         
 
-        private void CreateAndShowDialog(Exception exception, String title)
+        private void CreateAndShowDialog(Exception exception, string title)
         {
             CreateAndShowDialog(exception.Message, title);
         }
@@ -173,6 +292,7 @@ namespace DivineVerITies.Helpers
 
             builder.SetMessage(message);
             builder.SetTitle(title);
+            builder.SetPositiveButton("OKAY", delegate { builder.Dispose(); });
             builder.Create().Show();
         }
     }

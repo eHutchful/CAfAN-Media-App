@@ -60,6 +60,7 @@ namespace DivineVerITies
 
             mRecyclerView.SetLayoutManager(new LinearLayoutManager(mRecyclerView.Context));
             mRecyclerView.SetAdapter(new SimpleStringRecyclerViewAdapter(mRecyclerView.Context, values, this.Resources));
+            mRecyclerView.AddItemDecoration(new DividerDecoration(this, LinearLayoutCompat.Vertical));
 
         }
 

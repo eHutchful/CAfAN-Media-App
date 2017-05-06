@@ -164,43 +164,31 @@ namespace DivineVerITies.Fragments
                 case 0:
                     mAudios = (from audio in mAudios
                                     orderby audio.Title
-                                    select audio).ToList<AudioList>();
-
-                    mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
-                    recyclerView.SetAdapter(mAudioAdapter);
-                    builder.Dispose();
+                                    select audio).ToList();
                     break;
 
                 case 1:
                     mAudios = (from audio in mAudios
                                     orderby audio.Title descending
-                                    select audio).ToList<AudioList>();
-
-                    mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
-                    recyclerView.SetAdapter(mAudioAdapter);
-                    builder.Dispose();
+                                    select audio).ToList();
                     break;
 
                 case 2:
                     mAudios = (from audio in mAudios
                                     orderby audio.PubDate
-                                    select audio).ToList<AudioList>();
-
-                    mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
-                    recyclerView.SetAdapter(mAudioAdapter);
-                    builder.Dispose();
+                                    select audio).ToList();
                     break;
 
                 case 3:
                     mAudios = (from audio in mAudios
                                     orderby audio.PubDate descending
-                                    select audio).ToList<AudioList>();
-
-                    mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
-                    recyclerView.SetAdapter(mAudioAdapter);
-                    builder.Dispose();
+                                    select audio).ToList();
                     break;
             }
+
+            mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
+            recyclerView.SetAdapter(mAudioAdapter);
+            builder.Dispose();
         }
 
         public override void OnCreateOptionsMenu(IMenu menu, MenuInflater inflater)

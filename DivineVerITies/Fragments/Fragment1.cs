@@ -90,6 +90,11 @@ namespace DivineVerITies.Fragments
                 Phone.Error = "Passwords do not match!";
                 return;
             }
+            if (new NetworkStatusMonitor().State == NetworkState.Disconnected)
+            {
+                CreateAndShowDialog("Your device is currently not connected to the internet. Please check your data or WiFi connection and try again.", "Network Connectivity Error");
+                return;
+            }
 
             try
             {
@@ -114,10 +119,14 @@ namespace DivineVerITies.Fragments
                 //if (string.Equals(exception.Message, "invalid_grant"))
                     CreateAndShowDialog("Error", "Error Creating User. Please Try Again.");                
             }
+            catch(Exception ex)
+            {
+                CreateAndShowDialog(ex.Message, "Error");
+            }
            
         }
 
-         private void CreateAndShowDialog(Exception exception, String title)
+         private void CreateAndShowDialog(Exception exception, string title)
         {
             CreateAndShowDialog(exception.Message, title);
         }
@@ -128,6 +137,7 @@ namespace DivineVerITies.Fragments
 
             builder.SetMessage(message);
             builder.SetTitle(title);
+            builder.SetPositiveButton("OKAY", delegate { builder.Dispose(); });
             builder.Create().Show();
         }
     }

@@ -144,18 +144,11 @@ namespace DivineVerITies
                 mAlbumArt = view.FindViewById<ImageView>(Resource.Id.avatar);
                 mOptions = view.FindViewById<ImageButton>(Resource.Id.img_options);
                 mPlayed = view.FindViewById<TextView>(Resource.Id.txtPlayed);
-                mMainAudioView.Click += (sender, e) => listener(base.Position);
+                mMainAudioView.Click += (sender, e) => listener(base.AdapterPosition);
             }
         }
 
         public Filter Filter { get; private set; }
-
-        public new void NotifyDataSetChanged()
-        {
-            // If you are using cool stuff like sections
-            // remember to update the indices here!
-            base.NotifyDataSetChanged();
-        }
     }
 
     public class AudioFilter : Filter
@@ -203,9 +196,17 @@ namespace DivineVerITies
 
         protected override void PublishResults(ICharSequence constraint, FilterResults results)
         {
-            using (var values = results.Values)
+            try
+            {
+                using (var values = results.Values)
                 _adapter.mAudios = values.ToArray<Object>()
                     .Select(r => r.ToNetObject<AudioList>()).ToList();
+            }
+            catch (System.NullReferenceException)
+            {
+                
+                Thread.Sleep(500);
+            }
 
             _adapter.NotifyDataSetChanged();
 

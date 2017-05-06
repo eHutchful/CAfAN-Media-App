@@ -46,8 +46,7 @@ namespace DivineVerITies
 
         void OnClick(int position)
         {
-            if (itemClick != null)
-                itemClick(this, position);
+            itemClick?.Invoke(this, position);
         }
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
@@ -56,7 +55,7 @@ namespace DivineVerITies
             //int indexPosition = (mAudios.Count - 1) - position;
 
             simpleHolder.mAudioTitle.Text = mAudios[position].Title;
-            simpleHolder.mAudioCount.Text = "8 podcasts";
+            simpleHolder.mAudioSubtitle.Text = mAudios[position].SubTitle;
 
             Glide.With(mContext)
                 .Load(mAudios[position].ImageUrl)
@@ -103,7 +102,7 @@ namespace DivineVerITies
         {
             public View mMainAudioView { get; set; }
             public TextView mAudioTitle { get; set; }
-            public TextView mAudioCount { get; set; }
+            public TextView mAudioSubtitle { get; set; }
             public ImageView mAlbumArt { get; set; }
             public ImageButton mOptions { get; set; }
 
@@ -112,10 +111,10 @@ namespace DivineVerITies
             {
                 mMainAudioView = view;
                 mAudioTitle = view.FindViewById<TextView>(Resource.Id.title);
-                mAudioCount = view.FindViewById<TextView>(Resource.Id.count);
+                mAudioSubtitle = view.FindViewById<TextView>(Resource.Id.count);
                 mAlbumArt = view.FindViewById<ImageView>(Resource.Id.thumbnail);
                 mOptions = view.FindViewById<ImageButton>(Resource.Id.overflow);
-                mMainAudioView.Click += (sender, e) => listener(base.Position);
+                mMainAudioView.Click += (sender, e) => listener(base.AdapterPosition);
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Android.App;
+using Android.Content.PM;
 using Android.OS;
 using Android.Support.Design.Widget;
 using Android.Support.V4.View;
@@ -9,7 +10,7 @@ using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace DivineVerITies
 {
-    [Activity(MainLauncher = true, Icon = "@drawable/Logo_trans72", Theme = "@style/Theme.DesignDemo")]
+    [Activity(Theme = "@style/Theme.DesignDemo", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : AppCompatActivity
     {
    

@@ -701,6 +701,7 @@ namespace DivineVerITies.Helpers
             public MediaSessionCallback(AudioServiceBinder service)
             {
                 mediaPlayerService = service;
+                
             }
             public override void OnPause()
             {
