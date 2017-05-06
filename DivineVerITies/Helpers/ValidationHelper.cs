@@ -78,9 +78,9 @@ namespace DivineVerITies.Helpers
         {
 
 
-            if (pass.Length < 8)
+            if (pass.Length < 6)
             {
-                textInputLayout.Error = "Password must be at least 8 characters";
+                textInputLayout.Error = "Password must be at least 6 characters";
                 //hideKeyboardFrom(textInputLayout.EditText);
                 return false;
             }

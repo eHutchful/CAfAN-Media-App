@@ -402,8 +402,8 @@ namespace DivineVerITies
                 //case Resource.Id.action_sort:
                 //    return true;
 
-                case Resource.Id.action_appSettings:
-                    return true;
+                //case Resource.Id.action_appSettings:
+                //    return true;
 
                 case Resource.Id.action_signOut:
                     ISharedPreferences pref = Application.Context.GetSharedPreferences("UserInfo", FileCreationMode.Private);

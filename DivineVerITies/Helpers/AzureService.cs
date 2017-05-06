@@ -35,7 +35,7 @@ namespace DivineVerITies.Helpers
             CurrentPlatform.Init();
             // Initialize the Mobile Service client with your URL and key
             client = new MobileServiceClient(
-                "https://divineveritiestrial.azurewebsites.net",
+                "https://divineverities.azurewebsites.net",
                 new CustomMessageHandler())
             {
                 SerializerSettings = new MobileServiceJsonSerializerSettings()

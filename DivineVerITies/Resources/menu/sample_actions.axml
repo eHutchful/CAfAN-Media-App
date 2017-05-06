@@ -14,11 +14,11 @@
        android:title="Sort" 
        app:showAsAction="never"/>
 
-  <item
+  <!--<item
       android:id="@+id/action_appSettings"
       android:orderInCategory="101"
       android:title="Settings" 
-      app:showAsAction="never"/>
+      app:showAsAction="never"/>-->
 
   <item
       android:id="@+id/action_signOut"
