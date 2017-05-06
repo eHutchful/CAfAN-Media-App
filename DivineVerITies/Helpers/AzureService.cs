@@ -81,7 +81,7 @@ namespace DivineVerITies.Helpers
             if (token != null)
             {
                 // authenticate: create and use a mobile service user
-                user = new MobileServiceUser(token.UserID.ToString());
+                user = new MobileServiceUser(token.UserID);
                 user.MobileServiceAuthenticationToken = token.Access_Token;
                 client.CurrentUser = user;
 
