@@ -23,14 +23,15 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:inputType="textEmailAddress"
-                android:hint="Username or Email" />
+                android:hint="Username" />
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
             android:id="@+id/txtInputLayoutPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp">
+            android:layout_marginRight="20dp"
+            app:passwordToggleEnabled="true">
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/txtPassword"
                 android:layout_width="match_parent"
@@ -39,14 +40,6 @@
                 android:inputType="textPassword"
                 android:hint="Password" />
         </android.support.design.widget.TextInputLayout>
-      <TextView
-            android:text="Forgot Your Password?"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:textColor="#4A6EA9"
-            android:layout_gravity="right"
-            android:id="@+id/txtFgtPassword" />
         <CheckBox
             android:text="Remember Me"
             android:layout_width="match_parent"
@@ -54,10 +47,11 @@
             android:id="@+id/chkBoxRemmemberMe"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
             android:gravity="left"
             android:textColor="#4A6EA9"
             android:paddingLeft="20dp"
-            android:button="@drawable/checkbox_style"/>
+            android:button="@drawable/checkbox_style" />
         <Button
             android:id="@+id/btnSignIn"
             android:layout_marginTop="20dp"
@@ -66,44 +60,52 @@
             android:text="SIGN IN!"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp" />
-      <TextView
+        <TextView
             android:text="Or Sign In With Social Media"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:textColor="#4A6EA9"
             android:layout_gravity="center_horizontal" />
-      <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="100"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
-      <ImageView
-            android:id="@+id/imgFacebook"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="25"
-            android:src="@drawable/square_facebook"/>
-      <ImageView
-            android:id="@+id/imgTwitter"
-            android:layout_width="0dp"
+            android:orientation="horizontal"
+            android:weightSum="100"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+            <ImageView
+                android:id="@+id/imgFacebook"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="25"
+                android:src="@drawable/square_facebook" />
+            <ImageView
+                android:id="@+id/imgTwitter"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="25"
+                android:src="@drawable/square_twitter" />
+            <ImageView
+                android:id="@+id/imgGoogle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="25"
+                android:src="@drawable/social_square_google_plus" />
+            <ImageView
+                android:id="@+id/imgMicrosoft"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="25"
+                android:src="@drawable/Microsoft" />
+        </LinearLayout>
+      <TextView
+            android:text="Forgot Your Password?"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="25"
-            android:src="@drawable/square_twitter"/>
-      <ImageView
-            android:id="@+id/imgGoogle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="25"
-            android:src="@drawable/social_square_google_plus"/>
-      <ImageView
-            android:id="@+id/imgMicrosoft"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="25"
-            android:src="@drawable/Microsoft" />
-      </LinearLayout>
+            android:layout_margin="20dp"
+            android:textColor="#4A6EA9"
+            android:layout_gravity="center"
+            android:id="@+id/txtFgtPassword" />
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
