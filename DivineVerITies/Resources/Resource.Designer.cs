@@ -2728,8 +2728,8 @@ namespace DivineVerITies
 			// aapt resource value: 0x7f07002c
 			public const int bottom = 2131165228;
 			
-			// aapt resource value: 0x7f0700af
-			public const int btnSignIn = 2131165359;
+			// aapt resource value: 0x7f0700ae
+			public const int btnSignIn = 2131165358;
 			
 			// aapt resource value: 0x7f0700ac
 			public const int btnSignUp = 2131165356;
@@ -2761,8 +2761,8 @@ namespace DivineVerITies
 			// aapt resource value: 0x7f07005f
 			public const int checkbox = 2131165279;
 			
-			// aapt resource value: 0x7f0700ae
-			public const int chkBoxRemmemberMe = 2131165358;
+			// aapt resource value: 0x7f0700ad
+			public const int chkBoxRemmemberMe = 2131165357;
 			
 			// aapt resource value: 0x7f0700d7
 			public const int chronometer = 2131165399;
@@ -2893,17 +2893,17 @@ namespace DivineVerITies
 			// aapt resource value: 0x7f0700f3
 			public const int image_loading = 2131165427;
 			
-			// aapt resource value: 0x7f0700b0
-			public const int imgFacebook = 2131165360;
-			
-			// aapt resource value: 0x7f0700b2
-			public const int imgGoogle = 2131165362;
-			
-			// aapt resource value: 0x7f0700b3
-			public const int imgMicrosoft = 2131165363;
+			// aapt resource value: 0x7f0700af
+			public const int imgFacebook = 2131165359;
 			
 			// aapt resource value: 0x7f0700b1
-			public const int imgTwitter = 2131165361;
+			public const int imgGoogle = 2131165361;
+			
+			// aapt resource value: 0x7f0700b2
+			public const int imgMicrosoft = 2131165362;
+			
+			// aapt resource value: 0x7f0700b0
+			public const int imgTwitter = 2131165360;
 			
 			// aapt resource value: 0x7f0700c3
 			public const int imgViewHeader = 2131165379;
@@ -3223,8 +3223,8 @@ namespace DivineVerITies
 			// aapt resource value: 0x7f070096
 			public const int txtConfirmPassword = 2131165334;
 			
-			// aapt resource value: 0x7f0700ad
-			public const int txtFgtPassword = 2131165357;
+			// aapt resource value: 0x7f0700b3
+			public const int txtFgtPassword = 2131165363;
 			
 			// aapt resource value: 0x7f070095
 			public const int txtInputLayoutConfirmPassword = 2131165333;
