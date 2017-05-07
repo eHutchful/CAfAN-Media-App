@@ -33,7 +33,7 @@ namespace DivineVerITies.Helpers
 
         public async Task<List<Video>> getVideoList()
         {
-            string feed = "https://versolstore.blob.core.windows.net/verity/audios/audio.rss";
+            string feed = "https://versolstore.blob.core.windows.net/verity/audios/video.rss";
             var httpClient = new HttpClient(new NativeMessageHandler());
             httpClient.Timeout = TimeSpan.FromSeconds(30);
             string response = await httpClient.GetStringAsync(feed);
