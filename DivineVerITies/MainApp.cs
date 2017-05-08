@@ -97,7 +97,7 @@ namespace DivineVerITies
 
             // Create your application here
             SetContentView(Resource.Layout.MainApp);
-            SupportToolbar toolBar = FindViewById<SupportToolbar>(Resource.Id.toolBar);
+            toolBar = FindViewById<SupportToolbar>(Resource.Id.toolBar);
             SetSupportActionBar(toolBar);
             SupportActionBar.Title = "DivineVerITies";
             SupportActionBar.SetHomeAsUpIndicator(Resource.Drawable.ic_menu);
@@ -348,7 +348,7 @@ namespace DivineVerITies
 
             public MediaPlayerServiceConnection(MainApp mediaPlayer)
             {
-                this.instance = mediaPlayer;
+                instance = mediaPlayer;
             }
 
             public void OnServiceConnected(ComponentName name, IBinder service)
@@ -359,13 +359,13 @@ namespace DivineVerITies
                     var binder = (MediaPlayerServiceBinder)service;
                     instance.binder = binder;
                     instance.isBound = true;
-                    MainApp.playPauseButton.SetImageResource(binder.GetMediaPlayerService().playImage);
-                    MainApp.loadingBar.Visibility = binder.GetMediaPlayerService().pbarState;
+                    playPauseButton.SetImageResource(binder.GetMediaPlayerService().playImage);
+                    loadingBar.Visibility = binder.GetMediaPlayerService().pbarState;
                     binder.GetMediaPlayerService().sContext = SynchronizationContext.Current;
-                    binder.GetMediaPlayerService().CoverReloaded += (object sender, EventArgs e) => { if (instance.CoverReloaded != null) instance.CoverReloaded(sender, e); };
-                    binder.GetMediaPlayerService().StatusChanged += (object sender, EventArgs e) => { if (instance.StatusChanged != null) instance.StatusChanged(sender, e); };
-                    binder.GetMediaPlayerService().Playing += (object sender, EventArgs e) => { if (instance.Playing != null) instance.Playing(sender, e); };
-                    binder.GetMediaPlayerService().Buffering += (object sender, EventArgs e) => { if (instance.Buffering != null) instance.Buffering(sender, e); };
+                    binder.GetMediaPlayerService().CoverReloaded += (object sender, EventArgs e) => { instance.CoverReloaded?.Invoke(sender, e); };
+                    binder.GetMediaPlayerService().StatusChanged += (object sender, EventArgs e) => { instance.StatusChanged?.Invoke(sender, e); };
+                    binder.GetMediaPlayerService().Playing += (object sender, EventArgs e) => { instance.Playing?.Invoke(sender, e); };
+                    binder.GetMediaPlayerService().Buffering += (object sender, EventArgs e) => { instance.Buffering?.Invoke(sender, e); };
                 }
             }
 
@@ -374,7 +374,7 @@ namespace DivineVerITies
                 instance.isBound = false;
             }
         }
-        public void downloadButton_Click(object sender, System.EventArgs e)
+        public void downloadButton_Click(object sender, EventArgs e)
         {
             MyService.selectedAudio = selectedAudio;
             var intent = new Intent(ApplicationContext, typeof(MyService));
@@ -458,10 +458,10 @@ namespace DivineVerITies
         private void SetUpViewPager(ViewPager viewPager)
         {
             TabAdapter adapter = new TabAdapter(SupportFragmentManager);
-            adapter.AddFragment(new Fragment3(), "AUDIOS");
-            adapter.AddFragment(new Fragment4(), "VIDEOS");
-            adapter.AddFragment(new Fragment5(), "FAVOURITES");
-            adapter.AddFragment(new Fragment7(), "DOWNLOADED");
+            adapter.AddFragment(new Fragment3(), string.Empty);
+            adapter.AddFragment(new Fragment4(), string.Empty);
+            adapter.AddFragment(new Fragment5(), string.Empty);
+            adapter.AddFragment(new Fragment7(), string.Empty);
 
             viewPager.Adapter = adapter;
         }
