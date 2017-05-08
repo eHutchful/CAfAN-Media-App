@@ -11,21 +11,24 @@ using Microsoft.WindowsAzure.MobileServices;
 using Android.Support.Design.Widget;
 using Newtonsoft.Json.Linq;
 using DivineVerITies.Helpers;
+using Android.Text;
+using Java.Lang;
 
 namespace DivineVerITies.Fragments
 {
-    public class Fragment1 : SupportFragment
+    public class Fragment1 : SupportFragment, ITextWatcher
     {
         SupportEditText UserName;
         SupportEditText Email;
         SupportEditText Phone;
         SupportEditText Password;
         SupportEditText ConfirmPassword;
+        private ValidationHelper validityChecker;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+            validityChecker = new ValidationHelper(Activity);
             // Create your fragment here
         }
 
@@ -39,7 +42,9 @@ namespace DivineVerITies.Fragments
             UserName = View.FindViewById<SupportEditText>(Resource.Id.txtInputLayoutUserName);
             Email = View.FindViewById<SupportEditText>(Resource.Id.txtInputLayoutEmail);
             Password = View.FindViewById<SupportEditText>(Resource.Id.txtInputLayoutPassword);
+            Password.EditText.AddTextChangedListener(this);
             ConfirmPassword = View.FindViewById<SupportEditText>(Resource.Id.txtInputLayoutConfirmPassword);
+            ConfirmPassword.EditText.AddTextChangedListener(this);
             Phone = View.FindViewById<SupportEditText>(Resource.Id.txtInputLayoutPhone);
 
             Button mButtonSignUp = View.FindViewById<Button>(Resource.Id.btnSignUp);
@@ -63,31 +68,28 @@ namespace DivineVerITies.Fragments
             string txtCPassword = ConfirmPassword.EditText.Text;
             string txtPhone = Phone.EditText.Text;
 
-            if (txtUserName.Length == 0)
+            if (!validityChecker.isEditTextFilled(UserName, "Username is required!")
+                || !validityChecker.isEditTextFilled(Password, "Password is required!")
+                || !validityChecker.isEditTextFilled(Email, "Email address is required!")
+                || !validityChecker.isEditTextFilled(Phone, "Phone Number is required!")
+                || !validityChecker.isEditTextFilled(ConfirmPassword, "Password Confirmation is required!"))
             {
-                UserName.Error = "Username is required!";
-                return;
-            }
-            if (txtPassword.Length == 0)
-            {
-                Password.Error = "Password is required!";
                 return;
             }
 
-            if (txtCPassword.Length == 0)
+            if (!validityChecker.isEditTextEmail(Email, "Email address is invalid!"))
             {
-                ConfirmPassword.Error = "Password Confirmation is required!";
                 return;
             }
-            if (txtPhone.Length == 0)
+
+            if (!validityChecker.validatePassword(Password, txtPassword, txtUserName))
             {
-                Phone.Error = "Phone Number is required!";
                 return;
             }
 
             if (txtPassword != txtCPassword)
             {
-                Phone.Error = "Passwords do not match!";
+                ConfirmPassword.Error = "Passwords do not match!";
                 return;
             }
             if (new NetworkStatusMonitor().State == NetworkState.Disconnected)
@@ -119,26 +121,55 @@ namespace DivineVerITies.Fragments
                 //if (string.Equals(exception.Message, "invalid_grant"))
                     CreateAndShowDialog("Error", "Error Creating User. Please Try Again.");                
             }
-            catch(Exception ex)
+            catch(System.Exception ex)
             {
                 CreateAndShowDialog(ex.Message, "Error");
             }
            
         }
 
-         private void CreateAndShowDialog(Exception exception, string title)
+         private void CreateAndShowDialog(System.Exception exception, string title)
         {
             CreateAndShowDialog(exception.Message, title);
         }
 
         private void CreateAndShowDialog(string message, string title)
         {
-            Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(this.Context);
+            Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(Activity);
 
             builder.SetMessage(message);
             builder.SetTitle(title);
             builder.SetPositiveButton("OKAY", delegate { builder.Dispose(); });
             builder.Create().Show();
+        }
+
+        public void AfterTextChanged(IEditable s)
+        {
+            if (Password.HasFocus)
+            {
+                validityChecker.validatePassword(Password, Password.EditText.Text, UserName.EditText.Text);
+            }
+            else if (ConfirmPassword.HasFocus)
+            {
+                if (Password.EditText.Text != ConfirmPassword.EditText.Text)
+                {
+                    ConfirmPassword.Error = "Passwords do not match.";
+                }
+                else
+                {
+                    ConfirmPassword.ErrorEnabled = false;
+                }
+            }
+        }
+
+        public void BeforeTextChanged(ICharSequence s, int start, int count, int after)
+        {
+            
+        }
+
+        public void OnTextChanged(ICharSequence s, int start, int before, int count)
+        {
+            
         }
     }
 }
