@@ -1,3 +1,4 @@
+using Android;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -22,6 +23,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using SupportActionBar = Android.Support.V7.App.ActionBar;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
+using Android.Runtime;
 
 namespace DivineVerITies
 {
@@ -89,6 +91,8 @@ namespace DivineVerITies
         }
 
         ViewPager viewPager;
+        ISharedPreferences pref;
+        ISharedPreferencesEditor edit;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -112,6 +116,18 @@ namespace DivineVerITies
 
             //// Register the app for push notifications. 
             //GcmClient.Register(this, PushBroadcastReceiver.senderIDs);
+
+            pref = Application.Context.GetSharedPreferences("UserInfo", FileCreationMode.Private);
+            edit = pref.Edit();
+
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.M && !pref.GetBoolean("Permission_Write", false))
+            {
+                bool result = Utility.CheckPermission(this, Manifest.Permission.WriteExternalStorage);
+                if (result)
+                {
+                    edit.PutBoolean("Permission_Write", true).Apply();
+                }
+            }
 
             mDrawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
@@ -311,6 +327,26 @@ namespace DivineVerITies
             #endregion
         }
 
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
+        {
+            switch (requestCode)
+            {
+                case Utility.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE:
+
+                    if (grantResults[0] == Permission.Granted)
+                    {
+                        edit.PutBoolean("Permission_Write", true).Apply();
+                    }
+                    else
+                    {
+                        Snackbar.Make(toolBar, "External Storage Permission Denied", Snackbar.LengthLong)
+                            .Show();
+                    }
+
+                    break;
+            }
+        }
+
         private void setSelectedTab()
         {
             // Fetch the selected tab index with default
@@ -406,8 +442,11 @@ namespace DivineVerITies
                 //    return true;
 
                 case Resource.Id.action_signOut:
-                    ISharedPreferences pref = Application.Context.GetSharedPreferences("UserInfo", FileCreationMode.Private);
-                    ISharedPreferencesEditor edit = pref.Edit();
+                    if (edit == null)
+                    {
+                        pref = Application.Context.GetSharedPreferences("UserInfo", FileCreationMode.Private);
+                        edit = pref.Edit();
+                    }
                     edit.Clear();
                     edit.Apply();
 
