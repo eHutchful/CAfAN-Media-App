@@ -95,16 +95,6 @@ namespace DivineVerITies
             #region original
             base.OnCreate(savedInstanceState);
 
-            // Set the current instance of 
-            instance = this;
-
-            // Make sure the GCM client is set up correctly. 
-            GcmClient.CheckDevice(this);
-            GcmClient.CheckManifest(this);
-
-            // Register the app for push notifications. 
-            GcmClient.Register(this, PushBroadcastReceiver.senderIDs);
-
             // Create your application here
             SetContentView(Resource.Layout.MainApp);
             SupportToolbar toolBar = FindViewById<SupportToolbar>(Resource.Id.toolBar);
@@ -112,7 +102,17 @@ namespace DivineVerITies
             SupportActionBar.Title = "DivineVerITies";
             SupportActionBar.SetHomeAsUpIndicator(Resource.Drawable.ic_menu);
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
-            
+
+            // Set the current instance of 
+            instance = this;
+
+            // Make sure the GCM client is set up correctly. 
+            //GcmClient.CheckDevice(this);
+            //GcmClient.CheckManifest(this);
+
+            //// Register the app for push notifications. 
+            //GcmClient.Register(this, PushBroadcastReceiver.senderIDs);
+
             mDrawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
             if (navigationView != null)

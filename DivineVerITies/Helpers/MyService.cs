@@ -203,7 +203,15 @@ namespace DivineVerITies.Helpers
             const string specificDir = "cafan/Podcasts/audio/";
             string path = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.Path, specificDir);
             if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
+            {
+                
+                    Directory.CreateDirectory(path);
+
+
+                }
+               
+            }
+               
 
             if (File.Exists(path + DivineVerITies.Helpers.MyService.selectedAudio.Title + filetype)) 
             { 

@@ -36,7 +36,7 @@ namespace DivineVerITies.Helpers
             // Initialize the Mobile Service client with your URL and key
             client = new MobileServiceClient(
                 "https://divineverities.azurewebsites.net",
-                new CustomMessageHandler())
+                 new CustomMessageHandler())
             {
                 SerializerSettings = new MobileServiceJsonSerializerSettings()
                 {
@@ -96,13 +96,16 @@ namespace DivineVerITies.Helpers
                     edit.PutString("Token", token.Access_Token);
                     edit.PutString("TokenExpirationDate", token.Expires.Ticks.ToString());
                     edit.PutString("Username", token.UserName);
-                    edit.PutString("Password", StringCipher.Encrypt(password.Trim(), token.UserName));
+                    edit.PutString("Password", 
+                        StringCipher.Encrypt(password.Trim(), token.UserName)
+                        //password.Trim()
+                        );
                     edit.Apply();
                 }
                 else
                 {
                     edit.PutString("Username", token.UserName);
-                    
+                    tempToken = token.Access_Token;
                     edit.Apply();
                 }
             }       
@@ -126,7 +129,10 @@ namespace DivineVerITies.Helpers
                 {
                     try
                     {
-                        await Authenticate(userName, StringCipher.Decrypt(password, userName));
+                        await Authenticate(userName, 
+                            StringCipher.Decrypt(password, userName)
+                            //password
+                            );
                     }
                     catch (MobileServiceInvalidOperationException)
                     {
