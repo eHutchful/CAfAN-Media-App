@@ -1,3 +1,4 @@
+using Android;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
@@ -143,9 +144,9 @@ namespace DivineVerITies.Helpers
             //var dwn = new Download();
             Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(contxt);
             builder.SetTitle("Confirm Download")
-           .SetMessage("Are You Sure You Want To Download" + " " + MyService.selectedAudio.SubTitle)
+           .SetMessage("Are You Sure You Want To Download" + " " + selectedAudio.SubTitle)
            .SetPositiveButton("Yes", async delegate
-            {
+            {   
                 Progress<DownloadBytesProgress> progressReporter = new Progress<DownloadBytesProgress>();
                 progressReporter.ProgressChanged += (s, args) =>
                 {
@@ -189,7 +190,7 @@ namespace DivineVerITies.Helpers
                     }                   
                     DownLoadItemNotification(filename);                    
                     //await dwn.CreateDownloadTask(MyService.selectedAudio.Link, filename, progressReporter, contxt);
-                    await dwn.DownloadFileAsync(MyService.selectedAudio.Link, filename, progressReporter, contxt);
+                    await dwn.DownloadFileAsync(selectedAudio.Link, filename, progressReporter, contxt);
 
                 }; 
             })
@@ -203,14 +204,22 @@ namespace DivineVerITies.Helpers
             const string specificDir = "cafan/Podcasts/audio/";
             string path = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.Path, specificDir);
             if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
+            {
+                
+                    Directory.CreateDirectory(path);
 
-            if (File.Exists(path + DivineVerITies.Helpers.MyService.selectedAudio.Title + filetype)) 
+
+               // }
+               
+            }
+               
+
+            if (File.Exists(path + selectedAudio.Title + filetype)) 
             { 
                 choiceMade = false;
                 CreateAndShowDialog(choice); }
 
-            filename = path + DivineVerITies.Helpers.MyService.selectedAudio.Title + filetype;
+            filename = path + selectedAudio.Title + filetype;
             while (!choiceMade)
             {
                 await Task.Delay(1000);
@@ -224,14 +233,14 @@ namespace DivineVerITies.Helpers
                 Directory.CreateDirectory(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/cafan/Podcasts/audio/");
 
             if (File.Exists(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/cafan/Podcasts/audio/"
-                + DivineVerITies.Helpers.MyService.selectedVideo.Title + ".mp4"))
+                + selectedVideo.Title + ".mp4"))
             {
                 choiceMade = false;
                 videoCreateAndShowDialog(choice);
             }
 
             filename = Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/cafan/Podcasts/audio/"
-                + DivineVerITies.Helpers.MyService.selectedVideo.Title + ".mp4";
+                + selectedVideo.Title + ".mp4";
             while (!choiceMade)
             {
                 await Task.Delay(1000);
@@ -249,7 +258,7 @@ namespace DivineVerITies.Helpers
             choice=string.Empty;
             Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(contxt);
             builder.SetTitle("Confirm Download")
-           .SetMessage(MyService.selectedAudio.Title + " already exists. Do you wish to overwrite the existing file?")
+           .SetMessage(selectedAudio.Title + " already exists. Do you wish to overwrite the existing file?")
            .SetPositiveButton("Yes", delegate
            {
                deleteFile(filename);
@@ -270,7 +279,7 @@ namespace DivineVerITies.Helpers
             choice = string.Empty;
             Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(contxt);
             builder.SetTitle("Confirm Download")
-           .SetMessage(MyService.selectedVideo.Title + " already exists. Do you wish to overwrite the existing file?")
+           .SetMessage(selectedVideo.Title + " already exists. Do you wish to overwrite the existing file?")
            .SetPositiveButton("Yes", delegate
            {
                deleteFile(filename);

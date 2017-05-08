@@ -17,7 +17,7 @@
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v6.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -268,6 +268,7 @@
     <Compile Include="Helpers\PushBroadcastReceiver.cs" />
     <Compile Include="Helpers\RecyclerViewSwipeListener.cs" />
     <Compile Include="Helpers\StringCipher.cs" />
+    <Compile Include="Helpers\Utility.cs" />
     <Compile Include="Helpers\ValidationHelper.cs" />
     <Compile Include="Helpers\VideoDownloader.cs" />
     <Compile Include="Helpers\XamarinRecyclerViewOnScrollListener.cs" />

@@ -27,12 +27,13 @@ namespace DivineVerITies.Helpers
             {
                 //throw new InvalidOperationException("User is not currently logged in");
                 request.Headers.Add("Authorization", "bearer " + AzureService.tempToken);
+                request.Headers.Add("ZUMO-API-VERSION", "2.0.0");
                 return base.SendAsync(request, cancellationToken);
             }
 
             //request.Headers.Add("X-ZUMO-AUTH", pref.GetString("Token", String.Empty));
             request.Headers.Add("Authorization", "bearer " + pref.GetString("Token", string.Empty));
-            //request.Headers.Add("ZUMO-API-VERSION", "2.0.0");
+            request.Headers.Add("ZUMO-API-VERSION", "2.0.0");
 
             return base.SendAsync(request, cancellationToken);
         }

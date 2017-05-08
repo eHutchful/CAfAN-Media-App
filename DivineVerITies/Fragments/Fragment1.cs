@@ -50,7 +50,7 @@ namespace DivineVerITies.Fragments
 
         private void mLinearLayout_Click(object sender, EventArgs e)
         {
-            InputMethodManager inputManager = (InputMethodManager)Activity.GetSystemService(Android.App.Activity.InputMethodService);
+            InputMethodManager inputManager = (InputMethodManager)Activity.GetSystemService(Context.InputMethodService);
             inputManager.HideSoftInputFromWindow(Activity.CurrentFocus.WindowToken, HideSoftInputFlags.None);
         }
 

@@ -18,7 +18,7 @@ using Newtonsoft.Json;
 
 namespace DivineVerITies
 {
-    public class AudioRecyclerViewAdapter : RecyclerView.Adapter, IFilterable
+    public class AudioAlbumRecyclerAdapter : RecyclerView.Adapter, IFilterable
     {
         public List<AudioList> mAudios;
         public List<AudioList> mFilterAudios;
@@ -27,7 +27,7 @@ namespace DivineVerITies
         Resources mResource;
         public event EventHandler<int> itemClick;
       
-        public AudioRecyclerViewAdapter(Context context, List<AudioList> audios, Resources res)
+        public AudioAlbumRecyclerAdapter(Context context, List<AudioList> audios, Resources res)
         {
             context.Theme.ResolveAttribute(Resource.Attribute.selectableItemBackground, mTypedValue, true);
             mBackground = mTypedValue.ResourceId;
@@ -153,8 +153,8 @@ namespace DivineVerITies
 
     public class AudioFilter : Filter
     {
-        private readonly AudioRecyclerViewAdapter _adapter;
-        public AudioFilter(AudioRecyclerViewAdapter adapter)
+        private readonly AudioAlbumRecyclerAdapter _adapter;
+        public AudioFilter(AudioAlbumRecyclerAdapter adapter)
         {
             _adapter = adapter;
         }

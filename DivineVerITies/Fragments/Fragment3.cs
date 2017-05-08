@@ -24,13 +24,13 @@ namespace DivineVerITies.Fragments
         private ProgressBar mProgresBar;
         private SwipeRefreshLayout swipeRefreshLayout;
         private RecyclerView recyclerView;
-        private AudioRecyclerViewAdapter mAudioAdapter;
+        private AudioAlbumRecyclerAdapter mAudioAdapter;
         public static List<AudioList> mAudios;
         public List<AudioList> mlist;
         private View view;
         private Android.Support.V7.Widget.SearchView mSearchView;
         private Android.Support.V7.App.AlertDialog.Builder builder;
-        String[] sortitems = { "Title Ascending", "Title Descending", "Date Ascending", "Date Descending" };
+        string[] sortitems = { "Title Ascending", "Title Descending", "Date Ascending", "Date Descending" };
         public static Context context;
         public static TextView chosenView;
         TextView mPlayedText;
@@ -55,7 +55,7 @@ namespace DivineVerITies.Fragments
             try
             {
                 mAudios = await (new Initialize()).getAudioList();
-                mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
+                mAudioAdapter = new AudioAlbumRecyclerAdapter(recyclerView.Context, mAudios, Activity.Resources);
                 recyclerView.SetAdapter(mAudioAdapter);
                 
                 recyclerView.Visibility = ViewStates.Visible;
@@ -87,26 +87,27 @@ namespace DivineVerITies.Fragments
             // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
             view = inflater.Inflate(Resource.Layout.Fragment3, container, false) as View;
             recyclerView = view.FindViewById<RecyclerView>(Resource.Id.recyclerview);
-            recyclerView.HasFixedSize = true;
-            var layoutManager = new LinearLayoutManager(Activity);
-            var onScrollListener = new XamarinRecyclerViewOnScrollListener(layoutManager);
-            onScrollListener.LoadMoreEvent += (object sender, EventArgs e) =>
-            {
-                mAudios.Add(mAudios[0]);
-                recyclerView.GetAdapter().NotifyItemInserted(mAudios.Count - 1);
-                mAudios.RemoveAt(0);
-                recyclerView.GetAdapter().NotifyItemRemoved(0);
-            };
-            onScrollListener.LoadMoreReverseEvent += (object sender, EventArgs e) =>
-            {
-                mAudios.Insert(0, mAudios[mAudios.Count - 1]);                
-                recyclerView.GetAdapter().NotifyItemInserted(0);
-                mAudios.RemoveAt(mAudios.Count - 1);
-                recyclerView.GetAdapter().NotifyItemRemoved(mAudios.Count - 1);
-            };
-            recyclerView.AddOnScrollListener(onScrollListener);
+            //recyclerView.HasFixedSize = true;
+            //var layoutManager = new LinearLayoutManager(Activity);
 
-            recyclerView.SetLayoutManager(layoutManager);
+            //var onScrollListener = new XamarinRecyclerViewOnScrollListener(layoutManager);
+            //onScrollListener.LoadMoreEvent += (object sender, EventArgs e) =>
+            //{
+            //    mAudios.Add(mAudios[0]);
+            //    recyclerView.GetAdapter().NotifyItemInserted(mAudios.Count - 1);
+            //    mAudios.RemoveAt(0);
+            //    recyclerView.GetAdapter().NotifyItemRemoved(0);
+            //};
+            //onScrollListener.LoadMoreReverseEvent += (object sender, EventArgs e) =>
+            //{
+            //    mAudios.Insert(0, mAudios[mAudios.Count - 1]);                
+            //    recyclerView.GetAdapter().NotifyItemInserted(0);
+            //    mAudios.RemoveAt(mAudios.Count - 1);
+            //    recyclerView.GetAdapter().NotifyItemRemoved(mAudios.Count - 1);
+            //};
+            //recyclerView.AddOnScrollListener(onScrollListener);
+
+            //recyclerView.SetLayoutManager(layoutManager);
             mProgresBar = view.FindViewById<ProgressBar>(Resource.Id.audio_player_loading);
             mProgresBar.Animate();
             swipeRefreshLayout = view.FindViewById<SwipeRefreshLayout>(Resource.Id.swipe_refresh_layout);
@@ -116,10 +117,20 @@ namespace DivineVerITies.Fragments
             return view;
         }
 
+        private int dpToPx(int dp)
+        {
+            int pixels = (int)((dp) * Resources.DisplayMetrics.Density + 0.5f);
+            return pixels;
+        }
+
         private void SetUpAudioRecyclerView(RecyclerView recyclerView)
         {
-            recyclerView.SetLayoutManager(new LinearLayoutManager(recyclerView.Context));
-            
+            //recyclerView.SetLayoutManager(new LinearLayoutManager(recyclerView.Context));
+
+            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(Activity, 2);
+            recyclerView.SetLayoutManager(layoutManager);
+            recyclerView.AddItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+
             recyclerView.SetItemClickListener( (rv, position, view) =>
             {
                 var text = view.FindViewById<TextView>(Resource.Id.txtPlayed);
@@ -149,8 +160,7 @@ namespace DivineVerITies.Fragments
         
         public void SortAudios()
         { 
-            base.OnAttach(Activity);
-            builder = new Android.Support.V7.App.AlertDialog.Builder(Activity);
+            builder = new Android.Support.V7.App.AlertDialog.Builder(Context);
             builder.SetTitle("Sort Order")
                    .SetSingleChoiceItems(sortitems, -1, SortTypeListClicked)
                    .SetNegativeButton("Cancel", delegate { builder.Dispose(); });
@@ -186,7 +196,7 @@ namespace DivineVerITies.Fragments
                     break;
             }
 
-            mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
+            mAudioAdapter = new AudioAlbumRecyclerAdapter(recyclerView.Context, mAudios, Activity.Resources);
             recyclerView.SetAdapter(mAudioAdapter);
             builder.Dispose();
         }
