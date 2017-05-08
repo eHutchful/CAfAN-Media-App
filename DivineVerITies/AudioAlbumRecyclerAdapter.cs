@@ -6,15 +6,20 @@ using Android.Views;
 using Android.Widget;
 using Com.Bumptech.Glide;
 using Com.Bumptech.Glide.Load.Engine;
+using DivineVerITies.Fragments;
+using DivineVerITies.Helpers;
+using Java.Lang;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 
 namespace DivineVerITies
 {
-    class AudioAlbumRecyclerViewAdapter : RecyclerView.Adapter
+    class AudioAlbumRecyclerViewAdapter : RecyclerView.Adapter, IFilterable
     {
         List<AudioList> mAudios;
+        public List<AudioList> mFilterAudios;
         private readonly TypedValue mTypedValue = new TypedValue();
         private int mBackground;
         Resources mResource;
@@ -28,6 +33,7 @@ namespace DivineVerITies
             mBackground = mTypedValue.ResourceId;
             mAudios = audios;
             mResource = res;
+            Filter = new AudioFilter(this);
         }
 
         public override int ItemCount
@@ -36,6 +42,11 @@ namespace DivineVerITies
             {
                 return mAudios.Count;
             }
+        }
+
+        public Filter Filter
+        {
+            get; private set;
         }
 
         public void Add(AudioList audio)
@@ -61,20 +72,11 @@ namespace DivineVerITies
                 .Load(mAudios[position].ImageUrl)
                 .Placeholder(Resource.Drawable.Logo_trans192)
                 .Error(Resource.Drawable.Logo_trans192)
-                //.SkipMemoryCache(true)
+                .SkipMemoryCache(true)
                 //.Thumbnail(1)
                 .DiskCacheStrategy(DiskCacheStrategy.All)
                 .Into(simpleHolder.mAlbumArt);
 
-           
-        }
-
-        public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
-        {
-            View view = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.album_card, parent, false);
-            view.SetBackgroundResource(mBackground);
-
-            SimpleAudioViewHolder simpleHolder = new SimpleAudioViewHolder(view, OnClick);
             simpleHolder.mOptions.Click += (s, e) =>
             {
                 Android.Support.V7.Widget.PopupMenu Popup = new Android.Support.V7.Widget.PopupMenu(simpleHolder.mOptions.Context, simpleHolder.mOptions);
@@ -90,10 +92,32 @@ namespace DivineVerITies
                             break;
 
                         case Resource.Id.action_Download:
+                            MyService.selectedAudio = mAudios[position];
+                            MyService.contxt = mContext;
+                            var intent = new Intent(mContext, typeof(MyService));
+                            intent.SetAction(MyService.StartD);
+                            mContext.StartService(intent);
+                            break;
+
+                        case Resource.Id.action_details:
+                            string serial;
+                            intent = new Intent(mContext, typeof(PodcastDetails));
+                            serial = JsonConvert.SerializeObject(mAudios[position]);
+                            intent.PutExtra("selectedItem", serial);
+                            mContext.StartActivity(intent);
                             break;
                     }
                 }; Popup.Show();
             };
+        }
+
+        public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
+        {
+            View view = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.album_card, parent, false);
+            view.SetBackgroundResource(mBackground);
+
+            SimpleAudioViewHolder simpleHolder = new SimpleAudioViewHolder(view, OnClick);
+           
 
             return new SimpleAudioViewHolder(view, OnClick);
         }
@@ -114,7 +138,72 @@ namespace DivineVerITies
                 mAudioSubtitle = view.FindViewById<TextView>(Resource.Id.count);
                 mAlbumArt = view.FindViewById<ImageView>(Resource.Id.thumbnail);
                 mOptions = view.FindViewById<ImageButton>(Resource.Id.overflow);
-                mMainAudioView.Click += (sender, e) => listener(base.AdapterPosition);
+                mMainAudioView.Click += (sender, e) => listener(AdapterPosition);
+            }
+        }
+
+        public class AudioFilter : Filter
+        {
+            private readonly AudioAlbumRecyclerViewAdapter _adapter;
+            public AudioFilter(AudioAlbumRecyclerViewAdapter adapter)
+            {
+                _adapter = adapter;
+            }
+
+            protected override FilterResults PerformFiltering(ICharSequence constraint)
+            {
+                var returnObj = new FilterResults();
+                var results = new List<AudioList>();
+                if (_adapter.mFilterAudios == null)
+                    _adapter.mFilterAudios = _adapter.mAudios;
+
+                if (constraint == null) return returnObj;
+
+                if (_adapter.mFilterAudios != null && _adapter.mFilterAudios.Any())
+                {
+                    try
+                    {
+                        // Compare constraint to all names lowercased. 
+                        // It they are contained they are added to results.
+                        results.AddRange(
+                            _adapter.mFilterAudios.Where(
+                            audio => audio.Title.ToLower().Contains(constraint.ToString())));
+                    }
+
+                    catch (ArgumentNullException)
+                    {
+                        return returnObj;
+                    }
+                }
+
+                // Nasty piece of .NET to Java wrapping, be careful with this!
+                returnObj.Values = FromArray(results.Select(r => r.ToJavaObject()).ToArray());
+                returnObj.Count = results.Count;
+
+                constraint.Dispose();
+
+                return returnObj;
+            }
+
+            protected override void PublishResults(ICharSequence constraint, FilterResults results)
+            {
+                try
+                {
+                    using (var values = results.Values)
+                        _adapter.mAudios = values.ToArray<Java.Lang.Object>()
+                            .Select(r => r.ToNetObject<AudioList>()).ToList();
+                }
+                catch (NullReferenceException)
+                {
+
+                    Thread.Sleep(500);
+                }
+
+                _adapter.NotifyDataSetChanged();
+
+                // Don't do this and see GREF counts rising
+                constraint.Dispose();
+                results.Dispose();
             }
         }
     }

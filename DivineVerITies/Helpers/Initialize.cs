@@ -38,7 +38,7 @@ namespace DivineVerITies.Helpers
                         Link = (string)item.Element("enclosure").Attribute("url"),
                         SubTitle = (string)item.Elements().Where(y => y.Name.LocalName == "subtitle").FirstOrDefault(),
                         PubDate = (string)item.Element("pubDate")
-                    }).ToList<AudioList>();
+                    }).ToList();
         }
 
         public async Task<List<Video>> getVideoList()
@@ -47,9 +47,9 @@ namespace DivineVerITies.Helpers
 
             var httpClient = new HttpClient();
             //httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/atom+xml"));
-            httpClient.DefaultRequestHeaders.Add("x-ms-date", DateTime.UtcNow.ToString("R", CultureInfo.InvariantCulture));
-            httpClient.DefaultRequestHeaders.Add("x-ms-version", "2009-09-19");
-            httpClient.DefaultRequestHeaders.Add("Authorization", "");
+            //httpClient.DefaultRequestHeaders.Add("x-ms-date", DateTime.UtcNow.ToString("R", CultureInfo.InvariantCulture));
+            //httpClient.DefaultRequestHeaders.Add("x-ms-version", "2009-09-19");
+            //httpClient.DefaultRequestHeaders.Add("Authorization", "");
             //httpClient.DefaultRequestHeaders.Add("DataServiceVersion", "1.0;NetFx");
             //httpClient.DefaultRequestHeaders.Add("MaxDataServiceVersion", "1.0;NetFx");
             httpClient.Timeout = TimeSpan.FromSeconds(30);
@@ -66,7 +66,7 @@ namespace DivineVerITies.Helpers
                         //Link = (string)item.Element("link")+(string)item.Element("enclosure").Attribute("url"),
                         SubTitle = (string)item.Elements().Where(y => y.Name.LocalName == "subtitle").FirstOrDefault(),
                         PubDate = (string)item.Element("pubDate")
-                    }).ToList<Video>();
+                    }).ToList();
         }
 
         private static string SignThis(string StringToSign)
