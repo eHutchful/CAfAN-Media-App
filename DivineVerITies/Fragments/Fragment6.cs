@@ -15,7 +15,7 @@ namespace DivineVerITies.Fragments
     public class Fragment6 : SupportFragment
     {
         private RecyclerView recyclerView;
-        private AudioAlbumRecyclerAdapter mAudioAdapter;
+        private AudioRecyclerViewAdapter mAudioAdapter;
         public static List<AudioList> mAudios=new List<AudioList>();
         //private View view;
         //private Android.Support.V7.Widget.SearchView mSearchView;
@@ -45,7 +45,7 @@ namespace DivineVerITies.Fragments
         private void SetUpRecyclerView(RecyclerView mRecyclerView)
         {
             recyclerView.SetLayoutManager(new LinearLayoutManager(recyclerView.Context)); 
-            mAudioAdapter = new AudioAlbumRecyclerAdapter(recyclerView.Context, mAudios, Activity.Resources);
+            mAudioAdapter = new AudioRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
             recyclerView.SetAdapter(mAudioAdapter);
             recyclerView.SetItemClickListener((rv, position, view) =>
             {

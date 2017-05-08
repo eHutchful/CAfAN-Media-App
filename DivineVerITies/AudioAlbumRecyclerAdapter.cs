@@ -16,9 +16,9 @@ using System.Linq;
 
 namespace DivineVerITies
 {
-    class AudioAlbumRecyclerViewAdapter : RecyclerView.Adapter, IFilterable
+    public class AudioAlbumRecyclerViewAdapter : RecyclerView.Adapter, IFilterable
     {
-        List<AudioList> mAudios;
+        public List<AudioList> mAudios;
         public List<AudioList> mFilterAudios;
         private readonly TypedValue mTypedValue = new TypedValue();
         private int mBackground;
@@ -167,7 +167,8 @@ namespace DivineVerITies
                         // It they are contained they are added to results.
                         results.AddRange(
                             _adapter.mFilterAudios.Where(
-                            audio => audio.Title.ToLower().Contains(constraint.ToString())));
+                            audio => audio.Title.ToLower().Contains(constraint.ToString())
+                            || audio.SubTitle.ToLower().Contains(constraint.ToString())));
                     }
 
                     catch (ArgumentNullException)

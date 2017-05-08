@@ -364,7 +364,7 @@ namespace DivineVerITies
             }
             else
             {
-                return string.Format("{0}:{1:00}", (int)span.Minutes, span.Seconds);
+                return string.Format("{0}:{1:00}", span.Minutes, span.Seconds);
             }
         }
         private void InitilizeMedia()

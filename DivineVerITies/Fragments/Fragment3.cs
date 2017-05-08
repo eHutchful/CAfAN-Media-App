@@ -24,7 +24,7 @@ namespace DivineVerITies.Fragments
         private ProgressBar mProgresBar;
         private SwipeRefreshLayout swipeRefreshLayout;
         private RecyclerView recyclerView;
-        private AudioAlbumRecyclerAdapter mAudioAdapter;
+        private AudioAlbumRecyclerViewAdapter mAudioAdapter;
         public static List<AudioList> mAudios;
         public List<AudioList> mlist;
         private View view;
@@ -55,7 +55,7 @@ namespace DivineVerITies.Fragments
             try
             {
                 mAudios = await (new Initialize()).getAudioList();
-                mAudioAdapter = new AudioAlbumRecyclerAdapter(recyclerView.Context, mAudios, Activity.Resources);
+                mAudioAdapter = new AudioAlbumRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
                 recyclerView.SetAdapter(mAudioAdapter);
                 
                 recyclerView.Visibility = ViewStates.Visible;
@@ -196,7 +196,7 @@ namespace DivineVerITies.Fragments
                     break;
             }
 
-            mAudioAdapter = new AudioAlbumRecyclerAdapter(recyclerView.Context, mAudios, Activity.Resources);
+            mAudioAdapter = new AudioAlbumRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
             recyclerView.SetAdapter(mAudioAdapter);
             builder.Dispose();
         }
