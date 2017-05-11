@@ -144,7 +144,7 @@ namespace DivineVerITies.Helpers
             //var dwn = new Download();
             Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(contxt);
             builder.SetTitle("Confirm Download")
-           .SetMessage("Are You Sure You Want To Download" + " " + selectedAudio.SubTitle)
+           .SetMessage("Are You Sure You Want To Download" + " " + selectedAudio.Title)
            .SetPositiveButton("Yes", async delegate
             {   
                 Progress<DownloadBytesProgress> progressReporter = new Progress<DownloadBytesProgress>();
@@ -226,17 +226,17 @@ namespace DivineVerITies.Helpers
         private async Task<string> videoFileCheck()
         {
             string choice = "yes";
-            if (!Directory.Exists(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/cafan/Podcasts/audio/"))
-                Directory.CreateDirectory(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/cafan/Podcasts/audio/");
+            if (!Directory.Exists(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/cafan/Podcasts/video/"))
+                Directory.CreateDirectory(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/cafan/Podcasts/video/");
 
-            if (File.Exists(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/cafan/Podcasts/audio/"
+            if (File.Exists(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/cafan/Podcasts/video/"
                 + selectedVideo.Title + ".mp4"))
             {
                 choiceMade = false;
                 videoCreateAndShowDialog(choice);
             }
 
-            filename = Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/cafan/Podcasts/audio/"
+            filename = Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/cafan/Podcasts/video/"
                 + selectedVideo.Title + ".mp4";
             while (!choiceMade)
             {
