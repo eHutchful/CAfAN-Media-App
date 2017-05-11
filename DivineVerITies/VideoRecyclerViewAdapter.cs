@@ -13,6 +13,10 @@ using System.Linq;
 using Object = Java.Lang.Object;
 using DivineVerITies.Helpers;
 using DivineVerITies.Fragments;
+using Android.Text;
+using Android.Graphics;
+using Android.Text.Style;
+using System.Globalization;
 
 namespace DivineVerITies
 {
@@ -27,6 +31,7 @@ namespace DivineVerITies
         public event EventHandler<int> itemClick;
         public Filter Filter { get; private set; }
         private List<int> test = new List<int>();
+        internal string searchString;
 
         public VideoRecyclerViewAdapter(Context context, List<Video> videos, Resources res)
         {
@@ -65,6 +70,19 @@ namespace DivineVerITies
             simpleHolder.mAudioTitle.Text = mVideos[position].Title;
             simpleHolder.mAudioSubTitle.Text = mVideos[position].SubTitle;
             simpleHolder.mPubDate.Text = mVideos[position].PubDate;
+
+            string Msg = mVideos[position].Title.ToLower(CultureInfo.CurrentCulture);
+            if (!string.IsNullOrEmpty(searchString) && Msg.Contains(searchString))
+            {
+                int startPos = Msg.IndexOf(searchString);
+                int endPos = startPos + searchString.Length;
+
+                ISpannable spanString = new SpannableFactory().NewSpannable(mVideos[position].Title);
+                spanString.SetSpan(new ForegroundColorSpan(Color.ParseColor("#FF4081")), startPos, endPos, SpanTypes.ExclusiveExclusive);
+
+                simpleHolder.mAudioTitle.SetText(spanString, TextView.BufferType.Spannable);
+            }
+
             simpleHolder.mMainAudioView.Click += (sender, er) =>
             {
                 if (!simpleHolder.mMainAudioView.Selected)
@@ -91,10 +109,10 @@ namespace DivineVerITies
 
                         case Resource.Id.action_Download:
                             MyService.selectedVideo = mVideos[position];
-                            MyService.contxt = Fragment4.context;
-                            var intent = new Intent(Fragment4.context, typeof(MyService));
+                            MyService.contxt = mContext;
+                            var intent = new Intent(mContext, typeof(MyService));
                             intent.SetAction(MyService.Startvd);
-                            Fragment4.context.StartService(intent);
+                            mContext.StartService(intent);
                             break;
                     }
                 }; Popup.Show();

@@ -31,13 +31,11 @@ namespace DivineVerITies.Fragments
         private Android.Support.V7.Widget.SearchView mSearchView;
         private Android.Support.V7.App.AlertDialog.Builder builder;
         string[] sortitems = { "Title Ascending", "Title Descending", "Date Ascending", "Date Descending" };
-        public static Context context;
         public static TextView chosenView;
         TextView mPlayedText;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            context = this.Context;
             // Create your fragment here
         }
 
@@ -55,7 +53,7 @@ namespace DivineVerITies.Fragments
             try
             {
                 mAudios = await (new Initialize()).getAudioList();
-                mAudioAdapter = new AudioAlbumRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
+                mAudioAdapter = new AudioAlbumRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources, false);
                 recyclerView.SetAdapter(mAudioAdapter);
                 
                 recyclerView.Visibility = ViewStates.Visible;
@@ -196,7 +194,7 @@ namespace DivineVerITies.Fragments
                     break;
             }
 
-            mAudioAdapter = new AudioAlbumRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources);
+            mAudioAdapter = new AudioAlbumRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources, false);
             recyclerView.SetAdapter(mAudioAdapter);
             builder.Dispose();
         }
@@ -207,7 +205,11 @@ namespace DivineVerITies.Fragments
             var searchView = MenuItemCompat.GetActionView(item);
             mSearchView = searchView.JavaCast<Android.Support.V7.Widget.SearchView>();
 
-            mSearchView.QueryTextChange += (s, e) => mAudioAdapter.Filter.InvokeFilter(e.NewText);
+            mSearchView.QueryTextChange += (s, e) =>
+            {
+                mAudioAdapter.Filter.InvokeFilter(e.NewText);
+                mAudioAdapter.searchString = e.NewText;
+            };
 
             mSearchView.QueryTextSubmit += (s, e) =>
             {

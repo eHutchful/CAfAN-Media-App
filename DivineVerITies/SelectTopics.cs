@@ -13,7 +13,7 @@ using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace DivineVerITies
 {
-    [Activity(Theme = "@style/Theme.DesignDemo")]
+    [Activity(Theme = "@style/Theme.DesignDemo", NoHistory = true)]
     public class SelectTopics : AppCompatActivity
     {
         RecyclerView mRecyclerView;

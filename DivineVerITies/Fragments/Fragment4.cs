@@ -30,13 +30,13 @@ namespace DivineVerITies.Fragments
         private View view;
         private Android.Support.V7.Widget.SearchView mSearchView;
         private Android.Support.V7.App.AlertDialog.Builder builder;
-        String[] sortitems = { "Title Ascending", "Title Descending", "Date Ascending", "Date Descending" };
-        public static Context context;
+        string[] sortitems = { "Title Ascending", "Title Descending", "Date Ascending", "Date Descending" };
+
 
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            context = this.Context;
+            
             // Create your fragment here
         }
 
@@ -124,7 +124,11 @@ namespace DivineVerITies.Fragments
             var item = menu.FindItem(Resource.Id.action_search);
             var searchView = MenuItemCompat.GetActionView(item);
             mSearchView = searchView.JavaCast<Android.Support.V7.Widget.SearchView>();
-            mSearchView.QueryTextChange += (s, e) => mVideoAdapter.Filter.InvokeFilter(e.NewText);
+            mSearchView.QueryTextChange += (s, e) =>
+            {
+                mVideoAdapter.Filter.InvokeFilter(e.NewText);
+                mVideoAdapter.searchString = e.NewText;
+            };
             mSearchView.QueryTextSubmit += (s, e) =>
             {
                 Toast.MakeText(Activity, "Searched for: " + e.Query, ToastLength.Short).Show();
@@ -147,7 +151,6 @@ namespace DivineVerITies.Fragments
 
         private void SortVideos()
         {
-            base.OnAttach(Activity);
             builder = new Android.Support.V7.App.AlertDialog.Builder(Activity);
             builder.SetTitle("Sort Order")
                    .SetSingleChoiceItems(sortitems, -1, SortTypeListClicked)
@@ -162,7 +165,7 @@ namespace DivineVerITies.Fragments
                 case 0:
                     mVideos = (from video in mVideos
                                orderby video.Title
-                               select video).ToList<Video>();
+                               select video).ToList();
 
                     mVideoAdapter = new VideoRecyclerViewAdapter(recyclerView.Context, mVideos, Activity.Resources);
                     recyclerView.SetAdapter(mVideoAdapter);
@@ -172,7 +175,7 @@ namespace DivineVerITies.Fragments
                 case 1:
                     mVideos = (from video in mVideos
                                orderby video.Title descending
-                               select video).ToList<Video>();
+                               select video).ToList();
 
                     mVideoAdapter = new VideoRecyclerViewAdapter(recyclerView.Context, mVideos, Activity.Resources);
                     recyclerView.SetAdapter(mVideoAdapter);
@@ -182,7 +185,7 @@ namespace DivineVerITies.Fragments
                 case 2:
                     mVideos = (from video in mVideos
                                orderby video.PubDate
-                               select video).ToList<Video>();
+                               select video).ToList();
 
                     mVideoAdapter = new VideoRecyclerViewAdapter(recyclerView.Context, mVideos, Activity.Resources);
                     recyclerView.SetAdapter(mVideoAdapter);
@@ -192,7 +195,7 @@ namespace DivineVerITies.Fragments
                 case 3:
                     mVideos = (from video in mVideos
                                orderby video.PubDate descending
-                               select video).ToList<Video>();
+                               select video).ToList();
 
                     mVideoAdapter = new VideoRecyclerViewAdapter(recyclerView.Context, mVideos, Activity.Resources);
                     recyclerView.SetAdapter(mVideoAdapter);

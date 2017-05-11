@@ -41,6 +41,7 @@ namespace DivineVerITies.Fragments
 
             UserName = View.FindViewById<SupportEditText>(Resource.Id.txtInputLayoutUserName);
             Email = View.FindViewById<SupportEditText>(Resource.Id.txtInputLayoutEmail);
+            Email.EditText.AddTextChangedListener(this);
             Password = View.FindViewById<SupportEditText>(Resource.Id.txtInputLayoutPassword);
             Password.EditText.AddTextChangedListener(this);
             ConfirmPassword = View.FindViewById<SupportEditText>(Resource.Id.txtInputLayoutConfirmPassword);
@@ -145,7 +146,11 @@ namespace DivineVerITies.Fragments
 
         public void AfterTextChanged(IEditable s)
         {
-            if (Password.HasFocus)
+            if (Email.HasFocus)
+            {
+                validityChecker.isEditTextEmail(Email, "Email Address is invalid!");
+            }
+            else if (Password.HasFocus)
             {
                 validityChecker.validatePassword(Password, Password.EditText.Text, UserName.EditText.Text);
             }

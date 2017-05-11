@@ -14,7 +14,10 @@ using Object = Java.Lang.Object;
 using DivineVerITies.Helpers;
 using DivineVerITies.Fragments;
 using Newtonsoft.Json;
-
+using System.Globalization;
+using Android.Text;
+using Android.Text.Style;
+using Android.Graphics;
 
 namespace DivineVerITies
 {
@@ -27,7 +30,8 @@ namespace DivineVerITies
         Resources mResource;
         public event EventHandler<int> itemClick;
         private Context mContext;
-      
+        public string searchString;
+
         public AudioRecyclerViewAdapter(Context context, List<AudioList> audios, Resources res)
         {
             mContext = context;
@@ -67,7 +71,19 @@ namespace DivineVerITies
             simpleHolder.mAudioSubTitle.Text = mAudios[position].SubTitle;
             simpleHolder.mPubDate.Text = mAudios[position].PubDate;
             simpleHolder.mPlayed.Text = "Played";
-           
+
+            string Msg = mAudios[position].Title.ToLower(CultureInfo.CurrentCulture);
+            if (!string.IsNullOrEmpty(searchString) && Msg.Contains(searchString))
+            {
+                int startPos = Msg.IndexOf(searchString);
+                int endPos = startPos + searchString.Length;
+
+                ISpannable spanString = new SpannableFactory().NewSpannable(mAudios[position].Title);
+                spanString.SetSpan(new ForegroundColorSpan(Color.ParseColor("#FF4081")), startPos, endPos, SpanTypes.ExclusiveExclusive);
+
+                simpleHolder.mAudioTitle.SetText(spanString, TextView.BufferType.Spannable);
+            }
+
             simpleHolder.mOptions.Click += (sender, argss) =>
             {
 

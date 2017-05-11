@@ -131,6 +131,7 @@ namespace DivineVerITies
 
             mDrawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
+            navigationView.GetHeaderView(0).FindViewById<TextView>(Resource.Id.userNameHeader).Text = pref.GetString("Username", "Username");
             if (navigationView != null)
             {
                 SetUpDrawerContent(navigationView);
@@ -483,6 +484,16 @@ namespace DivineVerITies
 
                     case Resource.Id.nav_password:
                         intent = new Intent(this, typeof(ChangePassword));
+                        StartActivity(intent);
+                        break;
+
+                    case Resource.Id.nav_feedback:
+                        intent = new Intent(this, typeof(Feedback));
+                        StartActivity(intent);
+                        break;
+
+                    case Resource.Id.nav_privacy:
+                        intent = new Intent(this, typeof(Privacy));
                         StartActivity(intent);
                         break;
                 }

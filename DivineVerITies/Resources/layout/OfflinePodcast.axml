@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="100">
+    android:weightSum="100"
+    android:fitsSystemWindows="true">
     <FrameLayout
         android:animateLayoutChanges="true"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="50"
         android:background="#d3d3d3">
@@ -18,22 +20,36 @@
             android:layout_centerInParent="true"
             android:layout_gravity="center" />
         <LinearLayout
+          android:orientation="vertical"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/audio_heading"/>
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/audio_recyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="invisible" />
+            android:layout_width="wrap_content">
+          <android.support.v7.widget.CardView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center"
+              card_view:cardElevation="5dp"
+              card_view:cardUseCompatPadding="true"
+              card_view:cardCornerRadius="10dp"
+              card_view:cardBackgroundColor="#ffffff">
+              <TextView
+                  android:gravity="center_vertical"
+                  android:padding="5dp"
+                  android:textSize="12sp"
+                  android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/audio_heading" />
+          </android.support.v7.widget.CardView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/audio_recyclerview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible" />
         </LinearLayout>
     </FrameLayout>
-    <FrameLayout
+    <FrameLayout    
         android:animateLayoutChanges="true"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="50"
         android:background="#d3d3d3">
@@ -45,16 +61,30 @@
             android:layout_centerInParent="true"
             android:layout_gravity="center" />
         <LinearLayout
+            android:orientation="vertical"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent">
+            android:layout_width="wrap_content">
+          <android.support.v7.widget.CardView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center"
+              card_view:cardElevation="5dp"
+              card_view:cardUseCompatPadding="true"
+              card_view:cardCornerRadius="10dp"
+              card_view:cardBackgroundColor="#ffffff">
             <TextView
+                android:gravity="center_vertical"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/video_heading" />
+          </android.support.v7.widget.CardView>
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/video_recyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:visibility="invisible" />
         </LinearLayout>
     </FrameLayout>

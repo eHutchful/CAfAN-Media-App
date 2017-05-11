@@ -11,9 +11,12 @@
     <item name="android:statusBarColor">@android:color/transparent</item>
     <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     <item name="android:windowTranslucentStatus">true</item>
-    <item name="colorPrimary">#673AB7</item>
+    <!--<item name="colorPrimary">#673AB7</item>
     <item name="colorPrimaryDark">@android:color/transparent</item>
-    <item name="colorAccent">#FF4081</item>
+    <item name="colorAccent">#FF4081</item>-->
+    <item name="colorPrimary">#553a99</item>
+    <item name="colorPrimaryDark">@android:color/transparent</item>
+    <item name="colorAccent">#d52685</item>
   </style>
 
 <style name="Theme.Splash" parent="Theme.AppCompat.Light.NoActionBar">

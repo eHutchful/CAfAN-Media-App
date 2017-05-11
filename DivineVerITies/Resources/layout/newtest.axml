@@ -51,7 +51,7 @@
             android:layout_width="35dp"
             android:layout_height="wrap_content"
             android:id="@+id/img_options"
-            android:src="@drawable/ic_dots"
+            android:src="@drawable/ic_more_vert_black_24dp"
             android:tint="?attr/colorAccent"
             android:layout_alignParentRight="true"
             style="?android:attr/borderlessButtonStyle" />

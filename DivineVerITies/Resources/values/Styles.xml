@@ -25,6 +25,9 @@
     <item name="colorPrimary">#673AB7</item>
     <item name="colorPrimaryDark">#512DA8</item>
     <item name="colorAccent">#FF4081</item>
+    <!--<item name="colorPrimary">#553a99</item>
+    <item name="colorPrimaryDark">#512DA8</item>
+    <item name="colorAccent">#d52685</item>-->
   </style>
 
   <style name="Widget.CardContent" parent="android:Widget">

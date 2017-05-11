@@ -20,7 +20,6 @@ namespace DivineVerITies.Fragments
         //private View view;
         //private Android.Support.V7.Widget.SearchView mSearchView;
         //private Android.Support.V7.App.AlertDialog.Builder builder;
-        public static Context context;
 
         //private SwipeRefreshLayout swipeRefreshLayout;
         private RecyclerView mRecyclerView;
@@ -28,7 +27,6 @@ namespace DivineVerITies.Fragments
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            context = this.Context;
             // Create your fragment here
         }
 

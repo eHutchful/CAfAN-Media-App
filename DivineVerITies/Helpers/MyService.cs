@@ -61,11 +61,11 @@ namespace DivineVerITies.Helpers
 
         private void startVideoDownload()
         {
-            var dwn = new VideoDownloader();
+            var dwn = new Download();
 
             Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(contxt);
             builder.SetTitle("Confirm Download")
-           .SetMessage("Are You Sure You Want To Download" + " " + MyService.selectedVideo.Title)
+           .SetMessage("Are You Sure You Want To Download" + " " + selectedVideo.Title)
            .SetPositiveButton("Yes", async delegate
            {
                Progress<DownloadBytesProgress> progressReporter = new Progress<DownloadBytesProgress>();
@@ -110,7 +110,7 @@ namespace DivineVerITies.Helpers
                        cancellations.Add(filename, dwn.cts);
                    }
                    DownLoadItemNotification(filename);
-                   await dwn.DownloadFileAsync(MyService.selectedVideo.Link, filename, progressReporter, contxt);
+                   await dwn.CreateDownloadTask(selectedVideo.Link, filename, progressReporter, contxt);
 
                };
            })
@@ -122,7 +122,7 @@ namespace DivineVerITies.Helpers
             if (File.Exists(filename))
                 File.Delete(filename);
             NotificationManager notificationManager =
-                        GetSystemService(Context.NotificationService) as NotificationManager;
+                        GetSystemService(NotificationService) as NotificationManager;
 
             // Publish the notification:
             //const int notificationId = 0;
@@ -132,7 +132,7 @@ namespace DivineVerITies.Helpers
         public static void cancel(int id)
         {
             NotificationManager notificationManager =
-                       contxt.GetSystemService(Context.NotificationService) as NotificationManager;
+                       contxt.GetSystemService(NotificationService) as NotificationManager;
 
             // Publish the notification:
             //const int notificationId = 0;
@@ -140,7 +140,7 @@ namespace DivineVerITies.Helpers
         }
         public void startDownload()
         {
-            var dwn = new VideoDownloader();
+            var dwn = new Download();
             //var dwn = new Download();
             Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(contxt);
             builder.SetTitle("Confirm Download")
@@ -190,7 +190,7 @@ namespace DivineVerITies.Helpers
                     }                   
                     DownLoadItemNotification(filename);                    
                     //await dwn.CreateDownloadTask(MyService.selectedAudio.Link, filename, progressReporter, contxt);
-                    await dwn.DownloadFileAsync(selectedAudio.Link, filename, progressReporter, contxt);
+                    await dwn.CreateDownloadTask(selectedAudio.Link, filename, progressReporter, contxt);
 
                 }; 
             })
@@ -206,11 +206,8 @@ namespace DivineVerITies.Helpers
             if (!Directory.Exists(path))
             {
                 
-                    Directory.CreateDirectory(path);
+                Directory.CreateDirectory(path);
 
-
-               // }
-               
             }
                
 
