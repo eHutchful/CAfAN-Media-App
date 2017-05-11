@@ -256,6 +256,8 @@
     <Compile Include="Fragments\Fragment5.cs" />
     <Compile Include="Fragments\Fragment6.cs" />
     <Compile Include="Fragments\Fragment7.cs" />
+    <Compile Include="Helpers\ISimpleMediaHolder.cs" />
+    <Compile Include="Helpers\Media.cs" />
     <Compile Include="Helpers\AudioService.cs" />
     <Compile Include="Helpers\AzureService.cs" />
     <Compile Include="Helpers\CancelReceiver.cs" />
@@ -263,6 +265,7 @@
     <Compile Include="Helpers\CustomMessageHandler.cs" />
     <Compile Include="Helpers\DividerDecoration.cs" />
     <Compile Include="Helpers\GridSpacingItemDecoration.cs" />
+    <Compile Include="Helpers\MediaRecyclerAdapter.cs" />
     <Compile Include="Helpers\NetworkStatusBroadcastReceiver.cs" />
     <Compile Include="Helpers\NetworkStatusMonitor.cs" />
     <Compile Include="Helpers\PushBroadcastReceiver.cs" />

@@ -8,6 +8,11 @@ using Android.Widget;
 using SupportFragment = Android.Support.V4.App.Fragment;
 using DivineVerITies.Helpers;
 using Android.Content;
+using System.IO;
+using Android.Media;
+using System.Collections.Generic;
+using Android.Graphics;
+using System.Threading.Tasks;
 
 namespace DivineVerITies.Fragments
 {
@@ -19,7 +24,10 @@ namespace DivineVerITies.Fragments
         private ProgressBar videoProgressBar;
         private TextView audioHeading;
         private TextView videoHeading;
-
+        private List<Media> audioplaylist;
+        private List<Media> videoplaylist;
+        private MediaRecyclerAdapter videoAdapter;
+        private MediaRecyclerAdapter audioAdapter;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -50,23 +58,116 @@ namespace DivineVerITies.Fragments
         {
             base.OnActivityCreated(savedInstanceState);
             HasOptionsMenu = true;
+            getLists();
+        }
+
+        private async void getLists()
+        {
+            await GetOfflineList("audio");
+            await GetOfflineList("video");
+            if(audioplaylist.Count != 0)
+            {
+                audioAdapter = new MediaRecyclerAdapter(audioRecyclerView.Context, audioplaylist, Activity.Resources);
+                audioRecyclerView.SetAdapter(audioAdapter);
+                audioRecyclerView.Visibility = ViewStates.Visible;
+                audioProgressBar.Visibility = ViewStates.Gone;
+            }
+                
+
+            if(videoplaylist.Count != 0)
+            {
+                videoAdapter = new MediaRecyclerAdapter(audioRecyclerView.Context, videoplaylist, Activity.Resources);
+                videoRecyclerView.SetAdapter(videoAdapter);
+            }
+                
+
+            
         }
 
         public override void OnStart()
         {
             base.OnStart();
-            GetOfflineAudioList();
-            GetOfflineVideoList();
-        }
-
-        private void GetOfflineVideoList()
-        {
             
         }
-
-        private void GetOfflineAudioList()
+        private async Task GetOfflineList(String type)
         {
-            
+            string specificDir = "cafan/Podcasts/"+type+"/";
+            string path = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.Path, specificDir);
+            if (Directory.Exists(path))
+            {
+                var playlist = new List<Media>();
+                string[] files = Directory.GetFiles(path);
+                if(files.Length != 0)
+                {
+                    MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
+                    foreach (var file in files)
+                    {
+                        var media = new Media();
+                        string filep = System.IO.Path.Combine(path, file);
+                        media.Location = filep;
+                        await metaRetriever.SetDataSourceAsync(filep);
+                        try
+                        {
+                           media.Title= metaRetriever.ExtractMetadata(MetadataKey.Title);
+                        }
+                        catch (Exception exception1)
+                        {
+                            media.Title = file;
+                        }
+                        try
+                        {
+                            media.Artist = metaRetriever.ExtractMetadata(MetadataKey.Artist);
+                        }
+                        catch (Exception exception1)
+                        {
+                            media.Artist = "Unknown";
+                        }
+                        try
+                        {
+                            media.Album = metaRetriever.ExtractMetadata(MetadataKey.Album);
+                        }
+                        catch (Exception exception1)
+                        {
+                            media.Album = "Unknown";
+                        }
+                        try
+                        {
+                            media.Artist = metaRetriever.ExtractMetadata(MetadataKey.Artist);
+                        }
+                        catch (Exception exception1)
+                        {
+                            media.Artist = "Unknown";
+                        }
+                        try
+                        {
+                            media.Genre = metaRetriever.ExtractMetadata(MetadataKey.Genre);
+                        }
+                        catch (Exception exception1)
+                        {
+                            media.Genre = "Unknown";
+                        }
+                        try
+                        {
+                            byte[] img = metaRetriever.GetEmbeddedPicture();
+                            media.AlbumArt = BitmapFactory.DecodeByteArray(img, 0, img.Length);
+                        }
+                        catch (Exception exception1)
+                        {
+                            media.AlbumArt = null;
+                        }
+                        playlist.Add(media);
+                    }
+                    if (type == "audio")
+                    {
+                        this.audioplaylist = playlist;
+                    }
+                    else
+                    {
+                        this.videoplaylist = playlist;
+                    }
+                    
+                }
+            }
         }
 
         private void SetUpVideoRecyclerView(RecyclerView videoRecyclerView)
@@ -82,7 +183,6 @@ namespace DivineVerITies.Fragments
             {
                 int itemposition = rv.GetChildAdapterPosition(view);
                 Context context = view.Context;
-
             });
         }
 
