@@ -27,6 +27,7 @@ namespace DivineVerITies
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 
             WebView view = new WebView(this);
+            
             view.VerticalScrollBarEnabled = false;
 
             (FindViewById<CardView>(Resource.Id.privacyCard)).AddView(view);
