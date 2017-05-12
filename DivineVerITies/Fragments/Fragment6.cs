@@ -1,12 +1,8 @@
 using Android.Content;
 using Android.OS;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Widget;
 using Android.Support.V7.Widget;
 using Android.Views;
-using Android.Widget;
 using DivineVerITies.Helpers;
-using System;
 using System.Collections.Generic;
 using SupportFragment = Android.Support.V4.App.Fragment;
 

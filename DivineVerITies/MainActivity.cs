@@ -43,8 +43,8 @@ namespace DivineVerITies
         private void SetUpViewPager(ViewPager viewPager)
         {
             TabAdapter adapter = new TabAdapter(SupportFragmentManager);
-            adapter.AddFragment(new Fragment1(), "CREATE ACCOUNT");
-            adapter.AddFragment(new Fragment2(), "SIGN IN");
+            adapter.AddFragment(new SignUp(), "CREATE ACCOUNT");
+            adapter.AddFragment(new SignIn(), "SIGN IN");
 
             viewPager.Adapter = adapter;
         }

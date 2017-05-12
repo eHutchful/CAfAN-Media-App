@@ -250,13 +250,13 @@
     <Compile Include="ExoPlayer\SmoothStreamingTestMediaDrmCallback.cs" />
     <Compile Include="ExoPlayer\WidevineTestMediaDrmCallback.cs" />
     <Compile Include="Feedback.cs" />
-    <Compile Include="Fragments\Fragment1.cs" />
-    <Compile Include="Fragments\Fragment2.cs" />
-    <Compile Include="Fragments\Fragment3.cs" />
-    <Compile Include="Fragments\Fragment4.cs" />
-    <Compile Include="Fragments\Fragment5.cs" />
+    <Compile Include="Fragments\SignUp.cs" />
+    <Compile Include="Fragments\SignIn.cs" />
+    <Compile Include="Fragments\AudioLibrary.cs" />
+    <Compile Include="Fragments\VideoLibrary.cs" />
+    <Compile Include="Fragments\Downloaded.cs" />
     <Compile Include="Fragments\Fragment6.cs" />
-    <Compile Include="Fragments\Fragment7.cs" />
+    <Compile Include="Fragments\Favourites.cs" />
     <Compile Include="Helpers\ISimpleMediaHolder.cs" />
     <Compile Include="Helpers\Media.cs" />
     <Compile Include="Helpers\AudioService.cs" />
@@ -395,6 +395,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\Privacy.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\EmptyMediaCard.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

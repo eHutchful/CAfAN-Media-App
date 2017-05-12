@@ -15,7 +15,7 @@ using Android.Runtime;
 
 namespace DivineVerITies.Fragments
 {
-    public class Fragment7 : SupportFragment
+    public class Favourites : SupportFragment
     {
         private RecyclerView audioRecyclerView;
         private RecyclerView videoRecyclerView;

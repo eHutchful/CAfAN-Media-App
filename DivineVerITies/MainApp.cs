@@ -508,10 +508,10 @@ namespace DivineVerITies
         private void SetUpViewPager(ViewPager viewPager)
         {
             TabAdapter adapter = new TabAdapter(SupportFragmentManager);
-            adapter.AddFragment(new Fragment3(), string.Empty);
-            adapter.AddFragment(new Fragment4(), string.Empty);
-            adapter.AddFragment(new Fragment5(), string.Empty);
-            adapter.AddFragment(new Fragment7(), string.Empty);
+            adapter.AddFragment(new AudioLibrary(), string.Empty);
+            adapter.AddFragment(new VideoLibrary(), string.Empty);
+            adapter.AddFragment(new Favourites(), string.Empty);
+            adapter.AddFragment(new Downloaded(), string.Empty);          
 
             viewPager.Adapter = adapter;
         }

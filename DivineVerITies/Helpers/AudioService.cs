@@ -242,7 +242,7 @@ namespace DivineVerITies.Helpers
         {
             //await PlayNext();
             Stop();
-            Fragment3.chosenView.Visibility = ViewStates.Visible;
+            AudioLibrary.chosenView.Visibility = ViewStates.Visible;
         }
         public bool OnError(MediaPlayer mp, MediaError what, int extra)
         {

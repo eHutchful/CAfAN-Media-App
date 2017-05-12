@@ -169,7 +169,7 @@ namespace DivineVerITies.Helpers
             try
             {
                 // Sign in with Facebook login using a server-managed flow.
-                user = await client.LoginAsync(Fragment2.SignInContext,
+                user = await client.LoginAsync(SignIn.SignInContext,
                     MobileServiceAuthenticationProvider.Facebook);
 
                 pref = Application.Context.GetSharedPreferences("UserInfo", FileCreationMode.Private);
@@ -201,7 +201,7 @@ namespace DivineVerITies.Helpers
             try
             {
                 // Sign in with Facebook login using a server-managed flow.
-                user = await client.LoginAsync(Fragment2.SignInContext,
+                user = await client.LoginAsync(SignIn.SignInContext,
                     MobileServiceAuthenticationProvider.Twitter);
 
                 pref = Application.Context.GetSharedPreferences("UserInfo", FileCreationMode.Private);
@@ -230,7 +230,7 @@ namespace DivineVerITies.Helpers
             try
             {
                 // Sign in with Facebook login using a server-managed flow.
-                user = await client.LoginAsync(Fragment2.SignInContext,
+                user = await client.LoginAsync(SignIn.SignInContext,
                     MobileServiceAuthenticationProvider.Google);
 
                 pref = Application.Context.GetSharedPreferences("UserInfo", FileCreationMode.Private);
@@ -262,7 +262,7 @@ namespace DivineVerITies.Helpers
             try
             {
                 // Sign in with Facebook login using a server-managed flow.
-                user = await client.LoginAsync(Fragment2.SignInContext,
+                user = await client.LoginAsync(SignIn.SignInContext,
                     MobileServiceAuthenticationProvider.MicrosoftAccount);
 
                 // store settings
@@ -294,7 +294,7 @@ namespace DivineVerITies.Helpers
 
         private void CreateAndShowDialog(string message, string title)
         {
-            Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(Fragment2.SignInContext);
+            Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(SignIn.SignInContext);
 
             builder.SetMessage(message);
             builder.SetTitle(title);

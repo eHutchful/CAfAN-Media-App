@@ -16,7 +16,7 @@ using Java.Lang;
 
 namespace DivineVerITies.Fragments
 {
-    public class Fragment1 : SupportFragment, ITextWatcher
+    public class SignUp : SupportFragment, ITextWatcher
     {
         SupportEditText UserName;
         SupportEditText Email;

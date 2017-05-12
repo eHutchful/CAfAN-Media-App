@@ -13,7 +13,7 @@ using Android.Support.Design.Widget;
 
 namespace DivineVerITies.Fragments
 {
-    public class Fragment2 : SupportFragment
+    public class SignIn : SupportFragment
     {
         SupportEditText mtxtEmail;
         SupportEditText mtxtPassword;

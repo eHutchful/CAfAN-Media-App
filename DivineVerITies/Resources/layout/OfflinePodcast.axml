@@ -22,7 +22,7 @@
         <LinearLayout
           android:orientation="vertical"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content">
+            android:layout_width="match_parent">
           <android.support.v7.widget.CardView
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
@@ -42,9 +42,29 @@
           </android.support.v7.widget.CardView>
         <android.support.v7.widget.RecyclerView
             android:id="@+id/audio_recyclerview"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="invisible" />
+          <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/emptyAudioCard"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            card_view:cardCornerRadius="5dp"
+            card_view:cardElevation="5dp"
+            card_view:cardUseCompatPadding="true">
+            <TextView
+                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/txtEmptyText"
+                 android:textColor="?attr/colorAccent"
+                 android:textStyle="bold"
+                 android:layout_gravity="center_vertical"
+                 android:padding="10dp"
+                 android:textSize="14sp"/>
+          </android.support.v7.widget.CardView>
         </LinearLayout>
     </FrameLayout>
     <FrameLayout    
@@ -63,7 +83,7 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content">
+            android:layout_width="match_parent">
           <android.support.v7.widget.CardView
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
@@ -83,9 +103,29 @@
           </android.support.v7.widget.CardView>
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/video_recyclerview"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="invisible" />
+          <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+           android:id="@+id/emptyVideoCard"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:visibility="gone"
+           android:gravity="center"
+           card_view:cardCornerRadius="5dp"
+           card_view:cardElevation="5dp"
+           card_view:cardUseCompatPadding="true">
+            <TextView
+                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/txtEmptyText"
+                 android:textColor="?attr/colorAccent"
+                 android:textStyle="bold"
+                 android:layout_gravity="center_vertical"
+                 android:padding="10dp"
+                 android:textSize="14sp"/>
+          </android.support.v7.widget.CardView>
         </LinearLayout>
     </FrameLayout>
 </LinearLayout>

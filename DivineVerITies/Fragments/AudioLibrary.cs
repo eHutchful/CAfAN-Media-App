@@ -19,7 +19,7 @@ using System.Linq;
 
 namespace DivineVerITies.Fragments
 {
-    public class Fragment3 : SupportFragment
+    public class AudioLibrary : SupportFragment
     {
         private ProgressBar mProgresBar;
         private SwipeRefreshLayout swipeRefreshLayout;
