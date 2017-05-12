@@ -257,6 +257,7 @@
     <Compile Include="Fragments\Downloaded.cs" />
     <Compile Include="Fragments\Fragment6.cs" />
     <Compile Include="Fragments\Favourites.cs" />
+    <Compile Include="Helpers\CustomWebViewClient.cs" />
     <Compile Include="Helpers\ISimpleMediaHolder.cs" />
     <Compile Include="Helpers\Media.cs" />
     <Compile Include="Helpers\AudioService.cs" />
