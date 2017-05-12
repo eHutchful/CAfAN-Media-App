@@ -33,6 +33,8 @@ namespace DivineVerITies.Fragments
         private Android.Support.V7.Widget.SearchView mSearchView;
         private CardView emptyAudioCard;
         private CardView emptyVideoCard;
+        private TextView emptyAudioText;
+        private TextView emptyVideoText;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -53,6 +55,8 @@ namespace DivineVerITies.Fragments
             videoProgressBar = view.FindViewById<ProgressBar>(Resource.Id.video_loading);
             emptyAudioCard = view.FindViewById<CardView>(Resource.Id.emptyAudioCard);
             emptyVideoCard = view.FindViewById<CardView>(Resource.Id.emptyVideoCard);
+            emptyAudioText = view.FindViewById<TextView>(Resource.Id.txtEmptyAudio);
+            emptyVideoText = view.FindViewById<TextView>(Resource.Id.txtEmptyVideo);
             audioHeading = view.FindViewById<TextView>(Resource.Id.audio_heading);
             audioHeading.Text = "Downloaded Audios";
             videoHeading = view.FindViewById<TextView>(Resource.Id.video_heading);
@@ -84,6 +88,7 @@ namespace DivineVerITies.Fragments
             }
             else
             {
+                emptyAudioText.Text = "No Audios Have Been Downloaded Yet.";
                 emptyAudioCard.Visibility = ViewStates.Visible;
                 audioProgressBar.Visibility = ViewStates.Gone;
             }
@@ -98,6 +103,7 @@ namespace DivineVerITies.Fragments
             }
             else
             {
+                emptyVideoText.Text = "No Videos Have Been Downloaded Yet.";
                 emptyVideoCard.Visibility = ViewStates.Visible;
                 videoProgressBar.Visibility = ViewStates.Gone;
             }
@@ -251,21 +257,37 @@ namespace DivineVerITies.Fragments
 
             mSearchView.QueryTextChange += (s, e) =>
             {
-                audioAdapter.Filter.InvokeFilter(e.NewText);
-                audioAdapter.searchString = e.NewText;
+                if (audioAdapter != null)
+                {
+                    audioAdapter.Filter.InvokeFilter(e.NewText);
+                    audioAdapter.searchString = e.NewText;
+                }
 
-                videoAdapter.Filter.InvokeFilter(e.NewText);
-                videoAdapter.searchString = e.NewText;
+                if (videoAdapter != null)
+                {
+                    videoAdapter.Filter.InvokeFilter(e.NewText);
+                    videoAdapter.searchString = e.NewText;
+                }
             };
 
             mSearchView.QueryTextSubmit += (s, e) =>
             {
                 // Handle enter/search button on keyboard here
-                Toast.MakeText(Activity, "Searched for: " + e.Query, ToastLength.Short).Show();
+                if (audioAdapter == null && videoAdapter == null)
+                {
+                    Toast.MakeText(Activity, "No media to search through", ToastLength.Short).Show();
+                }
+                else
+                {
+                    Toast.MakeText(Activity, "Searched for: " + e.Query, ToastLength.Short).Show();
+                }
                 e.Handled = true;
             };
 
-            MenuItemCompat.SetOnActionExpandListener(item, new SearchViewExpandListener2(audioAdapter, videoAdapter));
+            if (true)
+            {
+                MenuItemCompat.SetOnActionExpandListener(item, new SearchViewExpandListener2(audioAdapter, videoAdapter));
+            }
         }
     }
 
@@ -283,8 +305,8 @@ namespace DivineVerITies.Fragments
 
         public bool OnMenuItemActionCollapse(IMenuItem item)
         {
-            _adapter1.Filter.InvokeFilter("");
-            _adapter2.Filter.InvokeFilter("");
+            _adapter1?.Filter.InvokeFilter("");
+            _adapter2?.Filter.InvokeFilter("");
             return true;
         }
 
