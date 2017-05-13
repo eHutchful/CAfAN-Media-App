@@ -133,8 +133,6 @@ namespace DivineVerITies.Fragments
             {
                 var text = view.FindViewById<TextView>(Resource.Id.txtPlayed);
                 int itemposition = rv.GetChildAdapterPosition(view);
-                Context context = view.Context;
-                Intent intent = new Intent(context, typeof(PodcastDetails));
                 if(mAudioAdapter.mAudios==null)
                 {
                     MediaPlayerService.selectedAudio = mAudios[position];
