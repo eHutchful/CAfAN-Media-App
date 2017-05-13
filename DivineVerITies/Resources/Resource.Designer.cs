@@ -2548,6 +2548,9 @@ namespace DivineVerITies
 			// aapt resource value: 0x7f07010e
 			public const int action_add_favourite = 2131165454;
 			
+			// aapt resource value: 0x7f07011e
+			public const int action_add_hide = 2131165470;
+			
 			// aapt resource value: 0x7f070119
 			public const int action_appSettings = 2131165465;
 			
@@ -2587,8 +2590,8 @@ namespace DivineVerITies
 			// aapt resource value: 0x7f0700de
 			public const int action_divider = 2131165406;
 			
-			// aapt resource value: 0x7f07011e
-			public const int action_download = 2131165470;
+			// aapt resource value: 0x7f07011f
+			public const int action_download = 2131165471;
 			
 			// aapt resource value: 0x7f0700d8
 			public const int action_image = 2131165400;
@@ -2629,8 +2632,8 @@ namespace DivineVerITies
 			// aapt resource value: 0x7f0700d9
 			public const int action_text = 2131165401;
 			
-			// aapt resource value: 0x7f07011f
-			public const int action_video_list = 2131165471;
+			// aapt resource value: 0x7f070120
+			public const int action_video_list = 2131165472;
 			
 			// aapt resource value: 0x7f0700e7
 			public const int actions = 2131165415;
@@ -3749,7 +3752,10 @@ namespace DivineVerITies
 			public const int skip = 2131558407;
 			
 			// aapt resource value: 0x7f0d0008
-			public const int video_list = 2131558408;
+			public const int slideupMenu = 2131558408;
+			
+			// aapt resource value: 0x7f0d0009
+			public const int video_list = 2131558409;
 			
 			static Menu()
 			{

@@ -152,15 +152,27 @@ namespace DivineVerITies.Fragments
         private void SetUpBottomSheet()
         {            
             bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
-
-            Glide.With(Activity)
-                .Load(MediaPlayerService.selectedAudio.ImageUrl)
+            try
+            {
+                var audio = (AudioList)MediaPlayerService.selectedAudio;
+                Glide.With(Activity)
+                .Load(audio.ImageUrl)
                 .Placeholder(Resource.Drawable.ChurchLogo_Gray)
                 .Error(Resource.Drawable.ChurchLogo_Gray)
                 .SkipMemoryCache(true)
                 .DiskCacheStrategy(DiskCacheStrategy.All)
                 .Into(backdrop);
-
+            }catch(InvalidCastException inv)
+            {
+                var audio = (Media)MediaPlayerService.selectedAudio;
+                Glide.With(Activity)
+                .Load(audio.AlbumArt)
+                .Placeholder(Resource.Drawable.ChurchLogo_Gray)
+                .Error(Resource.Drawable.ChurchLogo_Gray)
+                .SkipMemoryCache(true)
+                .DiskCacheStrategy(DiskCacheStrategy.All)
+                .Into(backdrop);
+            }
             backdropProgress.Visibility = ViewStates.Gone;
         }
 
