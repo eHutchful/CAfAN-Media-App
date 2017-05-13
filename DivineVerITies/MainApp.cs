@@ -252,7 +252,7 @@ namespace DivineVerITies
                     switch (args.Item.ItemId)
                     {
                         case Resource.Id.action_add_hide:
-                            layout.Visibility = ViewStates.Invisible;
+                            layout.Visibility = ViewStates.Gone;
                             break;
                     }
                 }; Popup.Show();
