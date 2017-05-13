@@ -9,7 +9,6 @@ using Android.Views;
 using Android.Widget;
 using Com.Bumptech.Glide;
 using Com.Bumptech.Glide.Load.Engine;
-using DivineVerITies.Fragments;
 using DivineVerITies.Helpers;
 using Java.Lang;
 using Newtonsoft.Json;

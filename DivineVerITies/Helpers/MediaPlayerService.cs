@@ -35,7 +35,7 @@ namespace DivineVerITies.Helpers
     MediaPlayer.IOnSeekCompleteListener
     {
         //Ato Added
-        public static AudioList selectedAudio;
+        public static object selectedAudio;
         public static List<AudioList> playlist = new List<AudioList>();
         //Actions
         public int position = 0;
@@ -176,7 +176,6 @@ namespace DivineVerITies.Helpers
         private void InitializePlayer()
         {
             mediaPlayer = new MediaPlayer();
-
             //Tell our player to sream music
             mediaPlayer.SetAudioStreamType(Stream.Music);
 
@@ -322,13 +321,14 @@ namespace DivineVerITies.Helpers
 
             try
             {
+                var Audio = (AudioList)selectedAudio;
                 sContext.Post(x => { MainApp.loadingBar.Visibility = ViewStates.Visible; }, null);
                 pbarState = ViewStates.Visible;
                 var Client = new HttpClient();
                 MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
-                var msource= mediaPlayer.SetDataSourceAsync(ApplicationContext, Android.Net.Uri.Parse(selectedAudio.Link));
-                var metaSource= metaRetriever.SetDataSourceAsync(selectedAudio.Link, new Dictionary<string, string>());                
-                var cmage=Client.GetByteArrayAsync(selectedAudio.ImageUrl);
+                var msource= mediaPlayer.SetDataSourceAsync(ApplicationContext, Android.Net.Uri.Parse(Audio.Link));
+                var metaSource= metaRetriever.SetDataSourceAsync(Audio.Link, new Dictionary<string, string>());                
+                var cmage=Client.GetByteArrayAsync(Audio.ImageUrl);
                 await Task.WhenAll(msource, metaSource, cmage);
                 await msource;
                 await metaSource;
@@ -351,6 +351,33 @@ namespace DivineVerITies.Helpers
                 //else
                 //    Cover = await BitmapFactory.DecodeByteArrayAsync(imageByteArray, 0, imageByteArray.Length);
             }
+            catch(InvalidCastException inv)
+            {
+                var Audio = (Media)selectedAudio;
+                sContext.Post(x => { MainApp.loadingBar.Visibility = ViewStates.Visible; }, null);
+                pbarState = ViewStates.Visible;
+                var Client = new HttpClient();
+                MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
+                mediaPlayer.SetDataSource(Audio.Location);
+                var metaSource = metaRetriever.SetDataSourceAsync(Audio.Location, new Dictionary<string, string>());
+               
+                await Task.WhenAll(metaSource);
+                
+                await metaSource;
+
+                cover = Audio.AlbumArt;
+                var focusResult = audioManager.RequestAudioFocus(this, Stream.Music, AudioFocus.Gain);
+                if (focusResult != AudioFocusRequest.Granted)
+                {
+                    //could not get audio focus
+                    Console.WriteLine("Could not get audio focus");
+                }
+                UpdatePlaybackState(PlaybackStateCompat.StateBuffering);
+                mediaPlayer.PrepareAsync();
+                AquireWifiLock();
+                UpdateMediaMetadataCompat(metaRetriever);
+                StartNotification();
+            }
             catch (Exception ex)
             {
                 UpdatePlaybackState(PlaybackStateCompat.StateStopped);
@@ -362,6 +389,7 @@ namespace DivineVerITies.Helpers
                 //unable to start playback log error
                 Console.WriteLine(ex);
             }
+            
         }
         public void toPlay()
         {
@@ -393,17 +421,17 @@ namespace DivineVerITies.Helpers
             }
 
             UpdatePlaybackState(PlaybackStateCompat.StateSkippingToNext);
-            if (Fragment6.mAudios.Contains(selectedAudio)) 
-            {
-                if (Fragment6.mAudios.IndexOf(selectedAudio) < Fragment6.mAudios.Count - 1)
-                {
-                    selectedAudio = Fragment6.mAudios[Fragment6.mAudios.IndexOf(selectedAudio) + 1];
-                    MainApp.visibility = ViewStates.Visible;
-                    await Stop();
-                    mediaPlayer = null;
-                    await Play();
-                }
-            }  
+            //if (Fragment6.mAudios.Contains(selectedAudio)) 
+            //{
+            //    if (Fragment6.mAudios.IndexOf(selectedAudio) < Fragment6.mAudios.Count - 1)
+            //    {
+            //        selectedAudio = Fragment6.mAudios[Fragment6.mAudios.IndexOf(selectedAudio) + 1];
+            //        MainApp.visibility = ViewStates.Visible;
+            //        await Stop();
+            //        mediaPlayer = null;
+            //        await Play();
+            //    }
+            //}  
             
         }
         public async Task PlayPrevious()
@@ -422,17 +450,17 @@ namespace DivineVerITies.Helpers
                     mediaPlayer = null;
                 }
 
-                if (Fragment6.mAudios.Contains(selectedAudio))
-                {
-                    if (Fragment6.mAudios.IndexOf(selectedAudio) >0)
-                    {
-                        selectedAudio = Fragment6.mAudios[Fragment6.mAudios.IndexOf(selectedAudio)-1];
-                        MainApp.visibility = ViewStates.Visible;
-                        await Stop();
-                        mediaPlayer = null;
-                        await Play();
-                    }
-                }  
+                //if (Fragment6.mAudios.Contains(selectedAudio))
+                //{
+                //    if (Fragment6.mAudios.IndexOf(selectedAudio) >0)
+                //    {
+                //        selectedAudio = Fragment6.mAudios[Fragment6.mAudios.IndexOf(selectedAudio)-1];
+                //        MainApp.visibility = ViewStates.Visible;
+                //        await Stop();
+                //        mediaPlayer = null;
+                //        await Play();
+                //    }
+                //}  
             
             }
         }

@@ -151,33 +151,41 @@ namespace DivineVerITies.Helpers
                 progressReporter.ProgressChanged += (s, args) =>
                 {
                     var name = filename;
-                    if (args.IsFinished)
+                    try
                     {
-                        dComplete(name);
-                    }
-                    else if (cancellations[name].IsCancellationRequested)
-                    {
-                        if (notificationIds.ContainsKey(name)) 
+                        if (args.IsFinished)
                         {
-                            pBarCancelled(name);
-                            cancellations.Remove(name);
-                            if (File.Exists(name))
+                            dComplete(name);
+                        }
+                        else if (cancellations[name].IsCancellationRequested)
+                        {
+                            if (notificationIds.ContainsKey(name))
                             {
-                                File.Delete(name);
+                                pBarCancelled(name);
+                                cancellations.Remove(name);
+                                if (File.Exists(name))
+                                {
+                                    File.Delete(name);
+                                }
+                            }
+
+                        }
+                        else
+                        {
+
+                            int per = (int)(100 * args.PercentComplete);
+                            if ((per - previousPer) >= 2)
+                            {
+                                ChangePBar(per, name);
+                                previousPer = per;
                             }
                         }
-                        
                     }
-                    else
+                    catch(KeyNotFoundException kn)
                     {
-                        
-                        int per = (int)(100 * args.PercentComplete);
-                        if ((per - previousPer) >= 2)
-                        {
-                            ChangePBar(per, name);
-                            previousPer = per;
-                        }
+
                     }
+                    
                 };
                 builder.Dispose();
                 if ((await FileCheck()).Equals("yes"))

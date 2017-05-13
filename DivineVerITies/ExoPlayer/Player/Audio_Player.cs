@@ -65,7 +65,17 @@ namespace DivineVerITies.ExoPlayer.Player
             toolBar = FindViewById<SupportToolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolBar);
             // Change To SubTitle Later
-            SupportActionBar.Title = MediaPlayerService.selectedAudio.Title;
+            try
+            {
+                var audio = (AudioList)MediaPlayerService.selectedAudio;
+                SupportActionBar.Title = audio.Title;
+            }
+            catch(InvalidCastException inv)
+            {
+                var audio = (Media)MediaPlayerService.selectedAudio;
+                SupportActionBar.Title = audio.Title;
+            }
+            
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
             SupportActionBar.SetHomeButtonEnabled(true);
 
@@ -121,12 +131,30 @@ namespace DivineVerITies.ExoPlayer.Player
             duration = FindViewById<TextView>(Resource.Id.audio_player_duration);
             seekbar = FindViewById<SeekBar>(Resource.Id.audio_player_seek);
             artworkView = FindViewById<ImageView>(Resource.Id.audio_player_image);
-            Glide.With(this)
-                    .Load(MediaPlayerService.selectedAudio.ImageUrl)
+            try
+            {
+                var audio = (AudioList)MediaPlayerService.selectedAudio;
+                Glide.With(this)
+                    .Load(audio.ImageUrl)
                     .Placeholder(Resource.Drawable.Logo_trans192)
                     .Error(Resource.Drawable.Logo_trans192)
                     .DiskCacheStrategy(DiskCacheStrategy.All)
                     .Into(artworkView);
+                downloadButton = FindViewById<ImageButton>(Resource.Id.audio_download);
+                downloadButton.Click += downloadButton_Click;
+                selectedAudio = audio;
+            }
+            catch (InvalidCastException inv)
+            {
+                var audio = (Media)MediaPlayerService.selectedAudio;
+                Glide.With(this)
+                     .Load(audio.AlbumArt)
+                     .Placeholder(Resource.Drawable.Logo_trans192)
+                     .Error(Resource.Drawable.Logo_trans192)
+                     .DiskCacheStrategy(DiskCacheStrategy.All)
+                     .Into(artworkView);
+            }
+            
             loadingBar = FindViewById<ProgressBar>(Resource.Id.audio_player_loading);
             
 
@@ -157,8 +185,7 @@ namespace DivineVerITies.ExoPlayer.Player
                 }
             };
 
-            downloadButton = FindViewById<ImageButton>(Resource.Id.audio_download);
-            downloadButton.Click += downloadButton_Click; 
+            
             audio_player_view = FindViewById(Resource.Id.audioPlayerView);
            
             //ShowAudioSnackBar();

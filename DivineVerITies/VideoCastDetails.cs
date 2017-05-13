@@ -50,14 +50,13 @@ namespace DivineVerITies
                 View anchor = o as View;
               
                 PlayerActivity.selectedVideo = selectedVideo;
+                try { StopService(new Intent(this, typeof(MediaPlayerService))); }
+                catch (Exception es) { }
                 var mpdIntent = new Intent(this, typeof(PlayerActivity))
                     .SetData(Android.Net.Uri.Parse(selectedVideo.Link))
                     .PutExtra(PlayerActivity.ContentIdExtra, 3)
                     .PutExtra(PlayerActivity.ContentTypeExtra, PlayerActivity.TypeOther);
-                StartActivity(mpdIntent);
-                try { StopService(new Intent(this, typeof(MediaPlayerService))); }
-                catch (Exception es) { }
-                StartActivity(mpdIntent);
+                StartActivity(mpdIntent);               
             };
             TextView mAudioDescription = FindViewById<TextView>(Resource.Id.AudioDescription);
             mAudioDescription.Text = selectedVideo.Description;

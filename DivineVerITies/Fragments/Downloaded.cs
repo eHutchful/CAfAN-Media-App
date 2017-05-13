@@ -15,6 +15,8 @@ using Android.Graphics;
 using System.Threading.Tasks;
 using Android.Support.V4.View;
 using Android.Runtime;
+using Newtonsoft.Json;
+using DivineVerITies.ExoPlayer;
 
 namespace DivineVerITies.Fragments
 {
@@ -221,6 +223,20 @@ namespace DivineVerITies.Fragments
             {
                 int itemposition = rv.GetChildAdapterPosition(view);
                 Context context = view.Context;
+                PlayerActivity.selectedVideo = videoplaylist[position];
+                try
+                {
+                    view.Context.StopService(new Intent(view.Context, typeof(MediaPlayerService)));
+                }
+                catch (Exception es)
+                {
+                }
+                var mpdIntent = new Intent(view.Context, typeof(PlayerActivity))
+                    .SetData(Android.Net.Uri.Parse(videoplaylist[position].Location))
+                    .PutExtra(PlayerActivity.ContentIdExtra, 3)
+                    .PutExtra(PlayerActivity.ContentTypeExtra, PlayerActivity.TypeOther);
+                StartActivity(mpdIntent);
+
             });
         }
 
@@ -239,6 +255,22 @@ namespace DivineVerITies.Fragments
             {
                 int itemposition = rv.GetChildAdapterPosition(view);
                 Context context = view.Context;
+                if (audioAdapter.media == null)
+                {
+                    MediaPlayerService.selectedAudio = audioplaylist[position];
+                    MainApp.visibility = ViewStates.Visible;
+
+                }
+                else if (audioAdapter.media.Count == audioplaylist.Count)
+                {
+                    MediaPlayerService.selectedAudio = audioplaylist[position];
+                    MainApp.visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    MediaPlayerService.selectedAudio = audioplaylist[position];
+                    MainApp.visibility = ViewStates.Visible;
+                }
 
             });
         }
