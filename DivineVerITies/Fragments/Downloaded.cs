@@ -221,6 +221,7 @@ namespace DivineVerITies.Fragments
             {
                 int itemposition = rv.GetChildAdapterPosition(view);
                 Context context = view.Context;
+                
             });
         }
 
@@ -239,6 +240,22 @@ namespace DivineVerITies.Fragments
             {
                 int itemposition = rv.GetChildAdapterPosition(view);
                 Context context = view.Context;
+                if (audioAdapter.media == null)
+                {
+                    MediaPlayerService.selectedAudio = audioplaylist[position];
+                    MainApp.visibility = ViewStates.Visible;
+
+                }
+                else if (audioAdapter.media.Count == audioplaylist.Count)
+                {
+                    MediaPlayerService.selectedAudio = audioplaylist[position];
+                    MainApp.visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    MediaPlayerService.selectedAudio = audioplaylist[position];
+                    MainApp.visibility = ViewStates.Visible;
+                }
 
             });
         }

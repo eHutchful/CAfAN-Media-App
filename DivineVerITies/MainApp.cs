@@ -152,24 +152,53 @@ namespace DivineVerITies
             {
                 if (MediaPlayerService.selectedAudio != null)
                 {
-                    mLayout.PanelHeight = toolBar.LayoutParameters.Height;
-                    var txtrow1 = FindViewById<TextView>(Resource.Id.txtRow11);
-                    txtrow1.Text = MediaPlayerService.selectedAudio.Title;
-                    var txtrow2 = FindViewById<TextView>(Resource.Id.txtRow21);
-                    txtrow2.Text = MediaPlayerService.selectedAudio.SubTitle;
-                    var avatar = FindViewById<ImageView>(Resource.Id.avatar1);
-                    Glide.With(this)
-                        .Load(MediaPlayerService.selectedAudio.ImageUrl)
-                        .Placeholder(Resource.Drawable.ChurchLogo_Gray)
-                        .Error(Resource.Drawable.ChurchLogo_Gray)
-                        .DiskCacheStrategy(DiskCacheStrategy.All)
-                        .Into(artworkView);
-                    Glide.With(this)
-                        .Load(MediaPlayerService.selectedAudio.ImageUrl)
-                        .Placeholder(Resource.Drawable.ChurchLogo_Gray)
-                        .Error(Resource.Drawable.ChurchLogo_Gray )
-                        .DiskCacheStrategy(DiskCacheStrategy.All)
-                        .Into(avatar);
+                    Media audio1;
+                    AudioList audio2;
+                    try
+                    {
+                        audio2 = (AudioList)MediaPlayerService.selectedAudio;
+                        mLayout.PanelHeight = toolBar.LayoutParameters.Height;
+                        var txtrow1 = FindViewById<TextView>(Resource.Id.txtRow11);
+                        txtrow1.Text = audio2.Title;
+                        var txtrow2 = FindViewById<TextView>(Resource.Id.txtRow21);
+                        txtrow2.Text = audio2.SubTitle;
+                        var avatar = FindViewById<ImageView>(Resource.Id.avatar1);
+                        Glide.With(this)
+                            .Load(audio2.ImageUrl)
+                            .Placeholder(Resource.Drawable.ChurchLogo_Gray)
+                            .Error(Resource.Drawable.ChurchLogo_Gray)
+                            .DiskCacheStrategy(DiskCacheStrategy.All)
+                            .Into(artworkView);
+                        Glide.With(this)
+                            .Load(audio2.ImageUrl)
+                            .Placeholder(Resource.Drawable.ChurchLogo_Gray)
+                            .Error(Resource.Drawable.ChurchLogo_Gray)
+                            .DiskCacheStrategy(DiskCacheStrategy.All)
+                            .Into(avatar);
+                    }
+                    catch(InvalidCastException inv)
+                    {
+                        audio1 = (Media)MediaPlayerService.selectedAudio;
+                        mLayout.PanelHeight = toolBar.LayoutParameters.Height;
+                        var txtrow1 = FindViewById<TextView>(Resource.Id.txtRow11);
+                        txtrow1.Text = audio1.Title;
+                        var txtrow2 = FindViewById<TextView>(Resource.Id.txtRow21);
+                        txtrow2.Text = audio1.Album;
+                        var avatar = FindViewById<ImageView>(Resource.Id.avatar1);
+                        Glide.With(this)
+                            .Load(audio1.AlbumArt)
+                            .Placeholder(Resource.Drawable.ChurchLogo_Gray)
+                            .Error(Resource.Drawable.ChurchLogo_Gray)
+                            .DiskCacheStrategy(DiskCacheStrategy.All)
+                            .Into(artworkView);
+                        Glide.With(this)
+                            .Load(audio1.AlbumArt)
+                            .Placeholder(Resource.Drawable.ChurchLogo_Gray)
+                            .Error(Resource.Drawable.ChurchLogo_Gray)
+                            .DiskCacheStrategy(DiskCacheStrategy.All)
+                            .Into(avatar);
+                    }
+                   
                 }
                
                     layout.Visibility = ViewStates.Visible;
@@ -279,14 +308,32 @@ namespace DivineVerITies
             artworkView = FindViewById<ImageView>(Resource.Id.audio_player_image);
             if (MediaPlayerService.selectedAudio != null)
             {
-                Glide.With(this)
-                    .Load(MediaPlayerService.selectedAudio.ImageUrl)
-                    .Placeholder(Resource.Drawable.ChurchLogo_Gray)
-                    .Error(Resource.Drawable.ChurchLogo_Gray)
-                    .DiskCacheStrategy(DiskCacheStrategy.All)
-                    .Into(artworkView);
+                try
+                {
+                    var audio = (AudioList)MediaPlayerService.selectedAudio;
+                    Glide.With(this)
+                   .Load(audio.ImageUrl)
+                   .Placeholder(Resource.Drawable.ChurchLogo_Gray)
+                   .Error(Resource.Drawable.ChurchLogo_Gray)
+                   .DiskCacheStrategy(DiskCacheStrategy.All)
+                   .Into(artworkView);
+                   
+                    
+                }
+                catch(InvalidCastException inv)
+                {
+                    var audio = (Media)MediaPlayerService.selectedAudio;
+                    Glide.With(this)
+                   .Load(audio.AlbumArt)
+                   .Placeholder(Resource.Drawable.ChurchLogo_Gray)
+                   .Error(Resource.Drawable.ChurchLogo_Gray)
+                   .DiskCacheStrategy(DiskCacheStrategy.All)
+                   .Into(artworkView);
+                }
+               
             }
-            
+            downloadButton = FindViewById<ImageButton>(Resource.Id.audio_download);
+            downloadButton.Click += downloadButton_Click;
             loadingBar = FindViewById<ProgressBar>(Resource.Id.audio_player_loading);
 
 
@@ -321,8 +368,6 @@ namespace DivineVerITies
                 }
             };
 
-            downloadButton = FindViewById<ImageButton>(Resource.Id.audio_download);
-            downloadButton.Click += downloadButton_Click;
             audio_player_view = FindViewById(Resource.Id.audioPlayerView);
            
             #endregion
@@ -413,10 +458,18 @@ namespace DivineVerITies
         }
         public void downloadButton_Click(object sender, EventArgs e)
         {
-            MyService.selectedAudio = selectedAudio;
-            var intent = new Intent(ApplicationContext, typeof(MyService));
-            intent.SetAction(MyService.StartD);
-            StartService(intent);
+           try
+            {
+                var audio = (AudioList)MediaPlayerService.selectedAudio;
+                MyService.selectedAudio = audio;
+                var intent = new Intent(ApplicationContext, typeof(MyService));
+                intent.SetAction(MyService.StartD);
+                StartService(intent);
+            }catch(Exception ex)
+            {
+
+            }
+            
 
         }
 
