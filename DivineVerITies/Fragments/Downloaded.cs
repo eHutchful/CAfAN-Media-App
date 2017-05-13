@@ -223,10 +223,6 @@ namespace DivineVerITies.Fragments
             {
                 int itemposition = rv.GetChildAdapterPosition(view);
                 Context context = view.Context;
-                string serial;
-                
-
-               
                 PlayerActivity.selectedVideo = videoplaylist[position];
                 try
                 {
