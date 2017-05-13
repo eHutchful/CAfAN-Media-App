@@ -32,7 +32,18 @@ namespace DivineVerITies.Helpers
                 mContext.StartActivity(intent);
                 return true;
             }
-            
+            else if (request.Url.Equals(new Uri("Terms")))
+            {
+                Intent intent = new Intent(mContext, typeof(Terms));
+                mContext.StartActivity(intent);
+                return true;
+            }
+            else if (request.Url.Equals(new Uri("Feedback")))
+            {
+                Intent intent = new Intent(mContext, typeof(Feedback));
+                mContext.StartActivity(intent);
+                return true;
+            }
             else
             {
                 view.LoadUrl(request.Url.ToString());

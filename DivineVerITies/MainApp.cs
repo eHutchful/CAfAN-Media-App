@@ -93,6 +93,8 @@ namespace DivineVerITies
         ViewPager viewPager;
         ISharedPreferences pref;
         ISharedPreferencesEditor edit;
+        CoordinatorLayout sheet;
+        public BottomSheetBehavior bottomSheetBehavior;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -174,7 +176,14 @@ namespace DivineVerITies
                
                     layout.Visibility = ViewStates.Visible;
             };
-            
+
+            sheet = FindViewById<CoordinatorLayout>(Resource.Id.bottom_sheet);
+            bottomSheetBehavior = BottomSheetBehavior.From(sheet);
+
+            //bottomSheetBehavior.PeekHeight = 0;
+            bottomSheetBehavior.Hideable = true;
+            bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
+           
 
             //FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
 
@@ -420,6 +429,7 @@ namespace DivineVerITies
 
         }
 
+
         private void setupTabIcons()
         {
             tabs.GetTabAt(0).SetIcon(tabIcons[0]);
@@ -496,6 +506,11 @@ namespace DivineVerITies
                         intent = new Intent(this, typeof(Privacy));
                         StartActivity(intent);
                         break;
+
+                    case Resource.Id.nav_terms:
+                        intent = new Intent(this, typeof(Terms));
+                        StartActivity(intent);
+                        break;
                 }
             };
         }
@@ -514,6 +529,22 @@ namespace DivineVerITies
             adapter.AddFragment(new Downloaded(), string.Empty);          
 
             viewPager.Adapter = adapter;
+        }
+
+        public override void OnBackPressed()
+        {
+            if (bottomSheetBehavior.State != BottomSheetBehavior.StateHidden)
+            {
+                bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
+            }
+            else if (mDrawerLayout.IsDrawerOpen(GravityCompat.Start))
+            {
+                mDrawerLayout.CloseDrawer(GravityCompat.Start);
+            }
+            else
+            {
+                base.OnBackPressed();
+            }
         }
     }
 }

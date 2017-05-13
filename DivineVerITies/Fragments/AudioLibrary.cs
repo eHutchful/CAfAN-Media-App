@@ -16,6 +16,9 @@ using System.Xml.Linq;
 using SupportFragment = Android.Support.V4.App.Fragment;
 using Android.Runtime;
 using System.Linq;
+using Android.Support.V7.App;
+using Com.Bumptech.Glide;
+using Com.Bumptech.Glide.Load.Engine;
 
 namespace DivineVerITies.Fragments
 {
@@ -33,20 +36,42 @@ namespace DivineVerITies.Fragments
         string[] sortitems = { "Title Ascending", "Title Descending", "Date Ascending", "Date Descending" };
         public static TextView chosenView;
         TextView mPlayedText;
+        private RecyclerView bottomSheetRecyclerView;
+        private ImageView backdrop;
+        CoordinatorLayout sheet;
+        BottomSheetBehavior bottomSheetBehavior;
+        ProgressBar backdropProgress;
+
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             // Create your fragment here
+
+            sheet = ((AppCompatActivity)Activity).FindViewById<CoordinatorLayout>(Resource.Id.bottom_sheet);
+            bottomSheetBehavior = BottomSheetBehavior.From(sheet);
+
+            bottomSheetRecyclerView =((AppCompatActivity)Activity).FindViewById<RecyclerView>(Resource.Id.recyclerview2);
+            bottomSheetRecyclerView.SetLayoutManager(new LinearLayoutManager(Activity));
+
+            backdrop = ((AppCompatActivity)Activity).FindViewById<ImageView>(Resource.Id.backdrop);
+            backdropProgress = ((AppCompatActivity)Activity).FindViewById<ProgressBar>(Resource.Id.image_loading);
         }
 
         public override void OnActivityCreated(Bundle savedInstanceState)
         {
             base.OnActivityCreated(savedInstanceState);
-            
-            getAudiosAsyc();
+                       
             HasOptionsMenu = true;
             swipeRefreshLayout.Refresh += swipeRefreshLayout_Refresh;
         }
+
+        public override void OnStart()
+        {
+            base.OnStart();
+            getAudiosAsyc();
+        }
+
+        
 
         private async void getAudiosAsyc()
         {
@@ -58,6 +83,9 @@ namespace DivineVerITies.Fragments
                 
                 recyclerView.Visibility = ViewStates.Visible;
                 mProgresBar.Visibility = ViewStates.Gone;
+
+                bottomSheetRecyclerView.SetAdapter(new AudioRecyclerViewAdapter(Activity, mAudios, Activity.Resources));
+                bottomSheetRecyclerView.Visibility = ViewStates.Visible;
             }
             catch (Exception e)
             {
@@ -121,6 +149,21 @@ namespace DivineVerITies.Fragments
             return pixels;
         }
 
+        private void SetUpBottomSheet()
+        {            
+            bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+
+            Glide.With(Activity)
+                .Load(MediaPlayerService.selectedAudio.ImageUrl)
+                .Placeholder(Resource.Drawable.ChurchLogo_Gray)
+                .Error(Resource.Drawable.ChurchLogo_Gray)
+                .SkipMemoryCache(true)
+                .DiskCacheStrategy(DiskCacheStrategy.All)
+                .Into(backdrop);
+
+            backdropProgress.Visibility = ViewStates.Gone;
+        }
+
         private void SetUpAudioRecyclerView(RecyclerView recyclerView)
         {
             //recyclerView.SetLayoutManager(new LinearLayoutManager(recyclerView.Context));
@@ -135,20 +178,24 @@ namespace DivineVerITies.Fragments
                 int itemposition = rv.GetChildAdapterPosition(view);
                 Context context = view.Context;
                 Intent intent = new Intent(context, typeof(PodcastDetails));
-                if(mAudioAdapter.mAudios==null)
+                
+                if (mAudioAdapter.mAudios==null)
                 {
                     MediaPlayerService.selectedAudio = mAudios[position];
+                    SetUpBottomSheet();
                     MainApp.visibility = ViewStates.Visible;
                     
                 }                
                 else if (mAudioAdapter.mAudios.Count == mAudios.Count)
                 {
                     MediaPlayerService.selectedAudio = mAudios[position];
+                    SetUpBottomSheet();
                     MainApp.visibility = ViewStates.Visible;
                 }                
                 else
                 {
                     MediaPlayerService.selectedAudio = mAudios[position];
+                    SetUpBottomSheet();
                     MainApp.visibility = ViewStates.Visible;
                 }
                 chosenView = text;

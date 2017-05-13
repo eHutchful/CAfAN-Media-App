@@ -296,6 +296,7 @@
     <Compile Include="SimpleStringRecyclerViewAdapter.cs" />
     <Compile Include="Splash.cs" />
     <Compile Include="TabAdapter.cs" />
+    <Compile Include="Terms.cs" />
     <Compile Include="Video.cs" />
     <Compile Include="VideoAlbumRecyclerAdapter.cs" />
     <Compile Include="VideoCastDetails.cs" />
@@ -399,6 +400,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\EmptyMediaCard.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\BottomSheet.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -868,6 +872,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\Privacy_Policy.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\values\Terms.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
