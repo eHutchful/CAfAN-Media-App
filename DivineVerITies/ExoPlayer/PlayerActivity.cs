@@ -45,7 +45,7 @@ namespace DivineVerITies.ExoPlayer
 		VideoPlayer.IListener, VideoPlayer.ICaptionListener, VideoPlayer.ID3MetadataListener,
 		AudioCapabilitiesReceiver.IListener
 	{
-        public static Video selectedVideo;
+        public static object selectedVideo;
         public ProgressBar mProgressBar;
 		// For use within demo app code.
 		public const string ContentIdExtra = "content_id";
@@ -111,7 +111,18 @@ namespace DivineVerITies.ExoPlayer
 
             toolBar = FindViewById<SupportToolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolBar);
-            SupportActionBar.Title = selectedVideo.Title;
+            
+            try
+            {
+                var video = (Video)selectedVideo;
+                SupportActionBar.Title = video.Title;
+            }
+            catch(InvalidCastException inv)
+            {
+                var video = (DivineVerITies.Helpers.Media)selectedVideo;
+                SupportActionBar.Title = video.Title;
+            }
+            
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 
 			var root = FindViewById(Resource.Id.root);
