@@ -147,14 +147,23 @@ namespace DivineVerITies.Fragments
                         try
                         {
                             media.Title = metaRetriever.ExtractMetadata(MetadataKey.Title);
+                            if (media.Title == null)
+                            {
+                                media.Title = file;
+                            }
                         }
                         catch (Exception exception1)
                         {
                             media.Title = file;
                         }
+                        
                         try
                         {
                             media.Artist = metaRetriever.ExtractMetadata(MetadataKey.Artist);
+                            if (media.Artist == null)
+                            {
+                                media.Artist = "Unknown";
+                            }
                         }
                         catch (Exception exception1)
                         {
@@ -163,6 +172,10 @@ namespace DivineVerITies.Fragments
                         try
                         {
                             media.Album = metaRetriever.ExtractMetadata(MetadataKey.Album);
+                            if (media.Album == null)
+                            {
+                                media.Album = "Unknown";
+                            }
                         }
                         catch (Exception exception1)
                         {
@@ -170,15 +183,11 @@ namespace DivineVerITies.Fragments
                         }
                         try
                         {
-                            media.Artist = metaRetriever.ExtractMetadata(MetadataKey.Artist);
-                        }
-                        catch (Exception exception1)
-                        {
-                            media.Artist = "Unknown";
-                        }
-                        try
-                        {
                             media.Genre = metaRetriever.ExtractMetadata(MetadataKey.Genre);
+                            if (media.Genre == null)
+                            {
+                                media.Genre = "Unknown";
+                            }
                         }
                         catch (Exception exception1)
                         {
