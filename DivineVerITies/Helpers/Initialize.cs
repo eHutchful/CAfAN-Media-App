@@ -111,5 +111,39 @@ namespace DivineVerITies.Helpers
             }
             return imageBitmap;
         }
+
+        public static  List<Album> getAlbumList(List<AudioList>list)
+        {
+            List<Album> albums = new List<Album>();
+            List<AudioList> holder = new List<AudioList>();
+            holder.AddRange(list);
+            while(holder.Count != 0)
+            {
+                var album = (from audio in holder where audio.SubTitle == holder[0].SubTitle select audio).ToList();
+                for(int i = 0; i < album.Count; i++)
+                {
+                    holder.Remove(album[i]);
+                }
+                albums.Add(
+                    new Album {
+                        Title= album[0].SubTitle,
+                        PubDate=album[0].PubDate,
+                        ImageUrl=album[0].ImageUrl,
+                        members=album,
+                        Count=album.Count
+                });
+            }
+            return albums;
+        }
     }
+
+    public class Album
+    {
+        public string Title;
+        public string PubDate;
+        public string ImageUrl;
+        public int Count;
+        public List<AudioList> members;
+    }
+
 }

@@ -23,7 +23,7 @@ namespace DivineVerITies.Fragments
         private ProgressBar videoProgressBar;
         private TextView audioHeading;
         private TextView videoHeading;
-        private AudioAlbumRecyclerViewAdapter mAudioAdapter;
+        private AudioRecyclerViewAdapter mAudioAdapter;
         private VideoAlbumRecyclerViewAdapter mVideoAdapter;
         private List<AudioList> mAudios;
         private List<Video> mVideos;
@@ -98,7 +98,7 @@ namespace DivineVerITies.Fragments
             try
             {
                 mAudios = await (new Initialize()).getAudioList();
-                mAudioAdapter = new AudioAlbumRecyclerViewAdapter(Activity, mAudios, Activity.Resources, true);
+                mAudioAdapter = new AudioRecyclerViewAdapter(Activity, mAudios, Activity.Resources);
                 audioRecyclerView.SetAdapter(mAudioAdapter);
 
                 audioRecyclerView.Visibility = ViewStates.Visible;

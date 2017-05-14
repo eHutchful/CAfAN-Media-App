@@ -22,8 +22,8 @@ namespace DivineVerITies
 {
     public class AudioAlbumRecyclerViewAdapter : RecyclerView.Adapter, IFilterable
     {
-        public List<AudioList> mAudios;
-        public List<AudioList> mFilterAudios;
+        public List<Album> mAudios;
+        public List<Album> mFilterAudios;
         private readonly TypedValue mTypedValue = new TypedValue();
         private int mBackground;
         Resources mResource;
@@ -32,7 +32,7 @@ namespace DivineVerITies
         bool isFixedSize;
         public string searchString;
 
-        public AudioAlbumRecyclerViewAdapter(Context context, List<AudioList> audios, Resources res, bool fixedSize)
+        public AudioAlbumRecyclerViewAdapter(Context context, List<Album> audios, Resources res, bool fixedSize)
         {
             mContext = context;
             context.Theme.ResolveAttribute(Resource.Attribute.selectableItemBackground, mTypedValue, true);
@@ -56,7 +56,7 @@ namespace DivineVerITies
             get; private set;
         }
 
-        public void Add(AudioList audio)
+        public void Add(Album audio)
         {
             mAudios.Add(audio);
             NotifyDataSetChanged();
@@ -73,7 +73,7 @@ namespace DivineVerITies
             //int indexPosition = (mAudios.Count - 1) - position;
 
             simpleHolder.mAudioTitle.Text = mAudios[position].Title;
-            simpleHolder.mAudioSubtitle.Text = mAudios[position].SubTitle;
+            simpleHolder.mAudioSubtitle.Text = mAudios[position].Count.ToString()+" Podcasts";
 
             Glide.With(mContext)
                 .Load(mAudios[position].ImageUrl)
@@ -111,19 +111,19 @@ namespace DivineVerITies
                             break;
 
                         case Resource.Id.action_Download:
-                            MyService.selectedAudio = mAudios[position];
-                            MyService.contxt = mContext;
-                            var intent = new Intent(mContext, typeof(MyService));
-                            intent.SetAction(MyService.StartD);
-                            mContext.StartService(intent);
+                            //MyService.selectedAudio = mAudios[position];
+                            //MyService.contxt = mContext;
+                            //var intent = new Intent(mContext, typeof(MyService));
+                            //intent.SetAction(MyService.StartD);
+                            //mContext.StartService(intent);
                             break;
 
                         case Resource.Id.action_details:
-                            string serial;
-                            intent = new Intent(mContext, typeof(PodcastDetails));
-                            serial = JsonConvert.SerializeObject(mAudios[position]);
-                            intent.PutExtra("selectedItem", serial);
-                            mContext.StartActivity(intent);
+                            //string serial;
+                            //intent = new Intent(mContext, typeof(PodcastDetails));
+                            //serial = JsonConvert.SerializeObject(mAudios[position]);
+                            //intent.PutExtra("selectedItem", serial);
+                            //mContext.StartActivity(intent);
                             break;
                     }
                 }; Popup.Show();
@@ -178,7 +178,7 @@ namespace DivineVerITies
             protected override FilterResults PerformFiltering(ICharSequence constraint)
             {
                 var returnObj = new FilterResults();
-                var results = new List<AudioList>();
+                var results = new List<Album>();
                 if (_adapter.mFilterAudios == null)
                     _adapter.mFilterAudios = _adapter.mAudios;
 
@@ -192,8 +192,8 @@ namespace DivineVerITies
                         // It they are contained they are added to results.
                         results.AddRange(
                             _adapter.mFilterAudios.Where(
-                            audio => audio.Title.ToLower().Contains(constraint.ToString())
-                            || audio.SubTitle.ToLower().Contains(constraint.ToString())));
+                            audio => audio.Title.ToLower().Contains(constraint.ToString())));
+                            //|| audio.SubTitle.ToLower().Contains(constraint.ToString())));
                     }
 
                     catch (ArgumentNullException)
@@ -217,7 +217,7 @@ namespace DivineVerITies
                 {
                     using (var values = results.Values)
                         _adapter.mAudios = values.ToArray<Java.Lang.Object>()
-                            .Select(r => r.ToNetObject<AudioList>()).ToList();
+                            .Select(r => r.ToNetObject<Album>()).ToList();
                 }
                 catch (NullReferenceException)
                 {

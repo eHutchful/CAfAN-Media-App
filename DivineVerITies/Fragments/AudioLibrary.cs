@@ -29,7 +29,7 @@ namespace DivineVerITies.Fragments
         private RecyclerView recyclerView;
         private AudioAlbumRecyclerViewAdapter mAudioAdapter;
         public static List<AudioList> mAudios;
-        public List<AudioList> mlist;
+        public static List<Album> albums;
         private View view;
         private Android.Support.V7.Widget.SearchView mSearchView;
         private Android.Support.V7.App.AlertDialog.Builder builder;
@@ -78,14 +78,14 @@ namespace DivineVerITies.Fragments
             try
             {
                 mAudios = await (new Initialize()).getAudioList();
-                mAudioAdapter = new AudioAlbumRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources, false);
+                albums = Initialize.getAlbumList(mAudios);
+                mAudioAdapter = new AudioAlbumRecyclerViewAdapter(recyclerView.Context, albums, Activity.Resources, false);
                 recyclerView.SetAdapter(mAudioAdapter);
                 
                 recyclerView.Visibility = ViewStates.Visible;
                 mProgresBar.Visibility = ViewStates.Gone;
 
-                bottomSheetRecyclerView.SetAdapter(new AudioRecyclerViewAdapter(Activity, mAudios, Activity.Resources));
-                bottomSheetRecyclerView.Visibility = ViewStates.Visible;
+                
             }
             catch (Exception e)
             {
@@ -149,30 +149,26 @@ namespace DivineVerITies.Fragments
             return pixels;
         }
 
-        private void SetUpBottomSheet()
-        {            
+        private void SetUpBottomSheet(int position)
+        {
+            var album = albums[position];
+            bottomSheetRecyclerView.SetAdapter(new AudioRecyclerViewAdapter(Activity, album.members, Activity.Resources));
+            bottomSheetRecyclerView.Visibility = ViewStates.Visible;
+            bottomSheetRecyclerView.SetItemClickListener((rv, positions, view) => {
+                MediaPlayerService.selectedAudio = ((AudioRecyclerViewAdapter)rv.GetAdapter()).mAudios[positions];
+                MainApp.visibility = ViewStates.Visible;
+            });
             bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
-            try
-            {
-                var audio = (AudioList)MediaPlayerService.selectedAudio;
+            
+                
                 Glide.With(Activity)
-                .Load(audio.ImageUrl)
+                .Load(album.ImageUrl)
                 .Placeholder(Resource.Drawable.ChurchLogo_Gray)
                 .Error(Resource.Drawable.ChurchLogo_Gray)
                 .SkipMemoryCache(true)
                 .DiskCacheStrategy(DiskCacheStrategy.All)
                 .Into(backdrop);
-            }catch(InvalidCastException inv)
-            {
-                var audio = (Media)MediaPlayerService.selectedAudio;
-                Glide.With(Activity)
-                .Load(audio.AlbumArt)
-                .Placeholder(Resource.Drawable.ChurchLogo_Gray)
-                .Error(Resource.Drawable.ChurchLogo_Gray)
-                .SkipMemoryCache(true)
-                .DiskCacheStrategy(DiskCacheStrategy.All)
-                .Into(backdrop);
-            }
+            
             backdropProgress.Visibility = ViewStates.Gone;
         }
 
@@ -188,27 +184,25 @@ namespace DivineVerITies.Fragments
             {
                 var text = view.FindViewById<TextView>(Resource.Id.txtPlayed);
                 int itemposition = rv.GetChildAdapterPosition(view);
-                Context context = view.Context;
-                Intent intent = new Intent(context, typeof(PodcastDetails));
                 
                 if (mAudioAdapter.mAudios==null)
                 {
-                    MediaPlayerService.selectedAudio = mAudios[position];
-                    SetUpBottomSheet();
-                    MainApp.visibility = ViewStates.Visible;
+                    //MediaPlayerService.selectedAudio = mAudios[position];
+                    SetUpBottomSheet(position);
+                    //MainApp.visibility = ViewStates.Visible;
                     
                 }                
                 else if (mAudioAdapter.mAudios.Count == mAudios.Count)
                 {
-                    MediaPlayerService.selectedAudio = mAudios[position];
-                    SetUpBottomSheet();
-                    MainApp.visibility = ViewStates.Visible;
+                    //MediaPlayerService.selectedAudio = mAudios[position];
+                    SetUpBottomSheet(position);
+                    //MainApp.visibility = ViewStates.Visible;
                 }                
                 else
                 {
-                    MediaPlayerService.selectedAudio = mAudios[position];
-                    SetUpBottomSheet();
-                    MainApp.visibility = ViewStates.Visible;
+                    //MediaPlayerService.selectedAudio = mAudios[position];
+                    SetUpBottomSheet(position);
+                    //MainApp.visibility = ViewStates.Visible;
                 }
                 chosenView = text;
                 //text.Visibility = ViewStates.Visible;
@@ -229,31 +223,31 @@ namespace DivineVerITies.Fragments
             switch (args.Which)
             {
                 case 0:
-                    mAudios = (from audio in mAudios
-                                    orderby audio.Title
-                                    select audio).ToList();
+                    albums = (from album in albums
+                                    orderby album.Title
+                                    select album).ToList();
                     break;
 
                 case 1:
-                    mAudios = (from audio in mAudios
-                                    orderby audio.Title descending
-                                    select audio).ToList();
+                    albums = (from album in albums
+                                    orderby album.Title descending
+                                    select album).ToList();
                     break;
 
                 case 2:
-                    mAudios = (from audio in mAudios
-                                    orderby audio.PubDate
-                                    select audio).ToList();
+                    albums = (from album in albums
+                                    orderby album.PubDate
+                                    select album).ToList();
                     break;
 
                 case 3:
-                    mAudios = (from audio in mAudios
-                                    orderby audio.PubDate descending
-                                    select audio).ToList();
+                    albums = (from album in albums
+                                    orderby album.PubDate descending
+                                    select album).ToList();
                     break;
             }
 
-            mAudioAdapter = new AudioAlbumRecyclerViewAdapter(recyclerView.Context, mAudios, Activity.Resources, false);
+            mAudioAdapter = new AudioAlbumRecyclerViewAdapter(recyclerView.Context, albums, Activity.Resources, false);
             recyclerView.SetAdapter(mAudioAdapter);
             builder.Dispose();
         }
