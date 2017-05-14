@@ -40,12 +40,13 @@ namespace DivineVerITies.Helpers
                 for (;;)
                 {
                     int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
-                    file.AddRange(buffer);
+                    //file.AddRange(buffer);
                     if (bytesRead == 0)
                     {
                         await Task.Yield();
                         break;
                     }
+                    filestream.Write(buffer, 0, bytesRead);
                     receivedBytes += bytesRead;
                     if (progressReporter != null)
                     {
@@ -53,7 +54,7 @@ namespace DivineVerITies.Helpers
                         progressReporter.Report(args);
                     }
                 }
-                filestream.Write(file.ToArray(), 0, (file.ToArray()).Length);
+                
                 filestream.Close();
                 stream.Close();
             }

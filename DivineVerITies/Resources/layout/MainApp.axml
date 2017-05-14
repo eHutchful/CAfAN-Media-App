@@ -16,20 +16,20 @@
         app:umanoShadowHeight="4dp"
         app:umanoOverlay="true">
     <!--sothree:umanoParalaxOffset="100dp"-->
-    <!--sothree:umanoDragView="@+id/dragView"-->      
-      <android.support.design.widget.CoordinatorLayout 
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
-        <include
+    <!--sothree:umanoDragView="@+id/dragView"-->
+        <android.support.design.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            layout="@layout/include_list_viewpager"/>
-        <include
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            layout="@layout/BottomSheet"
-            app:layout_behavior="@string/bottom_sheet_behavior"/>
+            android:fitsSystemWindows="true">
+            <include
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                layout="@layout/include_list_viewpager" />
+            <include
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                layout="@layout/BottomSheet"
+                app:layout_behavior="@string/bottom_sheet_behavior" />
         </android.support.design.widget.CoordinatorLayout>
         <RelativeLayout
             android:layout_width="match_parent"

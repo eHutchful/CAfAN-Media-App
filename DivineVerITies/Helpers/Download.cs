@@ -43,6 +43,7 @@ namespace DivineVerITies.Helpers
                             await Task.Yield();
                             break;
                         }
+                        filestream.Write(buffer, 0, bytesRead);
                         receivedBytes += bytesRead;
                         if (progressReporter != null)
                         {
@@ -50,9 +51,9 @@ namespace DivineVerITies.Helpers
                             progressReporter.Report(args);
                         }
                     }
-                    filestream.Write(file.ToArray(), 0, (file.ToArray()).Length);
-                    filestream.Close();
-                    stream.Close();
+                stream.Close();
+                filestream.Close();
+                    
                 }
             
             catch (ObjectDisposedException e)

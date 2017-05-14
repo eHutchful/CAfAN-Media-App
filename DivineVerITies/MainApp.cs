@@ -251,21 +251,22 @@ namespace DivineVerITies
             //    }
             //};
 
-            var mOptions = FindViewById<ImageButton>(Resource.Id.img_options);
-            mOptions.Click += (s, e) =>
-            {
-                Android.Support.V7.Widget.PopupMenu Popup = new Android.Support.V7.Widget.PopupMenu(mOptions.Context, mOptions);
-                Popup.Inflate(Resource.Menu.slideupMenu);
-                Popup.MenuItemClick += (o, args) =>
-                {
-                    switch (args.Item.ItemId)
-                    {
-                        case Resource.Id.action_add_hide:
-                            layout.Visibility = ViewStates.Gone;
-                            break;
-                    }
-                }; Popup.Show();
-            };
+            //var mOptions = FindViewById<ImageButton>(Resource.Id.img_options);
+            //mOptions.Click += (s, e) =>
+            //{
+            //    //Android.Support.V7.Widget.PopupMenu Popup = new Android.Support.V7.Widget.PopupMenu(mOptions.Context, mOptions);
+            //    //Popup.Inflate(Resource.Menu.slideupMenu);
+            //    //Popup.MenuItemClick += (o, args) =>
+            //    //{
+            //    //    switch (args.Item.ItemId)
+            //    //    {
+            //    //        case Resource.Id.action_add_hide:
+            //    //            layout.Visibility = ViewStates.Gone;
+            //    //            break;
+            //    //    }
+            //    //}; Popup.Show();
+                
+            //};
             #endregion
             #region slidingupcode
             mLayout = FindViewById<SlidingUpPanelLayout>(Resource.Id.sliding_layout);
