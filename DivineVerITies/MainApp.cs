@@ -29,7 +29,7 @@ namespace DivineVerITies
 {
     public delegate void VisibilityChangedHandler(object sender,EventArgs args);
     [Activity(Theme = "@style/Theme.DesignDemo", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    public class MainApp : AppCompatActivity
+    public class MainApp : AppCompatActivity, TabLayout.IOnTabSelectedListener
     {
 
         #region playerFields
@@ -146,6 +146,8 @@ namespace DivineVerITies
             SetUpViewPager(viewPager);
 
             tabs.SetupWithViewPager(viewPager);
+
+            tabs.AddOnTabSelectedListener(this);
 
             setupTabIcons();
             setSelectedTab();
@@ -613,6 +615,38 @@ namespace DivineVerITies
             {
                 base.OnBackPressed();
             }
+        }
+
+        public void OnTabReselected(TabLayout.Tab tab)
+        {
+            
+        }
+
+        public void OnTabSelected(TabLayout.Tab tab)
+        {
+            switch (tabs.SelectedTabPosition)
+            {
+                case 0:
+                    break;
+                case 1:
+                    //SlidingUpPanelLayout.PanelState state= mLayout.GetPanelState();
+                    if (mLayout.GetPanelState() != SlidingUpPanelLayout.PanelState.Hidden)
+                    {
+                        mLayout.SetPanelState(SlidingUpPanelLayout.PanelState.Hidden);
+                    }
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public void OnTabUnselected(TabLayout.Tab tab)
+        {
+            
         }
     }
 }
