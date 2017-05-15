@@ -18,6 +18,9 @@ using System.Globalization;
 using Android.Text;
 using Android.Text.Style;
 using Android.Graphics;
+using Android.App;
+using Android.Support.V7.App;
+using Android.Support.Design.Widget;
 
 namespace DivineVerITies
 {
@@ -31,6 +34,7 @@ namespace DivineVerITies
         public event EventHandler<int> itemClick;
         private Context mContext;
         public string searchString;
+        private TabLayout selectedTab;
 
         public AudioRecyclerViewAdapter(Context context, List<AudioList> audios, Resources res)
         {
@@ -41,6 +45,7 @@ namespace DivineVerITies
             mResource = res;
             
             Filter = new AudioFilter(this);
+            selectedTab = ((AppCompatActivity)mContext).FindViewById<TabLayout>(Resource.Id.tabs);
         }
 
         public override int ItemCount
@@ -63,80 +68,137 @@ namespace DivineVerITies
         }
         
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
-        {            
-            var simpleHolder = holder as SimpleAudioViewHolder;
-            //int indexPosition = (mAudios.Count - 1) - position;
-
-            simpleHolder.mAudioTitle.Text = mAudios[position].Title;
-            simpleHolder.mAudioSubTitle.Text = mAudios[position].SubTitle;
-            simpleHolder.mPubDate.Text = mAudios[position].PubDate;
-            simpleHolder.mPlayed.Text = "Played";
-
-            string Msg = mAudios[position].Title.ToLower(CultureInfo.CurrentCulture);
-            if (!string.IsNullOrEmpty(searchString) && Msg.Contains(searchString))
+        {
+            if (holder.GetType() == typeof(SimpleAudioViewHolder))
             {
-                int startPos = Msg.IndexOf(searchString);
-                int endPos = startPos + searchString.Length;
+                var simpleHolder = holder as SimpleAudioViewHolder;
+                //int indexPosition = (mAudios.Count - 1) - position;
 
-                ISpannable spanString = new SpannableFactory().NewSpannable(mAudios[position].Title);
-                spanString.SetSpan(new ForegroundColorSpan(Color.ParseColor("#FF4081")), startPos, endPos, SpanTypes.ExclusiveExclusive);
+                simpleHolder.mAudioTitle.Text = mAudios[position].Title;
+                simpleHolder.mAudioSubTitle.Text = mAudios[position].SubTitle;
+                simpleHolder.mPubDate.Text = mAudios[position].PubDate;
+                simpleHolder.mPlayed.Text = "Played";
 
-                simpleHolder.mAudioTitle.SetText(spanString, TextView.BufferType.Spannable);
-            }
-
-            simpleHolder.mOptions.Click += (sender, argss) =>
-            {
-
-                Android.Support.V7.Widget.PopupMenu Popup = new Android.Support.V7.Widget.PopupMenu(
-                    simpleHolder.mOptions.Context, simpleHolder.mOptions);
-                Popup.Inflate(Resource.Menu.audio_menu_album);
-                
-                Popup.MenuItemClick += (o, args) =>
+                simpleHolder.mOptions.Click += (sender, argss) =>
                 {
-                    switch (args.Item.ItemId)
+
+                    Android.Support.V7.Widget.PopupMenu Popup = new Android.Support.V7.Widget.PopupMenu(
+                        simpleHolder.mOptions.Context, simpleHolder.mOptions);
+                    Popup.Inflate(Resource.Menu.audio_menu_album);
+
+                    Popup.MenuItemClick += (o, args) =>
                     {
-                        case Resource.Id.action_add_favourite:
-                            break;
+                        switch (args.Item.ItemId)
+                        {
+                            case Resource.Id.action_add_favourite:
+                                break;
 
-                        //case Resource.Id.action_play_next:
-                        //    Fragment6.mAudios.Add(mAudios[position]);
-                        //    break;
+                            //case Resource.Id.action_play_next:
+                            //    Fragment6.mAudios.Add(mAudios[position]);
+                            //    break;
 
-                        case Resource.Id.action_Download:
-                            MyService.selectedAudio = mAudios[position];
-                            MyService.contxt = mContext;
-                            var intent = new Intent(mContext, typeof(MyService));
-                            intent.SetAction(MyService.StartD);
-                            mContext.StartService(intent);
-                            break;
+                            case Resource.Id.action_Download:
+                                MyService.selectedAudio = mAudios[position];
+                                MyService.contxt = mContext;
+                                var intent = new Intent(mContext, typeof(MyService));
+                                intent.SetAction(MyService.StartD);
+                                mContext.StartService(intent);
+                                break;
 
-                        case Resource.Id.action_details:
-                            string serial;
-                            intent = new Intent(mContext, typeof(PodcastDetails));                            
-                            serial = JsonConvert.SerializeObject(mAudios[position]);                            
-                            intent.PutExtra("selectedItem", serial);
-                            mContext.StartActivity(intent);
-                            break;
+                            case Resource.Id.action_details:
+                                string serial;
+                                intent = new Intent(mContext, typeof(PodcastDetails));
+                                serial = JsonConvert.SerializeObject(mAudios[position]);
+                                intent.PutExtra("selectedItem", serial);
+                                mContext.StartActivity(intent);
+                                break;
 
-                    }
-                }; Popup.Show();
-            };
-           
-            Glide.With(simpleHolder.mAlbumArt.Context)
-                .Load(mAudios[position].ImageUrl)
-                .Transform(new CircleTransform(simpleHolder.mAlbumArt.Context))
-                .Placeholder(Resource.Drawable.ChurchLogo_Gray)
-                .Error(Resource.Drawable.ChurchLogo_Gray)
-                .DiskCacheStrategy(DiskCacheStrategy.All)
-                .Into(simpleHolder.mAlbumArt);
+                        }
+                    }; Popup.Show();
+                };
+
+                Glide.With(simpleHolder.mAlbumArt.Context)
+                    .Load(mAudios[position].ImageUrl)
+                    .Transform(new CircleTransform(simpleHolder.mAlbumArt.Context))
+                    .Placeholder(Resource.Drawable.ChurchLogo_Gray)
+                    .Error(Resource.Drawable.ChurchLogo_Gray)
+                    .DiskCacheStrategy(DiskCacheStrategy.All)
+                    .Into(simpleHolder.mAlbumArt);
+
+                string Msg = mAudios[position].Title.ToLower(CultureInfo.CurrentCulture);
+                if (!string.IsNullOrEmpty(searchString) && Msg.Contains(searchString))
+                {
+                    int startPos = Msg.IndexOf(searchString);
+                    int endPos = startPos + searchString.Length;
+
+                    ISpannable spanString = new SpannableFactory().NewSpannable(mAudios[position].Title);
+                    spanString.SetSpan(new ForegroundColorSpan(Color.ParseColor("#FF4081")), startPos, endPos, SpanTypes.ExclusiveExclusive);
+
+                    simpleHolder.mAudioTitle.SetText(spanString, TextView.BufferType.Spannable);
+                }
+            }
+            else
+            {
+                var simpleHolder = holder as SimpleAudioViewHolder2;
+                //int indexPosition = (mAudios.Count - 1) - position;
+
+                simpleHolder.mAudioTitle.Text = mAudios[position].Title;
+                simpleHolder.mAudioSubtitle.Text = mAudios[position].SubTitle;
+
+                Glide.With(simpleHolder.mAlbumArt.Context)
+                    .Load(mAudios[position].ImageUrl)
+                    .Placeholder(Resource.Drawable.ChurchLogo_Gray)
+                    .Error(Resource.Drawable.ChurchLogo_Gray)
+                    .DiskCacheStrategy(DiskCacheStrategy.All)
+                    .Into(simpleHolder.mAlbumArt);
+
+                string Msg = mAudios[position].Title.ToLower(CultureInfo.CurrentCulture);
+                if (!string.IsNullOrEmpty(searchString) && Msg.Contains(searchString))
+                {
+                    int startPos = Msg.IndexOf(searchString);
+                    int endPos = startPos + searchString.Length;
+
+                    ISpannable spanString = new SpannableFactory().NewSpannable(mAudios[position].Title);
+                    spanString.SetSpan(new ForegroundColorSpan(Color.ParseColor("#FF4081")), startPos, endPos, SpanTypes.ExclusiveExclusive);
+
+                    simpleHolder.mAudioTitle.SetText(spanString, TextView.BufferType.Spannable);
+                }
+            }
+            
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
-            View view = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.audio_cardview, parent, false);
-            view.SetBackgroundResource(mBackground);
-           
-            return new SimpleAudioViewHolder(view, OnClick);
+            View view;
+
+            if (viewType == -100)
+            {
+                view = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.album_card2, parent, false);
+                view.SetBackgroundResource(mBackground);
+
+                return new SimpleAudioViewHolder2(view, OnClick);
+            }
+            else
+            {
+                view = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.audio_cardview, parent, false);
+                view.SetBackgroundResource(mBackground);
+
+                return new SimpleAudioViewHolder(view, OnClick);
+            }
+        }
+
+        public override int GetItemViewType(int position)
+        {
+            
+            if (selectedTab.SelectedTabPosition == 2 || selectedTab.SelectedTabPosition == 3)
+            {
+                return -100;
+            }
+            else
+            {
+                return base.GetItemViewType(position);
+            }
+            
         }
 
         public class SimpleAudioViewHolder : RecyclerView.ViewHolder
@@ -159,6 +221,26 @@ namespace DivineVerITies
                 mAlbumArt = view.FindViewById<ImageView>(Resource.Id.avatar);
                 mOptions = view.FindViewById<ImageButton>(Resource.Id.img_options);
                 mPlayed = view.FindViewById<TextView>(Resource.Id.txtPlayed);
+                mMainAudioView.Click += (sender, e) => listener(AdapterPosition);
+            }
+        }
+
+        public class SimpleAudioViewHolder2 : RecyclerView.ViewHolder
+        {
+            public View mMainAudioView { get; set; }
+            public TextView mAudioTitle { get; set; }
+            public TextView mAudioSubtitle { get; set; }
+            public ImageView mAlbumArt { get; set; }
+            public ImageButton mOptions { get; set; }
+
+            public SimpleAudioViewHolder2(View view, Action<int> listener)
+                : base(view)
+            {
+                mMainAudioView = view;
+                mAudioTitle = view.FindViewById<TextView>(Resource.Id.title);
+                mAudioSubtitle = view.FindViewById<TextView>(Resource.Id.count);
+                mAlbumArt = view.FindViewById<ImageView>(Resource.Id.thumbnail);
+                mOptions = view.FindViewById<ImageButton>(Resource.Id.overflow);
                 mMainAudioView.Click += (sender, e) => listener(AdapterPosition);
             }
         }
