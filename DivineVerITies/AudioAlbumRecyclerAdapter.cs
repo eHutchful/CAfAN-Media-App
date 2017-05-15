@@ -111,11 +111,28 @@ namespace DivineVerITies
                             break;
 
                         case Resource.Id.action_Download:
-                            //MyService.selectedAudio = mAudios[position];
-                            //MyService.contxt = mContext;
-                            //var intent = new Intent(mContext, typeof(MyService));
-                            //intent.SetAction(MyService.StartD);
-                            //mContext.StartService(intent);
+                            if (MyService.typeQueue.Count == 0)
+                            {
+                                foreach(var single in mAudios[position].members)
+                                {
+                                    MyService.typeQueue.Enqueue("audio");
+                                    MyService.audioQueue.Enqueue(single);
+                                }
+                                
+                                MyService.contxt = mContext;
+                                var intenta = new Intent(mContext, typeof(MyService));
+                                intenta.SetAction(MyService.StartD);
+                                mContext.StartService(intenta);
+                            }
+                            else
+                            {
+                                foreach (var single in mAudios[position].members)
+                                {
+                                    MyService.typeQueue.Enqueue("audio");
+                                    MyService.audioQueue.Enqueue(single);
+                                }
+
+                            }
                             break;
 
                         case Resource.Id.action_details:

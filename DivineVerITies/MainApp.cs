@@ -487,10 +487,21 @@ namespace DivineVerITies
            try
             {
                 var audio = (AudioList)MediaPlayerService.selectedAudio;
-                MyService.selectedAudio = audio;
-                var intent = new Intent(ApplicationContext, typeof(MyService));
-                intent.SetAction(MyService.StartD);
-                StartService(intent);
+                if (MyService.typeQueue.Count == 0)
+                {
+                    MyService.typeQueue.Enqueue("audio");
+                    MyService.audioQueue.Enqueue(audio);
+                    var intent = new Intent(ApplicationContext, typeof(MyService));
+                    intent.SetAction(MyService.StartD);
+                    StartService(intent);
+
+                }
+                else
+                {
+                    MyService.typeQueue.Enqueue("audio");
+                    MyService.audioQueue.Enqueue(audio);
+                }
+                
             }catch(Exception ex)
             {
 
