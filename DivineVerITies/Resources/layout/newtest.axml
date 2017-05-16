@@ -23,7 +23,7 @@
             android:orientation="vertical"
             android:layout_centerVertical="true"
             android:paddingLeft="5dp"
-            android:layout_toRightOf="@+id/avatar">
+            android:layout_toRightOf="@+id/avatar1">
             <TextView
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_width="match_parent"
@@ -50,7 +50,7 @@
             android:layout_width="35dp"
             android:layout_height="wrap_content"
             android:id="@+id/img_options"
-            android:src="@drawable/ic_more_vert_black_24dp"
+            android:src="@drawable/ic_expand_more"
             android:tint="?attr/colorAccent"
             android:layout_alignParentRight="true"
             style="?android:attr/borderlessButtonStyle" />

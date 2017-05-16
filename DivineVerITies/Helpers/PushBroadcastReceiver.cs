@@ -48,7 +48,7 @@ namespace DivineVerITies.Helpers
             string tag = string.Empty;
 
             // Extract the push notification message from the intent.
-            if (intent.Extras.ContainsKey("message"))
+            if (intent.Extras.ContainsKey("message") && intent.Extras.Get("url").ToString()=="")
             {
                 message = intent.Extras.Get("message").ToString();
                 type = intent.Extras.Get("type").ToString();
@@ -94,6 +94,47 @@ namespace DivineVerITies.Helpers
                 notificationManager.Notify(type, 1, notification);
 
             }
+
+            else if (intent.Extras.ContainsKey("message") && intent.Extras.Get("url").ToString() != string.Empty)
+            {
+                message = intent.Extras.Get("message").ToString();
+                type = intent.Extras.Get("type").ToString();
+                tag = intent.Extras.Get("url").ToString();
+
+                var title = $"New {type} added:";
+
+                // Create a notification manager to send the notification.
+                var notificationManager =
+                    GetSystemService(NotificationService) as NotificationManager;
+
+                // Create a new intent to show the notification in the UI.
+                Intent secondIntent = new Intent(this, typeof(MainApp));
+
+                secondIntent.PutExtra("TAG", tag);
+                    
+                PendingIntent contentIntent =
+                    PendingIntent.GetActivity(context, 0, secondIntent, 0);
+
+                // Create the notification using the builder.
+                var builder = new NotificationCompat.Builder(context);
+                builder.SetAutoCancel(true);
+                builder.SetContentTitle(title);
+                builder.SetContentText(message);
+                builder.SetSmallIcon(Resource.Drawable.ChurchLogo);
+                builder.SetContentIntent(contentIntent);
+                builder.SetPriority(NotificationCompat.PriorityMax);
+                builder.SetDefaults(NotificationCompat.DefaultAll);
+                if ((int)Android.OS.Build.VERSION.SdkInt >= 21)
+                {
+                    builder.SetCategory(NotificationCompat.CategoryMessage);
+                    builder.SetVisibility(NotificationCompat.VisibilitySecret);
+                }
+                var notification = builder.Build();
+
+                // Display the notification in the Notifications Area.
+                notificationManager.Notify(type, 2, notification);
+
+            }
         }
 
         protected override void OnError(Context context, string errorId)
@@ -116,7 +157,7 @@ namespace DivineVerITies.Helpers
             var push = client.GetPush();
 
             // Define a message body for GCM.
-            const string templateBodyGCM = "{\"data\":{\"message\":\"$(messageParam)\",\"type\":\"$(mediaType)\",\"tag\":\"$(category)\"}}";
+            const string templateBodyGCM = "{\"data\":{\"message\":\"$(messageParam)\",\"type\":\"$(mediaType)\",\"tag\":\"$(category)\", \"url\":\"$(url)\"}}";
 
             // Define the template registration as JSON.
             JObject templates = new JObject();
