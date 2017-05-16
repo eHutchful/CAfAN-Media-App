@@ -19,6 +19,7 @@ using System.Linq;
 using Android.Support.V7.App;
 using Com.Bumptech.Glide;
 using Com.Bumptech.Glide.Load.Engine;
+using Android.Support.V4.Media.Session;
 
 namespace DivineVerITies.Fragments
 {
@@ -155,9 +156,22 @@ namespace DivineVerITies.Fragments
             var album = albums[position];
             bottomSheetRecyclerView.SetAdapter(new SingleAudioAdapter(Activity, album.members, Activity.Resources));
             bottomSheetRecyclerView.Visibility = ViewStates.Visible;
-            bottomSheetRecyclerView.SetItemClickListener((rv, positions, view) => {
-                MediaPlayerService.selectedAudio = ((SingleAudioAdapter)rv.GetAdapter()).mAudios[positions];
-                MainApp.visibility = ViewStates.Visible;
+            bottomSheetRecyclerView.SetItemClickListener(async (rv, positions, view) => {
+                var activity = ((MainApp)Activity);
+                if (activity.binder.GetMediaPlayerService().mediaPlayer != null && activity.binder.GetMediaPlayerService().MediaPlayerState == PlaybackStateCompat.StatePlaying)
+                {
+                    await activity.binder.GetMediaPlayerService().Stop();
+                    MediaPlayerService.selectedAudio = ((SingleAudioAdapter)rv.GetAdapter()).mAudios[positions];
+                    MainApp.visibility = ViewStates.Visible;
+                    await activity.binder.GetMediaPlayerService().Play();
+                }
+                else
+                {
+                    MediaPlayerService.selectedAudio = ((SingleAudioAdapter)rv.GetAdapter()).mAudios[positions];
+                    MainApp.visibility = ViewStates.Visible;
+                    await activity.binder.GetMediaPlayerService().Play();
+                }
+               
             });
             bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
             
