@@ -24,22 +24,51 @@ namespace DivineVerITies.Helpers
             mContext = context;
         }
 
-        [Obsolete]
+        public override void OnLoadResource(WebView view, string url)
+        {
+            base.OnLoadResource(view, url);
+        }
+
+        public override void OnPageCommitVisible(WebView view, string url)
+        {
+            base.OnPageCommitVisible(view, url);
+        }
+
+        public override void OnReceivedClientCertRequest(WebView view, ClientCertRequest request)
+        {
+            base.OnReceivedClientCertRequest(view, request);
+        }
+
+        public override void OnUnhandledKeyEvent(WebView view, KeyEvent e)
+        {
+            base.OnUnhandledKeyEvent(view, e);
+        }
+
         public override bool ShouldOverrideUrlLoading(WebView view, string url)
         {
-            if (url.ToString().Equals("privacy"))
+            return base.ShouldOverrideUrlLoading(view, url);
+        }
+
+        public override WebResourceResponse ShouldInterceptRequest(WebView view, string url)
+        {
+            return base.ShouldInterceptRequest(view, url);
+        }
+        public override bool ShouldOverrideUrlLoading(WebView view, IWebResourceRequest request)
+        {
+            
+            if (request.Url.ToString().Equals("privacy"))
             {
                 Intent intent = new Intent(mContext, typeof(Privacy));
                 mContext.StartActivity(intent);
                 return true;
             }
-            else if (url.ToString().Equals("terms"))
+            else if (request.Url.ToString().Equals("terms"))
             {
                 Intent intent = new Intent(mContext, typeof(Terms));
                 mContext.StartActivity(intent);
                 return true;
             }
-            else if ((url.ToString().Equals("feedback")))
+            else if (request.Url.ToString().Equals("feedback"))
             {
                 Intent intent = new Intent(mContext, typeof(Feedback));
                 mContext.StartActivity(intent);
@@ -47,37 +76,15 @@ namespace DivineVerITies.Helpers
             }
             else
             {
-                view.LoadUrl(url.ToString());
+                view.LoadUrl(request.Url.ToString());
                 return true;
             }
         }
 
-        //public override bool ShouldOverrideUrlLoading(WebView view, IWebResourceRequest request)
-        //{
-        //    if (request.Url.Equals(new Uri("privacy")))
-        //    {
-        //        Intent intent = new Intent(mContext, typeof(Privacy));
-        //        mContext.StartActivity(intent);
-        //        return true;
-        //    }
-        //    else if (request.Url.Equals(new Uri("terms")))
-        //    {
-        //        Intent intent = new Intent(mContext, typeof(Terms));
-        //        mContext.StartActivity(intent);
-        //        return true;
-        //    }
-        //    else if (request.Url.Equals(new Uri("feedback")))
-        //    {
-        //        Intent intent = new Intent(mContext, typeof(Feedback));
-        //        mContext.StartActivity(intent);
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        view.LoadUrl(request.Url.ToString());
-        //        return true;
-        //    }
-        //}
+        public override WebResourceResponse ShouldInterceptRequest(WebView view, IWebResourceRequest request)
+        {
+            return base.ShouldInterceptRequest(view, request);
+        }
 
         public override void OnPageStarted(WebView view, string url, Android.Graphics.Bitmap favicon)
         {
