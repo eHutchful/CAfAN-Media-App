@@ -261,6 +261,7 @@
     <Compile Include="Fragments\Subscriptions.cs" />
     <Compile Include="Helpers\CustomWebViewClient.cs" />
     <Compile Include="Helpers\DividerDecoration.cs" />
+    <Compile Include="Helpers\DownloadService.cs" />
     <Compile Include="Helpers\ISimpleMediaHolder.cs" />
     <Compile Include="Helpers\Media.cs" />
     <Compile Include="Helpers\AudioService.cs" />

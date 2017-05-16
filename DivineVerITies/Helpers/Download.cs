@@ -14,12 +14,13 @@ namespace DivineVerITies.Helpers
 
         Context mContext;
         public CancellationTokenSource cts = new CancellationTokenSource();
-        public  async Task CreateDownloadTask(string urlToDownload,
+        public  async void CreateDownloadTask(string urlToDownload,
             string fullPath, IProgress<DownloadBytesProgress> progressReporter, Context context)
         {
             
             mContext = context;
                 WebClient client = new WebClient();
+            
                 cts.Token.Register(client.CancelAsync);
                 int receivedBytes = 0;
                 int totalBytes = 0;
@@ -36,7 +37,7 @@ namespace DivineVerITies.Helpers
                     var filestream = File.Create(fullPath, totalBytes);
                     for (; ; )
                     {
-                        int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
+                        int bytesRead = stream.Read(buffer, 0, buffer.Length);
                         file.AddRange(buffer);
                         if (bytesRead == 0)
                         {

@@ -146,7 +146,7 @@ namespace DivineVerITies.Helpers
         {
             if (typeQueue.Count == 0)
                 return;
-            var dwn = new Download();
+            var dwn = new VideoDownloader();
             string type="";
             Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(contxt);
             builder.SetTitle("Confirm Download");
@@ -221,12 +221,12 @@ namespace DivineVerITies.Helpers
                     if (type == "audio")
                     {
                         //await dwn.DownloadFileAsync(selectedAudio.Link, filename, progressReporter, contxt);
-                        await dwn.CreateDownloadTask(MyService.selectedAudio.Link, filename, progressReporter, contxt);
+                        //await dwn.CreateDownloadTask(MyService.selectedAudio.Link, filename, progressReporter, contxt);
                     }
                     else
                     {
                         //await dwn.DownloadFileAsync(selectedVideo.Link, filename, progressReporter, contxt);
-                        await dwn.CreateDownloadTask(MyService.selectedAudio.Link, filename, progressReporter, contxt);
+                        //await dwn.CreateDownloadTask(MyService.selectedAudio.Link, filename, progressReporter, contxt);
                     }
 
 

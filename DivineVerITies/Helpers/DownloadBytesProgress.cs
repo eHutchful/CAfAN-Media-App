@@ -13,6 +13,7 @@ namespace DivineVerITies.Helpers
             FileName = urlToDownload;
             BytesReceived = receivedBytes;
             TotalBytes = totalBytes;
+            prevPer = 0;
         }
 
         public string FileName { get; set; }
@@ -22,6 +23,8 @@ namespace DivineVerITies.Helpers
         public int TotalBytes { get; set; }
 
         public float PercentComplete { get { return (float)BytesReceived / TotalBytes; } }
+
+        public int prevPer;
 
         public bool IsFinished { get { return BytesReceived == TotalBytes; } }
     }
