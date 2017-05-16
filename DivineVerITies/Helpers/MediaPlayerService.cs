@@ -905,8 +905,12 @@ namespace DivineVerITies.Helpers
                     break;
                 case AudioFocus.LossTransientCanDuck:
                     //We have lost focus but should till play at a muted 10% volume
-                    if (mediaPlayer.IsPlaying)
-                        mediaPlayer.SetVolume(.1f, .1f);//turn it down!
+                    if(mediaPlayer != null)
+                    {
+                        if (mediaPlayer.IsPlaying)
+                            mediaPlayer.SetVolume(.1f, .1f);//turn it down!
+                    }
+                    
                     break;
 
             }
