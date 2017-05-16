@@ -99,26 +99,50 @@ namespace DivineVerITies
             simpleHolder.mOptions.Click += (s, e) =>
             {
                 Android.Support.V7.Widget.PopupMenu Popup = new Android.Support.V7.Widget.PopupMenu(simpleHolder.mOptions.Context, simpleHolder.mOptions);
-                //Popup.Inflate(Resource.Menu.audio_menu_album);
-                Popup.Menu.Add(Menu.None, 0, Menu.None, "options").SetTitle("Play Album").SetShowAsAction(ShowAsAction.Never);
-                Popup.Menu.Add(Menu.None, 1, Menu.None, "options").SetTitle("Download Album").SetShowAsAction(ShowAsAction.Never);
-                Popup.Menu.Add(Menu.None, 2, Menu.None, "options").SetTitle("Details").SetShowAsAction(ShowAsAction.Never);
+                Popup.Inflate(Resource.Menu.audio_menu_album);
                 Popup.MenuItemClick += (o, args) =>
                 {
                     switch (args.Item.ItemId)
                     {
-                        case 0:
+                        case Resource.Id.action_add_favourite:
                             break;
 
-                        case 1:
-                            //MyService.selectedAudio = mAudios[position];
-                            //MyService.contxt = mContext;
-                            //var intent = new Intent(mContext, typeof(MyService));
-                            //intent.SetAction(MyService.StartD);
-                            //mContext.StartService(intent);
+                        case Resource.Id.action_play_next:
+                            if(MediaPlayerService.playlist.Count !=0)
+                                MediaPlayerService.playlist.AddRange(mAudios[position].members);
+                            else
+                            {
+                                MediaPlayerService.playlist.AddRange(mAudios[position].members);
+                                MainApp.visibility = ViewStates.Visible;
+                            }
                             break;
 
-                        case 2:
+                        case Resource.Id.action_Download:
+                            if (MyService.typeQueue.Count == 0)
+                            {
+                                foreach(var single in mAudios[position].members)
+                                {
+                                    MyService.typeQueue.Enqueue("audio");
+                                    MyService.audioQueue.Enqueue(single);
+                                }
+                                
+                                MyService.contxt = mContext;
+                                var intenta = new Intent(mContext, typeof(MyService));
+                                intenta.SetAction(MyService.StartD);
+                                mContext.StartService(intenta);
+                            }
+                            else
+                            {
+                                foreach (var single in mAudios[position].members)
+                                {
+                                    MyService.typeQueue.Enqueue("audio");
+                                    MyService.audioQueue.Enqueue(single);
+                                }
+
+                            }
+                            break;
+
+                        case Resource.Id.action_details:
                             //string serial;
                             //intent = new Intent(mContext, typeof(PodcastDetails));
                             //serial = JsonConvert.SerializeObject(mAudios[position]);

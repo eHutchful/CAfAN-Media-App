@@ -93,21 +93,38 @@ namespace DivineVerITies
                             case Resource.Id.action_add_favourite:
                                 break;
 
-                            //case Resource.Id.action_play_next:
-                            //    Fragment6.mAudios.Add(mAudios[position]);
-                            //    break;
+                            case Resource.Id.action_play_next:
+                                if (MediaPlayerService.playlist.Count != 0)
+                                    MediaPlayerService.playlist.Add(mAudios[position]);
+                                else
+                                {
+                                    MediaPlayerService.playlist.Add(mAudios[position]);
+                                    MainApp.visibility = ViewStates.Visible;
+                                }
+
+                                break;
 
                             case Resource.Id.action_Download:
-                                MyService.selectedAudio = mAudios[position];
-                                MyService.contxt = mContext;
-                                var intent = new Intent(mContext, typeof(MyService));
-                                intent.SetAction(MyService.StartD);
-                                mContext.StartService(intent);
+                                if(MyService.typeQueue.Count == 0)
+                                {
+                                    MyService.typeQueue.Enqueue("audio");
+                                    MyService.audioQueue.Enqueue(mAudios[position]);
+                                    MyService.contxt = mContext;
+                                    var intenta = new Intent(mContext, typeof(MyService));
+                                    intenta.SetAction(MyService.StartD);
+                                    mContext.StartService(intenta);
+                                }
+                                else
+                                {
+                                    MyService.typeQueue.Enqueue("audio");
+                                    MyService.audioQueue.Enqueue(mAudios[position]);
+                                }
+                                
                                 break;
 
                             case Resource.Id.action_details:
                                 string serial;
-                                intent = new Intent(mContext, typeof(PodcastDetails));
+                                var intent = new Intent(mContext, typeof(PodcastDetails));
                                 serial = JsonConvert.SerializeObject(mAudios[position]);
                                 intent.PutExtra("selectedItem", serial);
                                 mContext.StartActivity(intent);

@@ -108,11 +108,20 @@ namespace DivineVerITies
                             break;
 
                         case Resource.Id.action_Download:
-                            MyService.selectedVideo = mVideos[position];
-                            MyService.contxt = mContext;
-                            var intent = new Intent(mContext, typeof(MyService));
-                            intent.SetAction(MyService.Startvd);
-                            mContext.StartService(intent);
+                            if (MyService.typeQueue.Count == 0)
+                            {
+                                MyService.typeQueue.Enqueue("video");
+                                MyService.videoQueue.Enqueue(mVideos[position]);
+                                MyService.contxt = mContext;
+                                var intenta = new Intent(mContext, typeof(MyService));
+                                intenta.SetAction(MyService.StartD);
+                                mContext.StartService(intenta);
+                            }
+                            else
+                            {
+                                MyService.typeQueue.Enqueue("video");
+                                MyService.videoQueue.Enqueue(mVideos[position]);
+                            }
                             break;
                     }
                 }; Popup.Show();

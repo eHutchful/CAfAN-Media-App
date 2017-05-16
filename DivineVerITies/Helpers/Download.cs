@@ -27,11 +27,11 @@ namespace DivineVerITies.Helpers
 
             try
             {
-
+                
                   
                 var stream = await client.OpenReadTaskAsync(urlToDownload);
                 
-                    byte[] buffer = new byte[4096];
+                    byte[] buffer = new byte[40960];
                     totalBytes = Int32.Parse(client.ResponseHeaders[HttpRequestHeader.ContentLength]);                   
                     var filestream = File.Create(fullPath, totalBytes);
                     for (; ; )

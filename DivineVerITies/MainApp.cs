@@ -362,7 +362,11 @@ namespace DivineVerITies
             downloadButton.Click += downloadButton_Click;
             loadingBar = FindViewById<ProgressBar>(Resource.Id.audio_player_loading);
 
-
+            seekbar.ProgressChanged += async (object sender, SeekBar.ProgressChangedEventArgs e) =>
+             {
+                 loadingBar.Visibility = ViewStates.Visible;
+                 await binder.GetMediaPlayerService().Seek(seekbar.Progress);
+             };
             Playing += (object sender, EventArgs e) =>
             {
                 seekbar.Max = binder.GetMediaPlayerService().Duration;
@@ -375,7 +379,7 @@ namespace DivineVerITies
 
             Buffering += (object sender, EventArgs e) =>
             {
-                loadingBar.Visibility = ViewStates.Visible;
+                //loadingBar.Visibility = ViewStates.Visible;
                 seekbar.SecondaryProgress = binder.GetMediaPlayerService().Buffered;
 
             };
@@ -487,10 +491,21 @@ namespace DivineVerITies
            try
             {
                 var audio = (AudioList)MediaPlayerService.selectedAudio;
-                MyService.selectedAudio = audio;
-                var intent = new Intent(ApplicationContext, typeof(MyService));
-                intent.SetAction(MyService.StartD);
-                StartService(intent);
+                if (MyService.typeQueue.Count == 0)
+                {
+                    MyService.typeQueue.Enqueue("audio");
+                    MyService.audioQueue.Enqueue(audio);
+                    var intent = new Intent(ApplicationContext, typeof(MyService));
+                    intent.SetAction(MyService.StartD);
+                    StartService(intent);
+
+                }
+                else
+                {
+                    MyService.typeQueue.Enqueue("audio");
+                    MyService.audioQueue.Enqueue(audio);
+                }
+                
             }catch(Exception ex)
             {
 

@@ -36,7 +36,7 @@ namespace DivineVerITies.Helpers
     {
         //Ato Added
         public static object selectedAudio;
-        public static List<AudioList> playlist = new List<AudioList>();
+        public static List<object> playlist = new List<object>();
         //Actions
         public int position = 0;
         public const string ActionPlay = "com.xamarin.action.PLAY";
@@ -321,7 +321,16 @@ namespace DivineVerITies.Helpers
 
             try
             {
-                var Audio = (AudioList)selectedAudio;
+                AudioList Audio = new AudioList();
+                if (selectedAudio != null)
+                {
+                    Audio = (AudioList)selectedAudio;
+                }
+                if (playlist.Count != 0 && selectedAudio == null)
+                {
+                    selectedAudio = playlist[0];
+                    Audio = (AudioList)selectedAudio;
+                }
                 sContext.Post(x => { MainApp.loadingBar.Visibility = ViewStates.Visible; }, null);
                 pbarState = ViewStates.Visible;
                 var Client = new HttpClient();
@@ -353,7 +362,16 @@ namespace DivineVerITies.Helpers
             }
             catch(InvalidCastException inv)
             {
-                var Audio = (Media)selectedAudio;
+                Media Audio = new Media();
+                if (selectedAudio != null)
+                {
+                    Audio = (Media)selectedAudio;
+                }
+                if (playlist.Count != 0 && selectedAudio == null)
+                {
+                    selectedAudio = playlist[0];
+                    Audio = (Media)selectedAudio;
+                }
                 sContext.Post(x => { MainApp.loadingBar.Visibility = ViewStates.Visible; }, null);
                 pbarState = ViewStates.Visible;
                 var Client = new HttpClient();
@@ -413,29 +431,58 @@ namespace DivineVerITies.Helpers
 
         public async Task PlayNext()
         {
-            if (mediaPlayer != null)
-            {
-                mediaPlayer.Reset();
-                mediaPlayer.Release();
-                mediaPlayer = null;
-            }
-
             UpdatePlaybackState(PlaybackStateCompat.StateSkippingToNext);
-            //if (Fragment6.mAudios.Contains(selectedAudio)) 
-            //{
-            //    if (Fragment6.mAudios.IndexOf(selectedAudio) < Fragment6.mAudios.Count - 1)
-            //    {
-            //        selectedAudio = Fragment6.mAudios[Fragment6.mAudios.IndexOf(selectedAudio) + 1];
-            //        MainApp.visibility = ViewStates.Visible;
-            //        await Stop();
-            //        mediaPlayer = null;
-            //        await Play();
-            //    }
-            //}  
+            if (playlist.Count != 0)
+            {
+                if(selectedAudio !=null && playlist.Contains(selectedAudio))
+                {
+                    int index = playlist.IndexOf(selectedAudio);
+                    
+                    if (index < (playlist.Count - 1))
+                    {
+                        selectedAudio = playlist[index + 1];
+                        try
+                        {
+                            await this.Stop();
+                        }
+                        catch(Exception e)
+                        {
+
+                        }                        
+                        await this.Play();
+                    }
+                    else
+                    {
+                        selectedAudio = playlist[0];
+                        try
+                        {
+                            await this.Stop();
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+                        await this.Play();
+                    }
+                }else
+                {
+                    selectedAudio = playlist[0];
+                    try
+                    {
+                        await this.Stop();
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                    await this.Play();
+                }
+            }
             
         }
         public async Task PlayPrevious()
         {
+
             // Start current track from beginning if it's the first track or the track has played more than 3sec and you hit "playPrevious".
             if (Position > 3000)
             {
@@ -443,25 +490,54 @@ namespace DivineVerITies.Helpers
             }
             else
             {
-                if (mediaPlayer != null)
+                UpdatePlaybackState(PlaybackStateCompat.StateSkippingToPrevious);
+                if (playlist.Count != 0)
                 {
-                    mediaPlayer.Reset();
-                    mediaPlayer.Release();
-                    mediaPlayer = null;
-                }
+                    if (selectedAudio != null && playlist.Contains(selectedAudio))
+                    {
+                        int index = playlist.IndexOf(selectedAudio);
+                        UpdatePlaybackState(PlaybackStateCompat.StateSkippingToNext);
+                        if (index > 0)
+                        {
+                            selectedAudio = playlist[index - 1];
+                            try
+                            {
+                                await this.Stop();
+                            }
+                            catch (Exception e)
+                            {
 
-                //if (Fragment6.mAudios.Contains(selectedAudio))
-                //{
-                //    if (Fragment6.mAudios.IndexOf(selectedAudio) >0)
-                //    {
-                //        selectedAudio = Fragment6.mAudios[Fragment6.mAudios.IndexOf(selectedAudio)-1];
-                //        MainApp.visibility = ViewStates.Visible;
-                //        await Stop();
-                //        mediaPlayer = null;
-                //        await Play();
-                //    }
-                //}  
-            
+                            }
+                            await this.Play();
+                        }
+                        else
+                        {
+                            selectedAudio = playlist[playlist.Count-1];
+                            try
+                            {
+                                await this.Stop();
+                            }
+                            catch (Exception e)
+                            {
+
+                            }
+                            await this.Play();
+                        }
+                    }
+                    else
+                    {
+                        selectedAudio = playlist[0];
+                        try
+                        {
+                            await this.Stop();
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+                        await this.Play();
+                    }
+                }
             }
         }
         public async Task PlayPause()
@@ -489,30 +565,39 @@ namespace DivineVerITies.Helpers
         }
         public async Task Stop()
         {
-            await Task.Run(() => {
-                if (mediaPlayer == null)
-                    return;
+            try
+            {
+                await Task.Run(() => {
+                    if (mediaPlayer == null)
+                        return;
 
-                if (mediaPlayer.IsPlaying)
-                {
-                    mediaPlayer.Stop();
-                }
-               
-                UpdatePlaybackState(PlaybackStateCompat.StateStopped);
-                mediaPlayer.Reset();
-                try {
-                    StopNotification();
-                    StopForeground(true);
-                    ReleaseWifiLock();
-                    sContext.Post(x => toPlay(), null);
-                    MainApp.loadingBar.Visibility = ViewStates.Gone;
-                    playImage = Android.Resource.Drawable.IcMediaPlay;
-                }
-                catch(Exception e) {}
-                finally {
-                    UnregisterMediaSessionCompat();                    
-                }                
-            });
+                    if (mediaPlayer.IsPlaying)
+                    {
+                        mediaPlayer.Stop();
+                    }
+
+                    UpdatePlaybackState(PlaybackStateCompat.StateStopped);
+                    mediaPlayer.Reset();
+                    try
+                    {
+                        StopNotification();
+                        StopForeground(true);
+                        ReleaseWifiLock();
+                        sContext.Post(x => toPlay(), null);
+                        MainApp.loadingBar.Visibility = ViewStates.Gone;
+                        playImage = Android.Resource.Drawable.IcMediaPlay;
+                    }
+                    catch (Exception e) { }
+                    finally
+                    {
+                        UnregisterMediaSessionCompat();
+                    }
+                });
+            }catch(Exception e)
+            {
+
+            }
+            
         }
         //changes
         private void UpdatePlaybackState(int state)
