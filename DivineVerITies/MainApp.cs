@@ -323,10 +323,19 @@ namespace DivineVerITies
                 if (binder.GetMediaPlayerService().mediaPlayer != null &&
                 binder.GetMediaPlayerService().MediaPlayerState != PlaybackStateCompat.StateStopped)
                     await binder.GetMediaPlayerService().Stop();
+                
                 if (mediaPlayerServiceConnection != null)
+                {
                     UnbindService(mediaPlayerServiceConnection);
+                    mediaPlayerServiceConnection = null;
+                }
+                    
                 if (binder.GetMediaPlayerService() != null)
+                {
                     binder.GetMediaPlayerService().StopSelf();
+                    
+                }
+                    
             };
             position = FindViewById<TextView>(Resource.Id.audio_player_position);
             duration = FindViewById<TextView>(Resource.Id.audio_player_duration);
