@@ -362,7 +362,11 @@ namespace DivineVerITies
             downloadButton.Click += downloadButton_Click;
             loadingBar = FindViewById<ProgressBar>(Resource.Id.audio_player_loading);
 
-
+            seekbar.ProgressChanged += async (object sender, SeekBar.ProgressChangedEventArgs e) =>
+             {
+                 loadingBar.Visibility = ViewStates.Visible;
+                 await binder.GetMediaPlayerService().Seek(seekbar.Progress);
+             };
             Playing += (object sender, EventArgs e) =>
             {
                 seekbar.Max = binder.GetMediaPlayerService().Duration;
@@ -375,7 +379,7 @@ namespace DivineVerITies
 
             Buffering += (object sender, EventArgs e) =>
             {
-                loadingBar.Visibility = ViewStates.Visible;
+                //loadingBar.Visibility = ViewStates.Visible;
                 seekbar.SecondaryProgress = binder.GetMediaPlayerService().Buffered;
 
             };

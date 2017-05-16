@@ -93,9 +93,16 @@ namespace DivineVerITies
                             case Resource.Id.action_add_favourite:
                                 break;
 
-                            //case Resource.Id.action_play_next:
-                            //    Fragment6.mAudios.Add(mAudios[position]);
-                            //    break;
+                            case Resource.Id.action_play_next:
+                                if (MediaPlayerService.playlist.Count != 0)
+                                    MediaPlayerService.playlist.Add(mAudios[position]);
+                                else
+                                {
+                                    MediaPlayerService.playlist.Add(mAudios[position]);
+                                    MainApp.visibility = ViewStates.Visible;
+                                }
+
+                                break;
 
                             case Resource.Id.action_Download:
                                 if(MyService.typeQueue.Count == 0)

@@ -108,6 +108,13 @@ namespace DivineVerITies
                             break;
 
                         case Resource.Id.action_play_next:
+                            if(MediaPlayerService.playlist.Count !=0)
+                                MediaPlayerService.playlist.AddRange(mAudios[position].members);
+                            else
+                            {
+                                MediaPlayerService.playlist.AddRange(mAudios[position].members);
+                                MainApp.visibility = ViewStates.Visible;
+                            }
                             break;
 
                         case Resource.Id.action_Download:
