@@ -157,21 +157,20 @@ namespace DivineVerITies.Fragments
             bottomSheetRecyclerView.SetAdapter(new SingleAudioAdapter(Activity, album.members, Activity.Resources));
             bottomSheetRecyclerView.Visibility = ViewStates.Visible;
             bottomSheetRecyclerView.SetItemClickListener(async (rv, positions, view) => {
+                MediaPlayerService.selectedAudio = ((SingleAudioAdapter)rv.GetAdapter()).mAudios[positions];
+                MainApp.visibility = ViewStates.Visible;
                 var activity = ((MainApp)Activity);
                 if (activity.binder.GetMediaPlayerService().mediaPlayer != null && activity.binder.GetMediaPlayerService().MediaPlayerState == PlaybackStateCompat.StatePlaying)
                 {
                     await activity.binder.GetMediaPlayerService().Stop();
-                    MediaPlayerService.selectedAudio = ((SingleAudioAdapter)rv.GetAdapter()).mAudios[positions];
-                    MainApp.visibility = ViewStates.Visible;
+                    
                     await activity.binder.GetMediaPlayerService().Play();
                 }
                 else
                 {
-                    MediaPlayerService.selectedAudio = ((SingleAudioAdapter)rv.GetAdapter()).mAudios[positions];
-                    MainApp.visibility = ViewStates.Visible;
+                   
                     await activity.binder.GetMediaPlayerService().Play();
                 }
-               
             });
             bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
             
