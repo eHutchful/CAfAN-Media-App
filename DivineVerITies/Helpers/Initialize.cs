@@ -1,3 +1,4 @@
+using Android.Content;
 using Android.Graphics;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -133,6 +134,35 @@ namespace DivineVerITies.Helpers
                         Count=album.Count
                 });
             }
+            return albums;
+        }
+        public static List<AudioList> getFavouritesList(List<AudioList> list, Context context)
+        {
+            List<AudioList> albums = new List<AudioList>();
+            List<AudioList> holder = new List<AudioList>();
+            holder.AddRange(list);
+            var pref = context.GetSharedPreferences("UserInfo", FileCreationMode.Private);
+            var favourites = pref.GetStringSet("Favourites", new List<string>()).ToArray();
+            for (int i = 0; i<favourites.Length; i++){
+                var album = (from audio in holder where audio.Description == favourites[i] select audio).ToList();
+                albums.AddRange(album);
+            }
+            
+            return albums;
+        }
+        public static List<Video> getFavouritesList(List<Video> list, Context context)
+        {
+            List<Video> albums = new List<Video>();
+            List<Video> holder = new List<Video>();
+            holder.AddRange(list);
+            var pref = context.GetSharedPreferences("UserInfo", FileCreationMode.Private);
+            var favourites = pref.GetStringSet("Favourites", new List<string>()).ToArray();
+            for (int i = 0; i < favourites.Length; i++)
+            {
+                var album = (from video in holder where video.Description == favourites[i] select video).ToList();
+                albums.AddRange(album);
+            }
+
             return albums;
         }
     }
