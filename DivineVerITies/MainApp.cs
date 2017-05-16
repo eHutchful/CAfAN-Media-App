@@ -74,7 +74,7 @@ namespace DivineVerITies
         private int[] tabIcons = {
             Resource.Drawable.ic_library_music,
             Resource.Drawable.ic_video_library,
-            Resource.Drawable.ic_favorite_border,
+            Resource.Drawable.ic_subscriptions,
             Resource.Drawable.ic_cloud_download
             //Resource.Drawable.ic_explore
                                  };
@@ -113,11 +113,11 @@ namespace DivineVerITies
             instance = this;
 
             // Make sure the GCM client is set up correctly. 
-            //GcmClient.CheckDevice(this);
-            //GcmClient.CheckManifest(this);
+            GcmClient.CheckDevice(this);
+            GcmClient.CheckManifest(this);
 
-            //// Register the app for push notifications. 
-            //GcmClient.Register(this, PushBroadcastReceiver.senderIDs);
+            // Register the app for push notifications. 
+            GcmClient.Register(this, PushBroadcastReceiver.senderIDs);
 
             pref = Application.Context.GetSharedPreferences("UserInfo", FileCreationMode.Private);
             edit = pref.Edit();
