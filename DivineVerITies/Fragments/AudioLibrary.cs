@@ -52,6 +52,7 @@ namespace DivineVerITies.Fragments
 
             bottomSheetRecyclerView =((AppCompatActivity)Activity).FindViewById<RecyclerView>(Resource.Id.recyclerview2);
             bottomSheetRecyclerView.SetLayoutManager(new LinearLayoutManager(Activity));
+            //bottomSheetRecyclerView.AddItemDecoration(new DividerDecoration(Activity, LinearLayoutCompat.Vertical));
 
             backdrop = ((AppCompatActivity)Activity).FindViewById<ImageView>(Resource.Id.backdrop);
             backdropProgress = ((AppCompatActivity)Activity).FindViewById<ProgressBar>(Resource.Id.image_loading);
@@ -152,10 +153,10 @@ namespace DivineVerITies.Fragments
         private void SetUpBottomSheet(int position)
         {
             var album = albums[position];
-            bottomSheetRecyclerView.SetAdapter(new AudioRecyclerViewAdapter(Activity, album.members, Activity.Resources));
+            bottomSheetRecyclerView.SetAdapter(new SingleAudioAdapter(Activity, album.members, Activity.Resources));
             bottomSheetRecyclerView.Visibility = ViewStates.Visible;
             bottomSheetRecyclerView.SetItemClickListener((rv, positions, view) => {
-                MediaPlayerService.selectedAudio = ((AudioRecyclerViewAdapter)rv.GetAdapter()).mAudios[positions];
+                MediaPlayerService.selectedAudio = ((SingleAudioAdapter)rv.GetAdapter()).mAudios[positions];
                 MainApp.visibility = ViewStates.Visible;
             });
             bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;

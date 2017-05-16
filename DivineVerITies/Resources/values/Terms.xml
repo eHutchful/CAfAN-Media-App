@@ -2,14 +2,14 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
   <string name="terms">
     <![CDATA[
-    <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
     <title>Divine Verities|Privacy Policy</title>
 
     <style>
         body{
-            font-family:\'Segoe UI\', Tahoma, Geneva, Verdana, sans-serif
+            font-family:Segoe UI, Tahoma, Geneva, Verdana, sans-serif
         }
 
         h2,h3,h4{
@@ -34,7 +34,7 @@
 
     <blockquote>If you access or use the Service, it means you agree to be bound by all of the terms below.
     So, before you use the Service, please read all of the terms. If you don\'t agree to all of the terms below, please do not use the Service.
-    Also, if a term does not make sense to you, please let us know via the <a href="#">Feedback</a> section in the app.</blockquote>
+    Also, if a term does not make sense to you, please let us know via the <a href="feedback">Feedback</a> section in the app.</blockquote>
 
     <blockquote>
         <h4>Changes to these Terms</h4>
@@ -71,7 +71,7 @@
     </blockquote>
 
     <blockquote>
-        <p>For information about how we collect and use information about users of the Service, please check out our privacy policy available at <a href="#">Privacy Policy</a>.</p>
+        <p>For information about how we collect and use information about users of the Service, please check out our privacy policy available at <a href="Privacy">Privacy Policy</a>.</p>
     </blockquote>
 
     <blockquote>
@@ -188,7 +188,7 @@
     </blockquote>
 
     <blockquote>
-        <p>Questions or comments about the Service may be directed to us at the <a href="#">Feedback</a> section of the app.</p>
+        <p>Questions or comments about the Service may be directed to us at the <a href="feedback">Feedback</a> section of the app.</p>
     </blockquote>
 
     <!--<blockquote>

@@ -258,6 +258,7 @@
     <Compile Include="Fragments\Fragment6.cs" />
     <Compile Include="Fragments\Favourites.cs" />
     <Compile Include="Helpers\CustomWebViewClient.cs" />
+    <Compile Include="Helpers\DividerDecoration.cs" />
     <Compile Include="Helpers\ISimpleMediaHolder.cs" />
     <Compile Include="Helpers\Media.cs" />
     <Compile Include="Helpers\AudioService.cs" />
@@ -265,7 +266,6 @@
     <Compile Include="Helpers\CancelReceiver.cs" />
     <Compile Include="Helpers\CircleTransform.cs" />
     <Compile Include="Helpers\CustomMessageHandler.cs" />
-    <Compile Include="Helpers\DividerDecoration.cs" />
     <Compile Include="Helpers\GridSpacingItemDecoration.cs" />
     <Compile Include="Helpers\MediaRecyclerAdapter.cs" />
     <Compile Include="Helpers\NetworkStatusBroadcastReceiver.cs" />
@@ -294,6 +294,7 @@
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleStringRecyclerViewAdapter.cs" />
+    <Compile Include="SingleAudioAdapter.cs" />
     <Compile Include="Splash.cs" />
     <Compile Include="TabAdapter.cs" />
     <Compile Include="Terms.cs" />
@@ -403,6 +404,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\BottomSheet.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\SingleAudio.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -878,6 +882,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\menu\slideupMenu.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\audio1.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\audio2.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

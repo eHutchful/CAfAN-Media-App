@@ -42,13 +42,14 @@ namespace DivineVerITies.Helpers
             {
                 if (value != HORIZONTAL_LIST && value != VERTICAL_LIST)
                 {
-                    throw new System.ArgumentException("invalid orientation");
+                    throw new ArgumentException("invalid orientation");
                 }
                 mOrientation = value;
             }
         }
 
-        public override void OnDraw(Canvas c, RecyclerView parent)
+
+        public override void OnDraw(Canvas c, RecyclerView parent, RecyclerView.State state)
         {
             if (mOrientation == VERTICAL_LIST)
             {
@@ -58,6 +59,7 @@ namespace DivineVerITies.Helpers
             {
                 drawHorizontal(c, parent);
             }
+
         }
 
         public virtual void drawVertical(Canvas c, RecyclerView parent)
@@ -103,8 +105,7 @@ namespace DivineVerITies.Helpers
             }
         }
 
-
-        public override void GetItemOffsets(Rect outRect, int itemPosition, RecyclerView parent)
+        public override void GetItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state)
         {
             if (mOrientation == VERTICAL_LIST)
             {

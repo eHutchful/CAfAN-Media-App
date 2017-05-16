@@ -47,17 +47,17 @@ namespace DivineVerITies.Fragments
             Button mButtonSignIn = View.FindViewById<Button>(Resource.Id.btnSignIn);
             mButtonSignIn.Click += mButtonSignIn_Click;
 
-            ImageView mFacebook = View.FindViewById<ImageView>(Resource.Id.imgFacebook);
-            mFacebook.Click += mFacebookSignIn_Click;
+            //ImageView mFacebook = View.FindViewById<ImageView>(Resource.Id.imgFacebook);
+            //mFacebook.Click += mFacebookSignIn_Click;
 
-            ImageView mTwitterSignIn = View.FindViewById<ImageView>(Resource.Id.imgTwitter);
-            mTwitterSignIn.Click += mTwitterSignIn_Click;
+            //ImageView mTwitterSignIn = View.FindViewById<ImageView>(Resource.Id.imgTwitter);
+            //mTwitterSignIn.Click += mTwitterSignIn_Click;
 
-            ImageView mGoogleSignIn = View.FindViewById<ImageView>(Resource.Id.imgGoogle);
-            mGoogleSignIn.Click += mGoogleSignIn_Click;
+            //ImageView mGoogleSignIn = View.FindViewById<ImageView>(Resource.Id.imgGoogle);
+            //mGoogleSignIn.Click += mGoogleSignIn_Click;
 
-            ImageView mMicrosoftSignIn = View.FindViewById<ImageView>(Resource.Id.imgMicrosoft);
-            mMicrosoftSignIn.Click += mMicrosoftSignIn_Click;
+            //ImageView mMicrosoftSignIn = View.FindViewById<ImageView>(Resource.Id.imgMicrosoft);
+            //mMicrosoftSignIn.Click += mMicrosoftSignIn_Click;
 
             return View;  
         }

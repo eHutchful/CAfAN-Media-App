@@ -46,9 +46,9 @@ namespace DivineVerITies.Fragments
             audioProgressBar = view.FindViewById<ProgressBar>(Resource.Id.audio_loading);
             videoProgressBar = view.FindViewById<ProgressBar>(Resource.Id.video_loading);
             audioHeading = view.FindViewById<TextView>(Resource.Id.audio_heading);
-            audioHeading.Text = "Downloaded Audios";
+            audioHeading.Text = "Favourite Audios";
             videoHeading = view.FindViewById<TextView>(Resource.Id.video_heading);
-            videoHeading.Text = "Downloaded Videos";
+            videoHeading.Text = "Favourite Videos";
             audioRecyclerView = view.FindViewById<RecyclerView>(Resource.Id.audio_recyclerview);
             videoRecyclerView = view.FindViewById<RecyclerView>(Resource.Id.video_recyclerview);
             SetUpAudioRecyclerView(audioRecyclerView);

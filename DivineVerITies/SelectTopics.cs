@@ -56,10 +56,28 @@ namespace DivineVerITies
 
         private void SetUpRecyclerView(RecyclerView mRecyclerView)
         {
-            var values = GetRandomSubList(Topics.TopicStrings, 30);
+            //var values = GetRandomSubList(Topics.TopicStrings, 30);
+
+            var values = new List<string>()
+            {
+                "Regeneration", 
+                "Prayer",
+                "The Gospel",
+                "Trinity",
+                "Work",
+                "Patriotism",
+                "Discussion",
+                "Relationship & Marriage",
+                "Leadership",
+                "Education",
+                "General Teaching (Doctrine)",
+                "Faith",
+                "Love",
+                "Purpose"
+            };
 
             mRecyclerView.SetLayoutManager(new LinearLayoutManager(mRecyclerView.Context));
-            mRecyclerView.SetAdapter(new SimpleStringRecyclerViewAdapter(mRecyclerView.Context, values, this.Resources));
+            mRecyclerView.SetAdapter(new SimpleStringRecyclerViewAdapter(mRecyclerView.Context, values, Resources));
             mRecyclerView.AddItemDecoration(new DividerDecoration(this, LinearLayoutCompat.Vertical));
 
         }

@@ -99,18 +99,18 @@ namespace DivineVerITies
             simpleHolder.mOptions.Click += (s, e) =>
             {
                 Android.Support.V7.Widget.PopupMenu Popup = new Android.Support.V7.Widget.PopupMenu(simpleHolder.mOptions.Context, simpleHolder.mOptions);
-                Popup.Inflate(Resource.Menu.audio_menu_album);
+                //Popup.Inflate(Resource.Menu.audio_menu_album);
+                Popup.Menu.Add(Menu.None, 0, Menu.None, "options").SetTitle("Play Album").SetShowAsAction(ShowAsAction.Never);
+                Popup.Menu.Add(Menu.None, 1, Menu.None, "options").SetTitle("Download Album").SetShowAsAction(ShowAsAction.Never);
+                Popup.Menu.Add(Menu.None, 2, Menu.None, "options").SetTitle("Details").SetShowAsAction(ShowAsAction.Never);
                 Popup.MenuItemClick += (o, args) =>
                 {
                     switch (args.Item.ItemId)
                     {
-                        case Resource.Id.action_add_favourite:
+                        case 0:
                             break;
 
-                        case Resource.Id.action_play_next:
-                            break;
-
-                        case Resource.Id.action_Download:
+                        case 1:
                             //MyService.selectedAudio = mAudios[position];
                             //MyService.contxt = mContext;
                             //var intent = new Intent(mContext, typeof(MyService));
@@ -118,7 +118,7 @@ namespace DivineVerITies
                             //mContext.StartService(intent);
                             break;
 
-                        case Resource.Id.action_details:
+                        case 2:
                             //string serial;
                             //intent = new Intent(mContext, typeof(PodcastDetails));
                             //serial = JsonConvert.SerializeObject(mAudios[position]);

@@ -1,6 +1,7 @@
 using Android.Content;
 using Android.Content.Res;
 using Android.Graphics;
+using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Android.Util;
 using Android.Views;
@@ -20,9 +21,11 @@ namespace DivineVerITies
         private List<string> mValues;
         Resources mResource;
         public event EventHandler<int> itemClick;
+        private Context mContext;
        
         public SimpleStringRecyclerViewAdapter(Context context, List<string> items, Resources res)
         {
+            mContext = context;
             context.Theme.ResolveAttribute(Resource.Attribute.selectableItemBackground, mTypedValue, true);
             mBackground = mTypedValue.ResourceId;
             mValues = items;
@@ -39,8 +42,7 @@ namespace DivineVerITies
 
         void OnClick(int position)
         {
-            if (itemClick != null)
-                itemClick(this, position);
+            itemClick?.Invoke(this, position);
         }
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
@@ -48,12 +50,12 @@ namespace DivineVerITies
             var simpleHolder = holder as SimpleViewHolder;
 
             Glide.With(simpleHolder.mImageView.Context)
-               .Load(Resource.Drawable.ChurchLogo)
-               .Transform(new CircleTransform(simpleHolder.mImageView.Context))
-               .Placeholder(Resource.Drawable.ChurchLogo_Gray)
-               .Error(Resource.Drawable.ChurchLogo_Gray)
-               .DiskCacheStrategy(DiskCacheStrategy.All)
-               .Into(simpleHolder.mImageView);
+                .Load(Resource.Drawable.ChurchLogo)
+                .Transform(new CircleTransform(simpleHolder.mImageView.Context))
+                .Placeholder(Resource.Drawable.ChurchLogo_Gray)
+                .Error(Resource.Drawable.ChurchLogo_Gray)
+                .DiskCacheStrategy(DiskCacheStrategy.All)
+                .Into(simpleHolder.mImageView);
 
             simpleHolder.mTxtView.Text = mValues[position];
         }
@@ -63,7 +65,7 @@ namespace DivineVerITies
             View view = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.List_Topic, parent, false);
             view.SetBackgroundResource(mBackground);
 
-            return new SimpleViewHolder(view);
+            return new SimpleViewHolder(view);  
         }
     }
 

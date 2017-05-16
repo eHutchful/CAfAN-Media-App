@@ -24,21 +24,22 @@ namespace DivineVerITies.Helpers
             mContext = context;
         }
 
-        public override bool ShouldOverrideUrlLoading(WebView view, IWebResourceRequest request)
+        [Obsolete]
+        public override bool ShouldOverrideUrlLoading(WebView view, string url)
         {
-            if (request.Url.Equals(new Uri("Privacy")))
+            if (url.Equals(new Uri("privacy")))
             {
                 Intent intent = new Intent(mContext, typeof(Privacy));
                 mContext.StartActivity(intent);
                 return true;
             }
-            else if (request.Url.Equals(new Uri("Terms")))
+            else if (url.Equals(new Uri("terms")))
             {
                 Intent intent = new Intent(mContext, typeof(Terms));
                 mContext.StartActivity(intent);
                 return true;
             }
-            else if (request.Url.Equals(new Uri("Feedback")))
+            else if (url.Equals(new Uri("feedback")))
             {
                 Intent intent = new Intent(mContext, typeof(Feedback));
                 mContext.StartActivity(intent);
@@ -46,10 +47,36 @@ namespace DivineVerITies.Helpers
             }
             else
             {
-                view.LoadUrl(request.Url.ToString());
+                view.LoadUrl(url.ToString());
                 return true;
             }
         }
+        //public override bool ShouldOverrideUrlLoading(WebView view, IWebResourceRequest request)
+        //{
+        //    if (request.Url.Equals(new Uri("privacy")))
+        //    {
+        //        Intent intent = new Intent(mContext, typeof(Privacy));
+        //        mContext.StartActivity(intent);
+        //        return true;
+        //    }
+        //    else if (request.Url.Equals(new Uri("terms")))
+        //    {
+        //        Intent intent = new Intent(mContext, typeof(Terms));
+        //        mContext.StartActivity(intent);
+        //        return true;
+        //    }
+        //    else if (request.Url.Equals(new Uri("feedback")))
+        //    {
+        //        Intent intent = new Intent(mContext, typeof(Feedback));
+        //        mContext.StartActivity(intent);
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        view.LoadUrl(request.Url.ToString());
+        //        return true;
+        //    }
+        //}
 
         public override void OnPageStarted(WebView view, string url, Android.Graphics.Bitmap favicon)
         {

@@ -60,7 +60,7 @@
             android:text="SIGN IN!"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp" />
-        <TextView
+        <!--<TextView
             android:text="Or Sign In With Social Media"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -98,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="25"
                 android:src="@drawable/Microsoft" />
-        </LinearLayout>
+        </LinearLayout>-->
       <TextView
             android:text="Forgot Your Password?"
             android:layout_width="wrap_content"
