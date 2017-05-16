@@ -232,6 +232,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Announcement.cs" />
+    <Compile Include="AnnouncementRecyclerAdapter.cs" />
     <Compile Include="AudioAlbumRecyclerAdapter.cs" />
     <Compile Include="AudioList.cs" />
     <Compile Include="AudioRecyclerViewAdapter.cs" />
@@ -256,7 +258,7 @@
     <Compile Include="Fragments\VideoLibrary.cs" />
     <Compile Include="Fragments\Downloaded.cs" />
     <Compile Include="Fragments\Fragment6.cs" />
-    <Compile Include="Fragments\Favourites.cs" />
+    <Compile Include="Fragments\Subscriptions.cs" />
     <Compile Include="Helpers\CustomWebViewClient.cs" />
     <Compile Include="Helpers\DividerDecoration.cs" />
     <Compile Include="Helpers\ISimpleMediaHolder.cs" />
@@ -288,6 +290,7 @@
     <Compile Include="Helpers\Topics.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MainApp.cs" />
+    <Compile Include="MessageBoard.cs" />
     <Compile Include="PodcastDetails.cs" />
     <Compile Include="Privacy.cs" />
     <Compile Include="SelectTopics.cs" />
@@ -407,6 +410,12 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\SingleAudio.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\AnnouncementCard.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\MessageBoard.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

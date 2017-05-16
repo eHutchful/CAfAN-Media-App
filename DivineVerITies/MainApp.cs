@@ -606,6 +606,11 @@ namespace DivineVerITies
                         intent = new Intent(this, typeof(Terms));
                         StartActivity(intent);
                         break;
+
+                    case Resource.Id.nav_help:
+                        intent = new Intent(this, typeof(MessageBoard));
+                        StartActivity(intent);
+                        break;
                 }
             };
         }
@@ -620,7 +625,7 @@ namespace DivineVerITies
             TabAdapter adapter = new TabAdapter(SupportFragmentManager);
             adapter.AddFragment(new AudioLibrary(), string.Empty);
             adapter.AddFragment(new VideoLibrary(), string.Empty);
-            adapter.AddFragment(new Favourites(), string.Empty);
+            adapter.AddFragment(new Subscriptions(), string.Empty);
             adapter.AddFragment(new Downloaded(), string.Empty);          
 
             viewPager.Adapter = adapter;

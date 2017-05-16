@@ -15,7 +15,7 @@ using Android.Runtime;
 
 namespace DivineVerITies.Fragments
 {
-    public class Favourites : SupportFragment
+    public class Subscriptions : SupportFragment
     {
         private RecyclerView audioRecyclerView;
         private RecyclerView videoRecyclerView;
@@ -46,9 +46,9 @@ namespace DivineVerITies.Fragments
             audioProgressBar = view.FindViewById<ProgressBar>(Resource.Id.audio_loading);
             videoProgressBar = view.FindViewById<ProgressBar>(Resource.Id.video_loading);
             audioHeading = view.FindViewById<TextView>(Resource.Id.audio_heading);
-            audioHeading.Text = "Favourite Audios";
+            audioHeading.Text = "Recomended Audios";
             videoHeading = view.FindViewById<TextView>(Resource.Id.video_heading);
-            videoHeading.Text = "Favourite Videos";
+            videoHeading.Text = "Recomended Videos";
             audioRecyclerView = view.FindViewById<RecyclerView>(Resource.Id.audio_recyclerview);
             videoRecyclerView = view.FindViewById<RecyclerView>(Resource.Id.video_recyclerview);
             SetUpAudioRecyclerView(audioRecyclerView);
