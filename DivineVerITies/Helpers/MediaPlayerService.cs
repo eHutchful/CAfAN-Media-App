@@ -51,7 +51,7 @@ namespace DivineVerITies.Helpers
         private MediaSessionCompat mediaSessionCompat;
         public MediaControllerCompat mediaControllerCompat;
         public ViewStates pbarState = ViewStates.Gone;
-        public int playImage = Android.Resource.Drawable.IcMediaPlay;
+        public int playImage = Resource.Drawable.ic_play_circle_outline;
         public SynchronizationContext sContext;
         public int MediaPlayerState
         {
@@ -408,12 +408,12 @@ namespace DivineVerITies.Helpers
         }
         public void toPlay()
         {
-            MainApp.playPauseButton.SetImageResource(Android.Resource.Drawable.IcMediaPlay);
+            MainApp.playPauseButton.SetImageResource(Resource.Drawable.ic_play_circle_outline);
             MainApp.playPauseButton.SetBackgroundColor(Color.Transparent);
         }
         public void toPause()
         {
-            MainApp.playPauseButton.SetImageResource(Android.Resource.Drawable.IcMediaPause);
+            MainApp.playPauseButton.SetImageResource(Resource.Drawable.ic_pause_circle_outline);
             MainApp.playPauseButton.SetBackgroundColor(Color.Transparent);
         }
         public async Task Seek(int position)

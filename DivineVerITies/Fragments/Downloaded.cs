@@ -18,6 +18,7 @@ using Android.Runtime;
 using Newtonsoft.Json;
 using DivineVerITies.ExoPlayer;
 using Android.Support.V4.Media.Session;
+using Com.Sothree.Slidinguppanel;
 
 namespace DivineVerITies.Fragments
 {
@@ -273,12 +274,20 @@ namespace DivineVerITies.Fragments
                         await activity.binder.GetMediaPlayerService().Stop();
                         MediaPlayerService.selectedAudio = audioplaylist[position];
                         MainApp.visibility = ViewStates.Visible;
+                        if (MainApp.mLayout.GetPanelState() != SlidingUpPanelLayout.PanelState.Expanded)
+                        {
+                            MainApp.mLayout.SetPanelState(SlidingUpPanelLayout.PanelState.Expanded);
+                        }
                         await activity.binder.GetMediaPlayerService().Play();
                     }
                     else
                     {
                         MediaPlayerService.selectedAudio = audioplaylist[position];
                         MainApp.visibility = ViewStates.Visible;
+                        if (MainApp.mLayout.GetPanelState() != SlidingUpPanelLayout.PanelState.Expanded)
+                        {
+                            MainApp.mLayout.SetPanelState(SlidingUpPanelLayout.PanelState.Expanded);
+                        }
                         await activity.binder.GetMediaPlayerService().Play();
                     }
                    
@@ -292,12 +301,20 @@ namespace DivineVerITies.Fragments
                         await activity.binder.GetMediaPlayerService().Stop();
                         MediaPlayerService.selectedAudio = audioplaylist[position];
                         MainApp.visibility = ViewStates.Visible;
+                        if (MainApp.mLayout.GetPanelState() != SlidingUpPanelLayout.PanelState.Expanded)
+                        {
+                            MainApp.mLayout.SetPanelState(SlidingUpPanelLayout.PanelState.Expanded);
+                        }
                         await activity.binder.GetMediaPlayerService().Play();
                     }
                     else
                     {
                         MediaPlayerService.selectedAudio = audioplaylist[position];
                         MainApp.visibility = ViewStates.Visible;
+                        if (MainApp.mLayout.GetPanelState() != SlidingUpPanelLayout.PanelState.Expanded)
+                        {
+                            MainApp.mLayout.SetPanelState(SlidingUpPanelLayout.PanelState.Expanded);
+                        }
                         await activity.binder.GetMediaPlayerService().Play();
                     }
                 }
@@ -309,12 +326,20 @@ namespace DivineVerITies.Fragments
                         await activity.binder.GetMediaPlayerService().Stop();
                         MediaPlayerService.selectedAudio = audioplaylist[position];
                         MainApp.visibility = ViewStates.Visible;
+                        if (MainApp.mLayout.GetPanelState() != SlidingUpPanelLayout.PanelState.Expanded)
+                        {
+                            MainApp.mLayout.SetPanelState(SlidingUpPanelLayout.PanelState.Expanded);
+                        }
                         await activity.binder.GetMediaPlayerService().Play();
                     }
                     else
                     {
                         MediaPlayerService.selectedAudio = audioplaylist[position];
                         MainApp.visibility = ViewStates.Visible;
+                        if (MainApp.mLayout.GetPanelState() != SlidingUpPanelLayout.PanelState.Expanded)
+                        {
+                            MainApp.mLayout.SetPanelState(SlidingUpPanelLayout.PanelState.Expanded);
+                        }
                         await activity.binder.GetMediaPlayerService().Play();
                     }
                 }

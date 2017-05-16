@@ -20,6 +20,7 @@ using Android.Support.V7.App;
 using Com.Bumptech.Glide;
 using Com.Bumptech.Glide.Load.Engine;
 using Android.Support.V4.Media.Session;
+using Com.Sothree.Slidinguppanel;
 
 namespace DivineVerITies.Fragments
 {
@@ -159,6 +160,10 @@ namespace DivineVerITies.Fragments
             bottomSheetRecyclerView.SetItemClickListener(async (rv, positions, view) => {
                 MediaPlayerService.selectedAudio = ((SingleAudioAdapter)rv.GetAdapter()).mAudios[positions];
                 MainApp.visibility = ViewStates.Visible;
+                if (MainApp.mLayout.GetPanelState() != SlidingUpPanelLayout.PanelState.Expanded)
+                {
+                    MainApp.mLayout.SetPanelState(SlidingUpPanelLayout.PanelState.Expanded);
+                }
                 var activity = ((MainApp)Activity);
                 if (activity.binder.GetMediaPlayerService().mediaPlayer != null && activity.binder.GetMediaPlayerService().MediaPlayerState == PlaybackStateCompat.StatePlaying)
                 {

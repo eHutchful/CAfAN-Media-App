@@ -141,7 +141,7 @@
                 tools:ignore="ContentDescription"
                 android:clickable="true"
                 android:foregroundGravity="fill"
-                android:src="@drawable/ic_play_arrow"
+                android:src="@drawable/ic_play_circle_outline"
                 android:background="@android:color/transparent"
                 android:tint="?attr/colorAccent" />
             <android.support.v4.widget.Space
