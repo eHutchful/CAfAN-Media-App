@@ -17,6 +17,7 @@ using Android.Support.V4.View;
 using Android.Runtime;
 using Newtonsoft.Json;
 using DivineVerITies.ExoPlayer;
+using Android.Support.V4.Media.Session;
 
 namespace DivineVerITies.Fragments
 {
@@ -260,25 +261,62 @@ namespace DivineVerITies.Fragments
             //SnapHelper snapHelper = new LinearSnapHelper();
             //snapHelper.AttachToRecyclerView(audioRecyclerView);
 
-            audioRecyclerView.SetItemClickListener((rv, position, view) =>
+            audioRecyclerView.SetItemClickListener(async (rv, position, view) =>
             {
                 int itemposition = rv.GetChildAdapterPosition(view);
                 Context context = view.Context;
                 if (audioAdapter.media == null)
                 {
-                    MediaPlayerService.selectedAudio = audioplaylist[position];
-                    MainApp.visibility = ViewStates.Visible;
+                    var activity = ((MainApp)Activity);
+                    if (activity.binder.GetMediaPlayerService().mediaPlayer != null && activity.binder.GetMediaPlayerService().MediaPlayerState == PlaybackStateCompat.StatePlaying)
+                    {
+                        await activity.binder.GetMediaPlayerService().Stop();
+                        MediaPlayerService.selectedAudio = audioplaylist[position];
+                        MainApp.visibility = ViewStates.Visible;
+                        await activity.binder.GetMediaPlayerService().Play();
+                    }
+                    else
+                    {
+                        MediaPlayerService.selectedAudio = audioplaylist[position];
+                        MainApp.visibility = ViewStates.Visible;
+                        await activity.binder.GetMediaPlayerService().Play();
+                    }
+                   
 
                 }
                 else if (audioAdapter.media.Count == audioplaylist.Count)
                 {
-                    MediaPlayerService.selectedAudio = audioplaylist[position];
-                    MainApp.visibility = ViewStates.Visible;
+                    var activity = ((MainApp)Activity);
+                    if (activity.binder.GetMediaPlayerService().mediaPlayer != null && activity.binder.GetMediaPlayerService().MediaPlayerState == PlaybackStateCompat.StatePlaying)
+                    {
+                        await activity.binder.GetMediaPlayerService().Stop();
+                        MediaPlayerService.selectedAudio = audioplaylist[position];
+                        MainApp.visibility = ViewStates.Visible;
+                        await activity.binder.GetMediaPlayerService().Play();
+                    }
+                    else
+                    {
+                        MediaPlayerService.selectedAudio = audioplaylist[position];
+                        MainApp.visibility = ViewStates.Visible;
+                        await activity.binder.GetMediaPlayerService().Play();
+                    }
                 }
                 else
                 {
-                    MediaPlayerService.selectedAudio = audioplaylist[position];
-                    MainApp.visibility = ViewStates.Visible;
+                    var activity = ((MainApp)Activity);
+                    if (activity.binder.GetMediaPlayerService().mediaPlayer != null && activity.binder.GetMediaPlayerService().MediaPlayerState == PlaybackStateCompat.StatePlaying)
+                    {
+                        await activity.binder.GetMediaPlayerService().Stop();
+                        MediaPlayerService.selectedAudio = audioplaylist[position];
+                        MainApp.visibility = ViewStates.Visible;
+                        await activity.binder.GetMediaPlayerService().Play();
+                    }
+                    else
+                    {
+                        MediaPlayerService.selectedAudio = audioplaylist[position];
+                        MainApp.visibility = ViewStates.Visible;
+                        await activity.binder.GetMediaPlayerService().Play();
+                    }
                 }
 
             });

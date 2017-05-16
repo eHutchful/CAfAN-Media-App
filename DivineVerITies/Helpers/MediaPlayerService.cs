@@ -480,10 +480,10 @@ namespace DivineVerITies.Helpers
             //}
             if (mediaPlayer.CurrentPosition < mediaPlayer.Duration)
             {
-                if (mediaPlayer.CurrentPosition + 5000 > mediaPlayer.Duration)
+                if (mediaPlayer.CurrentPosition + 15000 > mediaPlayer.Duration)
                     await Seek(mediaPlayer.Duration);
                 else
-                    await Seek(mediaPlayer.CurrentPosition + 5000);
+                    await Seek(mediaPlayer.CurrentPosition + 15000);
 
             }
             else
@@ -550,10 +550,10 @@ namespace DivineVerITies.Helpers
             //}
             if (mediaPlayer.CurrentPosition > 0)
             {
-                if (mediaPlayer.CurrentPosition - 5000 < 0)
+                if (mediaPlayer.CurrentPosition - 15000 < 0)
                     await Seek(0);
                 else
-                    await Seek(mediaPlayer.CurrentPosition - 5000);
+                    await Seek(mediaPlayer.CurrentPosition - 15000);
 
             }
             else
