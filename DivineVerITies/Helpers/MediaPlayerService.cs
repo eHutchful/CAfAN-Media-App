@@ -725,7 +725,7 @@ namespace DivineVerITies.Helpers
 
             PendingIntent pendingIntent = PendingIntent.GetService(ApplicationContext, 1, intent, flags);
 
-            return new Android.Support.V7.App.NotificationCompat.Action.Builder(icon, title, pendingIntent).Build();
+            return new NotificationCompat.Action.Builder(icon, title, pendingIntent).Build();
         }
 
         private void AddPlayPauseActionCompat(Android.Support.V7.App.NotificationCompat.Builder builder)
@@ -793,7 +793,7 @@ namespace DivineVerITies.Helpers
             if (intent == null || intent.Action == null)
                 return;
 
-            String action = intent.Action;
+            string action = intent.Action;
 
             if (action.Equals(ActionPlay))
             {

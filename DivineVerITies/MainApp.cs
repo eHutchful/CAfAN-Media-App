@@ -607,8 +607,13 @@ namespace DivineVerITies
                         StartActivity(intent);
                         break;
 
-                    case Resource.Id.nav_help:
+                    case Resource.Id.nav_announcements:
                         intent = new Intent(this, typeof(MessageBoard));
+                        StartActivity(intent);
+                        break;
+
+                    case Resource.Id.nav_help:
+                        intent = new Intent(this, typeof(SampleChooserActivity));
                         StartActivity(intent);
                         break;
                 }

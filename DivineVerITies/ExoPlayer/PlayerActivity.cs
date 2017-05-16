@@ -115,11 +115,12 @@ namespace DivineVerITies.ExoPlayer
             try
             {
                 var video = (Video)selectedVideo;
+                if(video != null)
                 SupportActionBar.Title = video.Title;
             }
             catch(InvalidCastException inv)
             {
-                var video = (DivineVerITies.Helpers.Media)selectedVideo;
+                var video = (Helpers.Media)selectedVideo;
                 SupportActionBar.Title = video.Title;
             }
             
@@ -382,6 +383,7 @@ namespace DivineVerITies.ExoPlayer
 					break;
                 case Exoplayer1.StateReady:
 					text = "Ready";
+                    SupportActionBar.Hide();
 					break;
 				default:
 					text = "Unknown";
@@ -630,6 +632,7 @@ namespace DivineVerITies.ExoPlayer
 			{
 				_mediaController.Hide();
 				_debugRootView.Visibility = ViewStates.Gone;
+                SupportActionBar.Hide();
 			}
 			else
 			{
@@ -641,6 +644,7 @@ namespace DivineVerITies.ExoPlayer
 		{
 			_mediaController.Show(0);
 			_debugRootView.Visibility = ViewStates.Visible;
+            SupportActionBar.Show();
 		}
 
 		#endregion
