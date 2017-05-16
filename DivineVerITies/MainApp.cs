@@ -29,7 +29,7 @@ namespace DivineVerITies
 {
     public delegate void VisibilityChangedHandler(object sender,EventArgs args);
     [Activity(Theme = "@style/Theme.DesignDemo", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    public class MainApp : AppCompatActivity, TabLayout.IOnTabSelectedListener
+    public class MainApp : AppCompatActivity, TabLayout.IOnTabSelectedListener, SeekBar.IOnSeekBarChangeListener
     {
 
         #region playerFields
@@ -169,14 +169,14 @@ namespace DivineVerITies
                         var avatar = FindViewById<ImageView>(Resource.Id.avatar1);
                         Glide.With(this)
                             .Load(audio2.ImageUrl)
-                            .Placeholder(Resource.Drawable.ChurchLogo_Gray)
-                            .Error(Resource.Drawable.ChurchLogo_Gray)
+                            .Placeholder(Resource.Drawable.ChurchLogo)
+                            .Error(Resource.Drawable.ChurchLogo)
                             .DiskCacheStrategy(DiskCacheStrategy.All)
                             .Into(artworkView);
                         Glide.With(this)
                             .Load(audio2.ImageUrl)
-                            .Placeholder(Resource.Drawable.ChurchLogo_Gray)
-                            .Error(Resource.Drawable.ChurchLogo_Gray)
+                            .Placeholder(Resource.Drawable.ChurchLogo)
+                            .Error(Resource.Drawable.ChurchLogo)
                             .DiskCacheStrategy(DiskCacheStrategy.All)
                             .Into(avatar);
                     }
@@ -191,14 +191,14 @@ namespace DivineVerITies
                         var avatar = FindViewById<ImageView>(Resource.Id.avatar1);
                         Glide.With(this)
                             .Load(audio1.AlbumArt)
-                            .Placeholder(Resource.Drawable.ChurchLogo_Gray)
+                            .Placeholder(Resource.Drawable.ChurchLogo)
                             .Error(Resource.Drawable.ChurchLogo_Gray)
                             .DiskCacheStrategy(DiskCacheStrategy.All)
                             .Into(artworkView);
                         Glide.With(this)
                             .Load(audio1.AlbumArt)
-                            .Placeholder(Resource.Drawable.ChurchLogo_Gray)
-                            .Error(Resource.Drawable.ChurchLogo_Gray)
+                            .Placeholder(Resource.Drawable.ChurchLogo)
+                            .Error(Resource.Drawable.ChurchLogo)
                             .DiskCacheStrategy(DiskCacheStrategy.All)
                             .Into(avatar);
                     }
@@ -339,8 +339,8 @@ namespace DivineVerITies
                     var audio = (AudioList)MediaPlayerService.selectedAudio;
                     Glide.With(this)
                    .Load(audio.ImageUrl)
-                   .Placeholder(Resource.Drawable.ChurchLogo_Gray)
-                   .Error(Resource.Drawable.ChurchLogo_Gray)
+                   .Placeholder(Resource.Drawable.ChurchLogo)
+                   .Error(Resource.Drawable.ChurchLogo)
                    .DiskCacheStrategy(DiskCacheStrategy.All)
                    .Into(artworkView);
                    
@@ -351,8 +351,8 @@ namespace DivineVerITies
                     var audio = (Media)MediaPlayerService.selectedAudio;
                     Glide.With(this)
                    .Load(audio.AlbumArt)
-                   .Placeholder(Resource.Drawable.ChurchLogo_Gray)
-                   .Error(Resource.Drawable.ChurchLogo_Gray)
+                   .Placeholder(Resource.Drawable.ChurchLogo)
+                   .Error(Resource.Drawable.ChurchLogo)
                    .DiskCacheStrategy(DiskCacheStrategy.All)
                    .Into(artworkView);
                 }
@@ -362,11 +362,12 @@ namespace DivineVerITies
             downloadButton.Click += downloadButton_Click;
             loadingBar = FindViewById<ProgressBar>(Resource.Id.audio_player_loading);
 
-            //seekbar.ProgressChanged += async (object sender, SeekBar.ProgressChangedEventArgs e) =>
-             //{
-             //    loadingBar.Visibility = ViewStates.Visible;
-             //    await binder.GetMediaPlayerService().Seek(seekbar.Progress);
-             //};
+            seekbar.ProgressChanged += (object sender, SeekBar.ProgressChangedEventArgs e) =>
+             {
+                 //loadingBar.Visibility = ViewStates.Visible;
+                 //await binder.GetMediaPlayerService().Seek(seekbar.Progress);
+             };
+            seekbar.SetOnSeekBarChangeListener(this);
             Playing += (object sender, EventArgs e) =>
             {
                 seekbar.Max = binder.GetMediaPlayerService().Duration;
@@ -662,6 +663,29 @@ namespace DivineVerITies
         public void OnTabUnselected(TabLayout.Tab tab)
         {
             
+        }
+
+        public void OnProgressChanged(SeekBar seekBar, int progress, bool fromUser)
+        {
+            
+        }
+
+        public async void OnStartTrackingTouch(SeekBar seekBar)
+        {
+            if (binder.GetMediaPlayerService().mediaPlayer != null && binder.GetMediaPlayerService().MediaPlayerState == PlaybackStateCompat.StatePlaying)
+            {
+                await binder.GetMediaPlayerService().Seek(seekbar.Progress);
+
+            }
+        }
+
+        public async void OnStopTrackingTouch(SeekBar seekBar)
+        {
+            if (binder.GetMediaPlayerService().mediaPlayer != null && binder.GetMediaPlayerService().MediaPlayerState == PlaybackStateCompat.StatePlaying)
+            {
+                await binder.GetMediaPlayerService().Seek(seekbar.Progress);
+
+            }
         }
     }
 }
