@@ -204,7 +204,7 @@ namespace DivineVerITies.Helpers
 
         public async void OnCompletion(MediaPlayer mp)
         {
-            await PlayNext();
+            //await PlayNext();
         }
 
         public bool OnError(MediaPlayer mp, MediaError what, int extra)
@@ -431,114 +431,133 @@ namespace DivineVerITies.Helpers
 
         public async Task PlayNext()
         {
-            UpdatePlaybackState(PlaybackStateCompat.StateSkippingToNext);
-            if (playlist.Count != 0)
+            //UpdatePlaybackState(PlaybackStateCompat.StateSkippingToNext);
+            //if (playlist.Count != 0)
+            //{
+            //    if(selectedAudio !=null && playlist.Contains(selectedAudio))
+            //    {
+            //        int index = playlist.IndexOf(selectedAudio);
+
+            //        if (index < (playlist.Count - 1))
+            //        {
+            //            selectedAudio = playlist[index + 1];
+            //            try
+            //            {
+            //                await this.Stop();
+            //            }
+            //            catch(Exception e)
+            //            {
+
+            //            }                        
+            //            await this.Play();
+            //        }
+            //        else
+            //        {
+            //            selectedAudio = playlist[0];
+            //            try
+            //            {
+            //                await this.Stop();
+            //            }
+            //            catch (Exception e)
+            //            {
+
+            //            }
+            //            await this.Play();
+            //        }
+            //    }else
+            //    {
+            //        selectedAudio = playlist[0];
+            //        try
+            //        {
+            //            await this.Stop();
+            //        }
+            //        catch (Exception e)
+            //        {
+
+            //        }
+            //        await this.Play();
+            //}
+            //}
+            if (mediaPlayer.CurrentPosition < mediaPlayer.Duration)
             {
-                if(selectedAudio !=null && playlist.Contains(selectedAudio))
-                {
-                    int index = playlist.IndexOf(selectedAudio);
-                    
-                    if (index < (playlist.Count - 1))
-                    {
-                        selectedAudio = playlist[index + 1];
-                        try
-                        {
-                            await this.Stop();
-                        }
-                        catch(Exception e)
-                        {
+                if (mediaPlayer.CurrentPosition + 5000 > mediaPlayer.Duration)
+                    await Seek(mediaPlayer.Duration);
+                else
+                    await Seek(mediaPlayer.CurrentPosition + 5000);
 
-                        }                        
-                        await this.Play();
-                    }
-                    else
-                    {
-                        selectedAudio = playlist[0];
-                        try
-                        {
-                            await this.Stop();
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-                        await this.Play();
-                    }
-                }else
-                {
-                    selectedAudio = playlist[0];
-                    try
-                    {
-                        await this.Stop();
-                    }
-                    catch (Exception e)
-                    {
-
-                    }
-                    await this.Play();
-                }
             }
-            
+            else
+                return;
         }
         public async Task PlayPrevious()
         {
 
             // Start current track from beginning if it's the first track or the track has played more than 3sec and you hit "playPrevious".
-            if (Position > 3000)
+            //if (Position > 3000)
+            //{
+            //    await Seek(0);
+            //}
+            //else
+            //{
+            //    UpdatePlaybackState(PlaybackStateCompat.StateSkippingToPrevious);
+            //    if (playlist.Count != 0)
+            //    {
+            //        if (selectedAudio != null && playlist.Contains(selectedAudio))
+            //        {
+            //            int index = playlist.IndexOf(selectedAudio);
+            //            UpdatePlaybackState(PlaybackStateCompat.StateSkippingToNext);
+            //            if (index > 0)
+            //            {
+            //                selectedAudio = playlist[index - 1];
+            //                try
+            //                {
+            //                    await this.Stop();
+            //                }
+            //                catch (Exception e)
+            //                {
+
+            //                }
+            //                await this.Play();
+            //            }
+            //            else
+            //            {
+            //                selectedAudio = playlist[playlist.Count-1];
+            //                try
+            //                {
+            //                    await this.Stop();
+            //                }
+            //                catch (Exception e)
+            //                {
+
+            //                }
+            //                await this.Play();
+            //            }
+            //        }
+            //        else
+            //        {
+            //            selectedAudio = playlist[0];
+            //            try
+            //            {
+            //                await this.Stop();
+            //            }
+            //            catch (Exception e)
+            //            {
+
+            //            }
+            //            await this.Play();
+            //        }
+            //    }
+            //}
+            if (mediaPlayer.CurrentPosition > 0)
             {
-                await Seek(0);
+                if (mediaPlayer.CurrentPosition - 5000 < 0)
+                    await Seek(0);
+                else
+                    await Seek(mediaPlayer.CurrentPosition - 5000);
+
             }
             else
-            {
-                UpdatePlaybackState(PlaybackStateCompat.StateSkippingToPrevious);
-                if (playlist.Count != 0)
-                {
-                    if (selectedAudio != null && playlist.Contains(selectedAudio))
-                    {
-                        int index = playlist.IndexOf(selectedAudio);
-                        UpdatePlaybackState(PlaybackStateCompat.StateSkippingToNext);
-                        if (index > 0)
-                        {
-                            selectedAudio = playlist[index - 1];
-                            try
-                            {
-                                await this.Stop();
-                            }
-                            catch (Exception e)
-                            {
-
-                            }
-                            await this.Play();
-                        }
-                        else
-                        {
-                            selectedAudio = playlist[playlist.Count-1];
-                            try
-                            {
-                                await this.Stop();
-                            }
-                            catch (Exception e)
-                            {
-
-                            }
-                            await this.Play();
-                        }
-                    }
-                    else
-                    {
-                        selectedAudio = playlist[0];
-                        try
-                        {
-                            await this.Stop();
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-                        await this.Play();
-                    }
-                }
-            }
+                return;
         }
         public async Task PlayPause()
         {
@@ -880,7 +899,7 @@ namespace DivineVerITies.Helpers
         /// All applications are encouraged to follow this, but are not enforced.
         /// </summary>
         /// <param name="focusChange"></param>
-        public void OnAudioFocusChange(AudioFocus focusChange)
+        public async void OnAudioFocusChange(AudioFocus focusChange)
         {
             switch (focusChange)
             {
@@ -897,11 +916,11 @@ namespace DivineVerITies.Helpers
                     break;
                 case AudioFocus.Loss:
                     //We have lost focus stop!
-                    Stop();
+                    await Stop();
                     break;
                 case AudioFocus.LossTransient:
                     //We have lost focus for a short time, but likely to resume so pause
-                    Pause();
+                    await Pause();
                     break;
                 case AudioFocus.LossTransientCanDuck:
                     //We have lost focus but should till play at a muted 10% volume

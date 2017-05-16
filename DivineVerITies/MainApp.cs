@@ -192,7 +192,7 @@ namespace DivineVerITies
                         Glide.With(this)
                             .Load(audio1.AlbumArt)
                             .Placeholder(Resource.Drawable.ChurchLogo)
-                            .Error(Resource.Drawable.ChurchLogo_Gray)
+                            .Error(Resource.Drawable.ChurchLogo)
                             .DiskCacheStrategy(DiskCacheStrategy.All)
                             .Into(artworkView);
                         Glide.With(this)
