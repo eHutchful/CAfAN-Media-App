@@ -2662,8 +2662,8 @@ namespace DivineVerITies
 			// aapt resource value: 0x7f07000f
 			public const int anchored = 2131165199;
 			
-			// aapt resource value: 0x7f070095
-			public const int appbar = 2131165333;
+			// aapt resource value: 0x7f070094
+			public const int appbar = 2131165332;
 			
 			// aapt resource value: 0x7f07008f
 			public const int appbar2 = 2131165327;
@@ -2773,8 +2773,8 @@ namespace DivineVerITies
 			// aapt resource value: 0x7f070036
 			public const int center_vertical = 2131165238;
 			
-			// aapt resource value: 0x7f070097
-			public const int changePasswordCard = 2131165335;
+			// aapt resource value: 0x7f070096
+			public const int changePasswordCard = 2131165334;
 			
 			// aapt resource value: 0x7f07005f
 			public const int checkbox = 2131165279;
@@ -2878,8 +2878,8 @@ namespace DivineVerITies
 			// aapt resource value: 0x7f07005e
 			public const int expanded_menu = 2131165278;
 			
-			// aapt resource value: 0x7f070094
-			public const int fab = 2131165332;
+			// aapt resource value: 0x7f07009d
+			public const int fab = 2131165341;
 			
 			// aapt resource value: 0x7f0700ab
 			public const int feedbackCard = 2131165355;
@@ -3241,8 +3241,8 @@ namespace DivineVerITies
 			// aapt resource value: 0x7f07005b
 			public const int title_template = 2131165275;
 			
-			// aapt resource value: 0x7f070096
-			public const int toolBar = 2131165334;
+			// aapt resource value: 0x7f070095
+			public const int toolBar = 2131165333;
 			
 			// aapt resource value: 0x7f0700c4
 			public const int toolbar = 2131165380;
@@ -3265,8 +3265,8 @@ namespace DivineVerITies
 			// aapt resource value: 0x7f0700b0
 			public const int txtBody = 2131165360;
 			
-			// aapt resource value: 0x7f07009d
-			public const int txtConfirmPassword = 2131165341;
+			// aapt resource value: 0x7f07009c
+			public const int txtConfirmPassword = 2131165340;
 			
 			// aapt resource value: 0x7f0700ed
 			public const int txtEmptyAudio = 2131165421;
@@ -3283,17 +3283,17 @@ namespace DivineVerITies
 			// aapt resource value: 0x7f0700af
 			public const int txtInputLayoutBody = 2131165359;
 			
-			// aapt resource value: 0x7f07009c
-			public const int txtInputLayoutConfirmPassword = 2131165340;
+			// aapt resource value: 0x7f07009b
+			public const int txtInputLayoutConfirmPassword = 2131165339;
 			
 			// aapt resource value: 0x7f0700ac
 			public const int txtInputLayoutEmail = 2131165356;
 			
-			// aapt resource value: 0x7f07009a
-			public const int txtInputLayoutNewPassword = 2131165338;
+			// aapt resource value: 0x7f070099
+			public const int txtInputLayoutNewPassword = 2131165337;
 			
-			// aapt resource value: 0x7f070098
-			public const int txtInputLayoutOldPassword = 2131165336;
+			// aapt resource value: 0x7f070097
+			public const int txtInputLayoutOldPassword = 2131165335;
 			
 			// aapt resource value: 0x7f0700b6
 			public const int txtInputLayoutPassword = 2131165366;
@@ -3307,11 +3307,11 @@ namespace DivineVerITies
 			// aapt resource value: 0x7f0700b2
 			public const int txtInputLayoutUserName = 2131165362;
 			
-			// aapt resource value: 0x7f07009b
-			public const int txtNewPassword = 2131165339;
+			// aapt resource value: 0x7f07009a
+			public const int txtNewPassword = 2131165338;
 			
-			// aapt resource value: 0x7f070099
-			public const int txtOldPassword = 2131165337;
+			// aapt resource value: 0x7f070098
+			public const int txtOldPassword = 2131165336;
 			
 			// aapt resource value: 0x7f0700b7
 			public const int txtPassword = 2131165367;
