@@ -339,8 +339,8 @@ namespace DivineVerITies
                     var audio = (AudioList)MediaPlayerService.selectedAudio;
                     Glide.With(this)
                    .Load(audio.ImageUrl)
-                   .Placeholder(Resource.Drawable.ChurchLogo_Gray)
-                   .Error(Resource.Drawable.ChurchLogo_Gray)
+                   .Placeholder(Resource.Drawable.ChurchLogo)
+                   .Error(Resource.Drawable.ChurchLogo)
                    .DiskCacheStrategy(DiskCacheStrategy.All)
                    .Into(artworkView);
                    
@@ -351,8 +351,8 @@ namespace DivineVerITies
                     var audio = (Media)MediaPlayerService.selectedAudio;
                     Glide.With(this)
                    .Load(audio.AlbumArt)
-                   .Placeholder(Resource.Drawable.ChurchLogo_Gray)
-                   .Error(Resource.Drawable.ChurchLogo_Gray)
+                   .Placeholder(Resource.Drawable.ChurchLogo)
+                   .Error(Resource.Drawable.ChurchLogo)
                    .DiskCacheStrategy(DiskCacheStrategy.All)
                    .Into(artworkView);
                 }
