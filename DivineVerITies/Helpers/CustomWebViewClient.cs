@@ -27,19 +27,19 @@ namespace DivineVerITies.Helpers
         [Obsolete]
         public override bool ShouldOverrideUrlLoading(WebView view, string url)
         {
-            if (url.Equals(new Uri("privacy")))
+            if (url.ToString().Equals("privacy"))
             {
                 Intent intent = new Intent(mContext, typeof(Privacy));
                 mContext.StartActivity(intent);
                 return true;
             }
-            else if (url.Equals(new Uri("terms")))
+            else if (url.ToString().Equals("terms"))
             {
                 Intent intent = new Intent(mContext, typeof(Terms));
                 mContext.StartActivity(intent);
                 return true;
             }
-            else if (url.Equals(new Uri("feedback")))
+            else if ((url.ToString().Equals("feedback")))
             {
                 Intent intent = new Intent(mContext, typeof(Feedback));
                 mContext.StartActivity(intent);
@@ -51,6 +51,7 @@ namespace DivineVerITies.Helpers
                 return true;
             }
         }
+
         //public override bool ShouldOverrideUrlLoading(WebView view, IWebResourceRequest request)
         //{
         //    if (request.Url.Equals(new Uri("privacy")))

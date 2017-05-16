@@ -46,7 +46,8 @@ namespace DivineVerITies
                 }
             };
 
-            WebView view = new WebView(this);            
+            WebView view = new WebView(this);
+            view.Settings.JavaScriptEnabled = true;           
             view.VerticalScrollBarEnabled = false;
 
             (FindViewById<CardView>(Resource.Id.privacyCard)).AddView(view);
