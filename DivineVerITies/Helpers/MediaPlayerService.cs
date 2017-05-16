@@ -102,8 +102,7 @@ namespace DivineVerITies.Helpers
 
         protected virtual void OnStatusChanged(EventArgs e)
         {
-            if (StatusChanged != null)
-                StatusChanged(this, e);
+            StatusChanged?.Invoke(this, e);
         }
 
         protected virtual void OnCoverReloaded(EventArgs e)
@@ -118,14 +117,12 @@ namespace DivineVerITies.Helpers
 
         protected virtual void OnPlaying(EventArgs e)
         {
-            if (Playing != null)
-                Playing(this, e);
+            Playing?.Invoke(this, e);
         }
 
         protected virtual void OnBuffering(EventArgs e)
         {
-            if (Buffering != null)
-                Buffering(this, e);
+            Buffering?.Invoke(this, e);
         }
 
         /// <summary>
@@ -604,7 +601,7 @@ namespace DivineVerITies.Helpers
                         ReleaseWifiLock();
                         sContext.Post(x => toPlay(), null);
                         MainApp.loadingBar.Visibility = ViewStates.Gone;
-                        playImage = Android.Resource.Drawable.IcMediaPlay;
+                        playImage = Resource.Drawable.ic_play_circle_outline;
                     }
                     catch (Exception e) { }
                     finally
@@ -735,16 +732,16 @@ namespace DivineVerITies.Helpers
         {
             if (MediaPlayerState == PlaybackStateCompat.StatePlaying)
             {
-                builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaPause, "", ActionPause));
+                builder.AddAction(GenerateActionCompat(Resource.Drawable.ic_pause_circle_outline, "", ActionPause));
                 sContext.Post(x => toPause(), null);
-                playImage = Android.Resource.Drawable.IcMediaPause;
+                playImage = Resource.Drawable.ic_pause_circle_outline;
 
             }
             else
             {
-                builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaPlay, "", ActionPlay));
+                builder.AddAction(GenerateActionCompat(Resource.Drawable.ic_play_circle_outline, "", ActionPlay));
                 sContext.Post(x => toPlay(), null);
-                playImage = Android.Resource.Drawable.IcMediaPlay;
+                playImage = Resource.Drawable.ic_play_circle_outline;
             }
         }
 

@@ -232,6 +232,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Announcement.cs" />
+    <Compile Include="AnnouncementRecyclerAdapter.cs" />
     <Compile Include="AudioAlbumRecyclerAdapter.cs" />
     <Compile Include="AudioList.cs" />
     <Compile Include="AudioRecyclerViewAdapter.cs" />
@@ -256,7 +258,7 @@
     <Compile Include="Fragments\VideoLibrary.cs" />
     <Compile Include="Fragments\Downloaded.cs" />
     <Compile Include="Fragments\Fragment6.cs" />
-    <Compile Include="Fragments\Favourites.cs" />
+    <Compile Include="Fragments\Subscriptions.cs" />
     <Compile Include="Helpers\CustomWebViewClient.cs" />
     <Compile Include="Helpers\DividerDecoration.cs" />
     <Compile Include="Helpers\DownloadService.cs" />
@@ -289,6 +291,7 @@
     <Compile Include="Helpers\Topics.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MainApp.cs" />
+    <Compile Include="MessageBoard.cs" />
     <Compile Include="PodcastDetails.cs" />
     <Compile Include="Privacy.cs" />
     <Compile Include="SelectTopics.cs" />
@@ -408,6 +411,12 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\SingleAudio.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\AnnouncementCard.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\MessageBoard.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -889,6 +898,18 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\audio2.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_announcement_black_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_announcement_black_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_announcement_black_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_announcement_black_24dp.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
