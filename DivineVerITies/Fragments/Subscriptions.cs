@@ -29,6 +29,10 @@ namespace DivineVerITies.Fragments
         private List<Video> mVideos;
         View view;
         private Android.Support.V7.Widget.SearchView mSearchView;
+        private CardView emptyAudioCard;
+        private CardView emptyVideoCard;
+        private TextView emptyAudioText;
+        private TextView emptyVideoText;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -45,6 +49,10 @@ namespace DivineVerITies.Fragments
             view = inflater.Inflate(Resource.Layout.OfflinePodcast, container, false) as View;
             audioProgressBar = view.FindViewById<ProgressBar>(Resource.Id.audio_loading);
             videoProgressBar = view.FindViewById<ProgressBar>(Resource.Id.video_loading);
+            emptyAudioCard = view.FindViewById<CardView>(Resource.Id.emptyAudioCard);
+            emptyVideoCard = view.FindViewById<CardView>(Resource.Id.emptyVideoCard);
+            emptyAudioText = view.FindViewById<TextView>(Resource.Id.txtEmptyAudio);
+            emptyVideoText = view.FindViewById<TextView>(Resource.Id.txtEmptyVideo);
             audioHeading = view.FindViewById<TextView>(Resource.Id.audio_heading);
             audioHeading.Text = "Recomended Audios";
             videoHeading = view.FindViewById<TextView>(Resource.Id.video_heading);
@@ -74,12 +82,21 @@ namespace DivineVerITies.Fragments
             try
             {
                 mVideos = await(new Initialize()).getVideoList();
-                var favourties = Initialize.getFavouritesList(mVideos, Activity);
-                mVideoAdapter = new VideoAlbumRecyclerViewAdapter(Activity, favourties, Activity.Resources, true);
-                videoRecyclerView.SetAdapter(mVideoAdapter);
+                if (mVideos.Count > 0)
+                {
+                    var favourties = Initialize.getFavouritesList(mVideos, Activity);
+                    mVideoAdapter = new VideoAlbumRecyclerViewAdapter(Activity, favourties, Activity.Resources, true);
+                    videoRecyclerView.SetAdapter(mVideoAdapter);
 
-                videoRecyclerView.Visibility = ViewStates.Visible;
-                videoProgressBar.Visibility = ViewStates.Gone;
+                    videoRecyclerView.Visibility = ViewStates.Visible;
+                    videoProgressBar.Visibility = ViewStates.Gone;
+                }
+                else
+                {
+                    emptyVideoText.Text = "No Videos Have Been Subscribed To Yet.";
+                    emptyVideoCard.Visibility = ViewStates.Visible;
+                    videoProgressBar.Visibility = ViewStates.Gone;
+                }
             }
             catch (Exception e)
             {
@@ -100,12 +117,21 @@ namespace DivineVerITies.Fragments
             {
 
                 mAudios = await (new Initialize()).getAudioList();
-                var favourties = Initialize.getFavouritesList(mAudios, Activity);
-                mAudioAdapter = new AudioRecyclerViewAdapter(Activity, favourties, Activity.Resources);
-                audioRecyclerView.SetAdapter(mAudioAdapter);
+                if (mAudios.Count > 0)
+                {
+                    var favourties = Initialize.getFavouritesList(mAudios, Activity);
+                    mAudioAdapter = new AudioRecyclerViewAdapter(Activity, favourties, Activity.Resources);
+                    audioRecyclerView.SetAdapter(mAudioAdapter);
 
-                audioRecyclerView.Visibility = ViewStates.Visible;
-                audioProgressBar.Visibility = ViewStates.Gone;
+                    audioRecyclerView.Visibility = ViewStates.Visible;
+                    audioProgressBar.Visibility = ViewStates.Gone;
+                }
+                else
+                {
+                    emptyAudioText.Text = "No Audios Have Been Subscribed To Yet.";
+                    emptyAudioCard.Visibility = ViewStates.Visible;
+                    audioProgressBar.Visibility = ViewStates.Gone;
+                }
             }
             catch (Exception e)
             {

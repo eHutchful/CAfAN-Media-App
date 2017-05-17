@@ -90,6 +90,14 @@ namespace DivineVerITies.Helpers
                     simpleHolder.Album.SetText(spanString, TextView.BufferType.Spannable);
                 }
 
+                if (isFixedSize)
+                {
+                    simpleHolder.mOptions.Visibility = ViewStates.Gone;
+                }
+                else
+                {
+                    simpleHolder.mOptions.Visibility = ViewStates.Visible;
+                }
             }
             else
             {
@@ -172,7 +180,7 @@ namespace DivineVerITies.Helpers
             public TextView Title { get; set; }
             public TextView Album { get; set; }
             public ImageView AlbumArt { get; set; }
-            
+            public ImageButton mOptions { get; set; }
 
             public SimpleMediaHolder(View view, Action<int> listener):base(view)
             {
@@ -180,7 +188,7 @@ namespace DivineVerITies.Helpers
                 Title = view.FindViewById<TextView>(Resource.Id.title);
                 Album = view.FindViewById<TextView>(Resource.Id.count);
                 AlbumArt = view.FindViewById<ImageView>(Resource.Id.thumbnail);
-                
+                mOptions = view.FindViewById<ImageButton>(Resource.Id.overflow);
                 mainView.Click += (sender, e) => listener(AdapterPosition);
             }
         }

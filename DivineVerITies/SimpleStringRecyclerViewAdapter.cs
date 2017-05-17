@@ -58,6 +58,8 @@ namespace DivineVerITies
                 .Into(simpleHolder.mImageView);
 
             simpleHolder.mTxtView.Text = mValues[position];
+
+            simpleHolder.mCbxFavTopic.Checked = ((SelectTopics)mContext).favourites.Contains(mValues[position]);
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)

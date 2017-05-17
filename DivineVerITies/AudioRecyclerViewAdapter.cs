@@ -79,60 +79,60 @@ namespace DivineVerITies
                 simpleHolder.mPubDate.Text = mAudios[position].PubDate;
                 simpleHolder.mPlayed.Text = "Played";
 
-                simpleHolder.mOptions.Click += (sender, argss) =>
-                {
+                //simpleHolder.mOptions.Click += (sender, argss) =>
+                //{
 
-                    Android.Support.V7.Widget.PopupMenu Popup = new Android.Support.V7.Widget.PopupMenu(
-                        simpleHolder.mOptions.Context, simpleHolder.mOptions);
-                    Popup.Inflate(Resource.Menu.audio_menu_album);
+                //    Android.Support.V7.Widget.PopupMenu Popup = new Android.Support.V7.Widget.PopupMenu(
+                //        simpleHolder.mOptions.Context, simpleHolder.mOptions);
+                //    Popup.Inflate(Resource.Menu.audio_menu_album);
 
-                    Popup.MenuItemClick += (o, args) =>
-                    {
-                        switch (args.Item.ItemId)
-                        {
-                            //case Resource.Id.action_add_favourite:
-                            //    break;
+                //    Popup.MenuItemClick += (o, args) =>
+                //    {
+                //        switch (args.Item.ItemId)
+                //        {
+                //            //case Resource.Id.action_add_favourite:
+                //            //    break;
 
-                            //case Resource.Id.action_play_next:
-                            //    if (MediaPlayerService.playlist.Count != 0)
-                            //        MediaPlayerService.playlist.Add(mAudios[position]);
-                            //    else
-                            //    {
-                            //        MediaPlayerService.playlist.Add(mAudios[position]);
-                            //        MainApp.visibility = ViewStates.Visible;
-                            //    }
+                //            //case Resource.Id.action_play_next:
+                //            //    if (MediaPlayerService.playlist.Count != 0)
+                //            //        MediaPlayerService.playlist.Add(mAudios[position]);
+                //            //    else
+                //            //    {
+                //            //        MediaPlayerService.playlist.Add(mAudios[position]);
+                //            //        MainApp.visibility = ViewStates.Visible;
+                //            //    }
 
-                            //    break;
+                //            //    break;
 
-                            case Resource.Id.action_Download:
-                                if(MyService.typeQueue.Count == 0)
-                                {
-                                    MyService.typeQueue.Enqueue("audio");
-                                    MyService.audioQueue.Enqueue(mAudios[position]);
-                                    MyService.contxt = mContext;
-                                    var intenta = new Intent(mContext, typeof(MyService));
-                                    intenta.SetAction(MyService.StartD);
-                                    mContext.StartService(intenta);
-                                }
-                                else
-                                {
-                                    MyService.typeQueue.Enqueue("audio");
-                                    MyService.audioQueue.Enqueue(mAudios[position]);
-                                }
+                //            case Resource.Id.action_Download:
+                //                if(MyService.typeQueue.Count == 0)
+                //                {
+                //                    MyService.typeQueue.Enqueue("audio");
+                //                    MyService.audioQueue.Enqueue(mAudios[position]);
+                //                    MyService.contxt = mContext;
+                //                    var intenta = new Intent(mContext, typeof(MyService));
+                //                    intenta.SetAction(MyService.StartD);
+                //                    mContext.StartService(intenta);
+                //                }
+                //                else
+                //                {
+                //                    MyService.typeQueue.Enqueue("audio");
+                //                    MyService.audioQueue.Enqueue(mAudios[position]);
+                //                }
                                 
-                                break;
+                //                break;
 
-                            case Resource.Id.action_details:
-                                string serial;
-                                var intent = new Intent(mContext, typeof(PodcastDetails));
-                                serial = JsonConvert.SerializeObject(mAudios[position]);
-                                intent.PutExtra("selectedItem", serial);
-                                mContext.StartActivity(intent);
-                                break;
+                //            case Resource.Id.action_details:
+                //                string serial;
+                //                var intent = new Intent(mContext, typeof(PodcastDetails));
+                //                serial = JsonConvert.SerializeObject(mAudios[position]);
+                //                intent.PutExtra("selectedItem", serial);
+                //                mContext.StartActivity(intent);
+                //                break;
 
-                        }
-                    }; Popup.Show();
-                };
+                //        }
+                //    }; Popup.Show();
+                //};
 
                 Glide.With(simpleHolder.mAlbumArt.Context)
                     .Load(mAudios[position].ImageUrl)
@@ -180,6 +180,8 @@ namespace DivineVerITies
 
                     simpleHolder.mAudioTitle.SetText(spanString, TextView.BufferType.Spannable);
                 }
+
+                simpleHolder.mOptions.Visibility = ViewStates.Gone;
             }
             
         }

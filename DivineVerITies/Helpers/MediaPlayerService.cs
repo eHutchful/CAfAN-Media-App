@@ -698,11 +698,11 @@ namespace DivineVerITies.Helpers
             builder.SetContentIntent(pendingIntent);
             builder.SetShowWhen(false);
             builder.SetOngoing(MediaPlayerState == PlaybackStateCompat.StatePlaying);
-            builder.SetVisibility(Android.Support.V7.App.NotificationCompat.VisibilityPublic);
+            builder.SetVisibility(NotificationCompat.VisibilityPublic);
 
-            builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaPrevious, "", ActionPrevious));
+            builder.AddAction(GenerateActionCompat(Resource.Drawable.ic_skip_previous, "", ActionPrevious));
             AddPlayPauseActionCompat(builder);
-            builder.AddAction(GenerateActionCompat(Android.Resource.Drawable.IcMediaNext, "", ActionNext));
+            builder.AddAction(GenerateActionCompat(Resource.Drawable.ic_skip_next, "", ActionNext));
             style.SetShowActionsInCompactView(0, 1, 2);
             builder.SetStyle(style);
             NotificationManager notificationManager =

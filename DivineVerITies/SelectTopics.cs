@@ -18,7 +18,7 @@ namespace DivineVerITies
     public class SelectTopics : AppCompatActivity
     {
         RecyclerView mRecyclerView;
-        List<string> favourites;
+        public List<string> favourites;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);

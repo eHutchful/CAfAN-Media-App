@@ -120,14 +120,7 @@ namespace DivineVerITies.Fragments
         {
             base.OnStart();
             getLists();
-            //audioplaylist.Add(new Media { Title = "Test", Album = "You Alone" });
-            //audioplaylist.Add(new Media { Title = "Hunger", Album = "Bless You" });
-            //audioplaylist.Add(new Media { Title = "Hallelujah", Album = "This is the day" });
-
-            //videoplaylist.Add(new Media { Title = "Test", Album = "You Alone" });
-            //videoplaylist.Add(new Media { Title = "Hunger", Album = "Bless You" });
-            //videoplaylist.Add(new Media { Title = "Hallelujah", Album = "This is the day" });
-            //videoplaylist.Add(new Media { Title = "New day", Album = "Give Thanks" });
+            
         }
         private async Task GetOfflineList(string type)
         {

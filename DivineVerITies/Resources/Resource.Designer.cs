@@ -2554,11 +2554,11 @@ namespace DivineVerITies
 			// aapt resource value: 0x7f0700d8
 			public const int action0 = 2131165400;
 			
-			// aapt resource value: 0x7f070112
-			public const int action_Download = 2131165458;
+			// aapt resource value: 0x7f070111
+			public const int action_Download = 2131165457;
 			
-			// aapt resource value: 0x7f070110
-			public const int action_add_favourite = 2131165456;
+			// aapt resource value: 0x7f07011a
+			public const int action_add_favourite = 2131165466;
 			
 			// aapt resource value: 0x7f070121
 			public const int action_add_hide = 2131165473;
@@ -2596,8 +2596,8 @@ namespace DivineVerITies
 			// aapt resource value: 0x7f070069
 			public const int action_context_bar = 2131165289;
 			
-			// aapt resource value: 0x7f070113
-			public const int action_details = 2131165459;
+			// aapt resource value: 0x7f070112
+			public const int action_details = 2131165458;
 			
 			// aapt resource value: 0x7f0700dc
 			public const int action_divider = 2131165404;
@@ -2623,8 +2623,8 @@ namespace DivineVerITies
 			// aapt resource value: 0x7f070047
 			public const int action_mode_close_button = 2131165255;
 			
-			// aapt resource value: 0x7f070111
-			public const int action_play_next = 2131165457;
+			// aapt resource value: 0x7f070110
+			public const int action_play_next = 2131165456;
 			
 			// aapt resource value: 0x7f07011f
 			public const int action_search = 2131165471;
@@ -2989,26 +2989,26 @@ namespace DivineVerITies
 			// aapt resource value: 0x7f07001e
 			public const int multiply = 2131165214;
 			
-			// aapt resource value: 0x7f070116
-			public const int nav_announcements = 2131165462;
-			
-			// aapt resource value: 0x7f070118
-			public const int nav_feedback = 2131165464;
+			// aapt resource value: 0x7f070115
+			public const int nav_announcements = 2131165461;
 			
 			// aapt resource value: 0x7f070117
-			public const int nav_help = 2131165463;
+			public const int nav_feedback = 2131165463;
 			
-			// aapt resource value: 0x7f070114
-			public const int nav_password = 2131165460;
+			// aapt resource value: 0x7f070116
+			public const int nav_help = 2131165462;
 			
-			// aapt resource value: 0x7f07011a
-			public const int nav_privacy = 2131165466;
-			
-			// aapt resource value: 0x7f070115
-			public const int nav_recommended = 2131165461;
+			// aapt resource value: 0x7f070113
+			public const int nav_password = 2131165459;
 			
 			// aapt resource value: 0x7f070119
-			public const int nav_terms = 2131165465;
+			public const int nav_privacy = 2131165465;
+			
+			// aapt resource value: 0x7f070114
+			public const int nav_recommended = 2131165460;
+			
+			// aapt resource value: 0x7f070118
+			public const int nav_terms = 2131165464;
 			
 			// aapt resource value: 0x7f0700ca
 			public const int nav_view = 2131165386;
