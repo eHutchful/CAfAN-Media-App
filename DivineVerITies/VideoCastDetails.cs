@@ -26,6 +26,9 @@ namespace DivineVerITies
         //bool isVisible = true;
 
         Video selectedVideo;
+        private TextView mAudioCategory;
+        private TextView mAudioSize;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -60,7 +63,17 @@ namespace DivineVerITies
             };
             TextView mAudioDescription = FindViewById<TextView>(Resource.Id.AudioDescription);
             mAudioDescription.Text = selectedVideo.Description;
+            mAudioCategory = FindViewById<TextView>(Resource.Id.category);
+            mAudioCategory.Text = selectedVideo.Category;
 
+            mAudioSize = FindViewById<TextView>(Resource.Id.size);
+            mAudioSize.Text = ((int)ConvertBytesToMegabytes(long.Parse(selectedVideo.Size))).ToString() + " MB";
+
+        }
+
+        static double ConvertBytesToMegabytes(long bytes)
+        {
+            return (bytes / 1024f) / 1024f;
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
@@ -74,11 +87,11 @@ namespace DivineVerITies
 
             return base.OnOptionsItemSelected(item);
         }
-        public override bool OnCreateOptionsMenu(IMenu menu)
-        {
-            MenuInflater.Inflate(Resource.Menu.options_only, menu);
-            return true;
-        }
+        //public override bool OnCreateOptionsMenu(IMenu menu)
+        //{
+        //    MenuInflater.Inflate(Resource.Menu.options_only, menu);
+        //    return true;
+        //}
         protected override void OnStart()
         {
             base.OnStart();

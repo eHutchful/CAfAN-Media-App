@@ -23,5 +23,8 @@ namespace DivineVerITies
         public string ImageUrl { get; set; }
         [JsonProperty("category")]
         public string Category { get; set; }
+
+        [JsonProperty("size")]
+        public string Size { get; set; }
     }
 }

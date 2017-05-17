@@ -40,7 +40,8 @@ namespace DivineVerITies.Helpers
                         Link = (string)item.Element("enclosure").Attribute("url"),
                         SubTitle = (string)item.Elements().Where(y => y.Name.LocalName == "subtitle").FirstOrDefault(),
                         PubDate = (string)item.Element("pubDate"),
-                        Category = (string)item.Element("category")
+                        Category = (string)item.Element("category"),
+                        Size = (string)item.Element("enclosure").Attribute("length")
                     }).ToList();
         }
         public async Task<List<Announcement>> getAnnouncements()
@@ -88,7 +89,8 @@ namespace DivineVerITies.Helpers
                         //Link = (string)item.Element("link")+(string)item.Element("enclosure").Attribute("url"),
                         SubTitle = (string)item.Elements().Where(y => y.Name.LocalName == "subtitle").FirstOrDefault(),
                         PubDate = (string)item.Element("pubDate"),
-                        Category = (string)item.Element("category")
+                        Category = (string)item.Element("category"),
+                        Size = (string)item.Element("enclosure").Attribute("length")
                     }).ToList();
         }
 

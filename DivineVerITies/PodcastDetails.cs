@@ -26,6 +26,10 @@ namespace DivineVerITies
         //bool isVisible = true;
 
         AudioList selectedAudio;
+        TextView mAudioDescription;
+        TextView mAudioCategory;
+        TextView mAudioSize;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -55,9 +59,20 @@ namespace DivineVerITies
                 catch (Exception es) { }
                 StartActivity(intent);
             };
-            TextView mAudioDescription = FindViewById<TextView>(Resource.Id.AudioDescription);
+            mAudioDescription = FindViewById<TextView>(Resource.Id.AudioDescription);
             mAudioDescription.Text = selectedAudio.Description;
 
+            mAudioCategory = FindViewById<TextView>(Resource.Id.category);
+            mAudioCategory.Text = selectedAudio.Category;
+
+            mAudioSize = FindViewById<TextView>(Resource.Id.size);
+            mAudioSize.Text = ((int)ConvertBytesToMegabytes(long.Parse(selectedAudio.Size))).ToString() + " MB";
+
+        }
+
+        static double ConvertBytesToMegabytes(long bytes)
+        {
+            return (bytes / 1024f) / 1024f;
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
@@ -68,22 +83,22 @@ namespace DivineVerITies
                     Finish();
                     return true;
 
-                case Resource.Id.action_Download:
-                    MyService.selectedAudio = selectedAudio;
-                    MyService.contxt = this;
-                    var intent = new Intent(this, typeof(MyService));
-                    intent.SetAction(MyService.StartD);
-                    StartService(intent);
-                    return true;
+                //case Resource.Id.action_Download:
+                //    MyService.selectedAudio = selectedAudio;
+                //    MyService.contxt = this;
+                //    var intent = new Intent(this, typeof(MyService));
+                //    intent.SetAction(MyService.StartD);
+                //    StartService(intent);
+                //    return true;
             }
 
             return base.OnOptionsItemSelected(item);
         }
-        public override bool OnCreateOptionsMenu(IMenu menu)
-        {
-            MenuInflater.Inflate(Resource.Menu.menu_album, menu);
-            return true;
-        }
+        //public override bool OnCreateOptionsMenu(IMenu menu)
+        //{
+        //    MenuInflater.Inflate(Resource.Menu.menu_album, menu);
+        //    return true;
+        //}
         protected override void OnStart()
         {
             base.OnStart();            
