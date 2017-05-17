@@ -11,18 +11,18 @@ xmlns:tools="http://schemas.android.com/tools">
 <item
     android:id="@+id/action_play_next"
     android:orderInCategory="101"
-    android:title="Play Next"
+    android:title="Play Album"
     app:showAsAction="never"/>
 
   <item
     android:id="@+id/action_Download"
     android:orderInCategory="102"
-    android:title="Download"
+    android:title="Download Album"
     app:showAsAction="never"/>
 
-  <item
+  <!--<item
     android:id="@+id/action_details"
     android:orderInCategory="103"
     android:title="Details"
-    app:showAsAction="never"/>
+    app:showAsAction="never"/>-->
 </menu>

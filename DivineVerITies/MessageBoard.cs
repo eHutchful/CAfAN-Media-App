@@ -16,6 +16,7 @@ using SupportActionBar = Android.Support.V7.App.ActionBar;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 using Android.Graphics;
 using Android.Support.Design.Widget;
+using DivineVerITies.Helpers;
 
 namespace DivineVerITies
 {
@@ -60,18 +61,19 @@ namespace DivineVerITies
             GetAnnouncements();
         }
 
-        private void GetAnnouncements()
+        private async void GetAnnouncements()
         {
             try
             {
-                mAnnouncements = new List<Announcement>();
-                mAnnouncements.Add(new Announcement { message = "lorem ipsum", timestamp = "today" });
+
+                mAnnouncements = await (new Initialize()).getAnnouncements();
+                //mAnnouncements.Add(new Announcement { message = "lorem ipsum", timestamp = "today"});
                 mAdapter = new AnnouncementRecyclerAdapter(recyclerView.Context, mAnnouncements, Resources);
                 recyclerView.SetAdapter(mAdapter);
                 recyclerView.Visibility = ViewStates.Visible;
                 mProgressBar.Visibility = ViewStates.Gone;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 mProgressBar.Visibility = ViewStates.Gone;
                 Snackbar.Make(recyclerView, "Connection Error", Snackbar.LengthIndefinite)

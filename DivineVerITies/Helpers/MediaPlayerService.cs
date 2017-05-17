@@ -585,11 +585,17 @@ namespace DivineVerITies.Helpers
             {
                 await Task.Run(() => {
                     if (mediaPlayer == null)
+                    {
+                        MainApp.loadingBar.Visibility = Android.Views.ViewStates.Gone;
                         return;
+
+                    }
+                        
 
                     if (mediaPlayer.IsPlaying)
                     {
                         mediaPlayer.Stop();
+                        MainApp.loadingBar.Visibility = Android.Views.ViewStates.Gone;
                     }
 
                     UpdatePlaybackState(PlaybackStateCompat.StateStopped);

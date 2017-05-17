@@ -48,8 +48,8 @@ namespace DivineVerITies
             fab.Click += (o, e) =>
             {
                 MainApp.visibility = ViewStates.Visible;
-               // View anchor = o as View;
-                Android.Content.Intent intent = new Android.Content.Intent(this, typeof(MainApp));
+                // View anchor = o as View;
+                Intent intent = new Intent(this, typeof(MainApp));
                 MediaPlayerService.selectedAudio = selectedAudio;
                 try { StopService(new Intent(this, typeof(MediaPlayerService))); }
                 catch (Exception es) { }

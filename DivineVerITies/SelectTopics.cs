@@ -6,6 +6,7 @@ using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Android.Views;
 using DivineVerITies.Helpers;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using SupportActionBar = Android.Support.V7.App.ActionBar;
@@ -19,7 +20,7 @@ namespace DivineVerITies
     {
         RecyclerView mRecyclerView;
         public List<string> favourites;
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected async override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             favourites = new List<string>();
@@ -31,6 +32,12 @@ namespace DivineVerITies
 
             mRecyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerview);
             SetUpRecyclerView(mRecyclerView);
+
+            JObject jo = new JObject();
+            jo.Add("title", "The Lord and His Christ");
+            jo.Add("mediaType", "audio");
+            jo.Add("category", "Doctrine");
+            var t = await AzureService.DefaultService.client.InvokeApiAsync("/api/notification/newmedia", jo);
 
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
 
@@ -83,7 +90,7 @@ namespace DivineVerITies
                 "Relationship & Marriage",
                 "Leadership",
                 "Education",
-                "General Teaching (Doctrine)",
+                "Doctrine",
                 "Faith",
                 "Love",
                 "Purpose"

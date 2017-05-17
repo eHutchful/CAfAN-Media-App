@@ -22,6 +22,8 @@ namespace DivineVerITies
 
         [JsonProperty("link")]
         public string Link { get; set; }
+        [JsonProperty("category")]
+        public string Category { get; set; }
 
 
     }

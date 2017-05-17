@@ -39,10 +39,29 @@ namespace DivineVerITies.Helpers
                         ImageUrl = (string)item.Elements().Where(y => y.Name.LocalName == "image").FirstOrDefault().Attribute("href"),
                         Link = (string)item.Element("enclosure").Attribute("url"),
                         SubTitle = (string)item.Elements().Where(y => y.Name.LocalName == "subtitle").FirstOrDefault(),
-                        PubDate = (string)item.Element("pubDate")
+                        PubDate = (string)item.Element("pubDate"),
+                        Category = (string)item.Element("category")
                     }).ToList();
         }
-
+        public async Task<List<Announcement>> getAnnouncements()
+        {
+            string feed = "http://versolstore.blob.core.windows.net/cafan/news/news.rss";
+            var httpClient = new HttpClient(new NativeMessageHandler());
+            httpClient.Timeout = TimeSpan.FromSeconds(30);
+            string response = await httpClient.GetStringAsync(feed);
+            var xdoc = XDocument.Parse(response);
+            return (from item in xdoc.Descendants("item")
+                    select new Announcement
+                    {
+                       
+                        message = (string)item.Element("description"),
+                        //ImageUrl = (string)item.Elements().Where(y => y.Name.LocalName == "image").FirstOrDefault().Attribute("href"),
+                        imageURL = (string)item.Element("link"),
+                        //SubTitle = (string)item.Elements().Where(y => y.Name.LocalName == "subtitle").FirstOrDefault(),
+                        timestamp = (string)item.Element("pubDate"),
+                        //Category = (string)item.Element("category")
+                    }).ToList();
+        }
         public async Task<List<Video>> getVideoList()
         {
             string feed = //"http://feeds.soundcloud.com/users/soundcloud:users:247218071/sounds.rss";
@@ -68,7 +87,8 @@ namespace DivineVerITies.Helpers
                         //ImageUrl = "http://www.blubrry.com/coverart/orig/379169-504006.png",
                         //Link = (string)item.Element("link")+(string)item.Element("enclosure").Attribute("url"),
                         SubTitle = (string)item.Elements().Where(y => y.Name.LocalName == "subtitle").FirstOrDefault(),
-                        PubDate = (string)item.Element("pubDate")
+                        PubDate = (string)item.Element("pubDate"),
+                        Category = (string)item.Element("category")
                     }).ToList();
         }
 
@@ -144,7 +164,7 @@ namespace DivineVerITies.Helpers
             var pref = context.GetSharedPreferences("UserInfo", FileCreationMode.Private);
             var favourites = pref.GetStringSet("Favourites", new List<string>()).ToArray();
             for (int i = 0; i<favourites.Length; i++){
-                var album = (from audio in holder where audio.Description == favourites[i] select audio).ToList();
+                var album = (from audio in holder where audio.Category == favourites[i] select audio).ToList();
                 albums.AddRange(album);
             }
             
@@ -159,7 +179,7 @@ namespace DivineVerITies.Helpers
             var favourites = pref.GetStringSet("Favourites", new List<string>()).ToArray();
             for (int i = 0; i < favourites.Length; i++)
             {
-                var album = (from video in holder where video.Description == favourites[i] select video).ToList();
+                var album = (from video in holder where video.Category == favourites[i] select video).ToList();
                 albums.AddRange(album);
             }
 

@@ -24,6 +24,7 @@ using System.Threading.Tasks;
 using SupportActionBar = Android.Support.V7.App.ActionBar;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 using Android.Runtime;
+using Newtonsoft.Json.Linq;
 
 namespace DivineVerITies
 {
@@ -96,7 +97,7 @@ namespace DivineVerITies
         CoordinatorLayout sheet;
         public BottomSheetBehavior bottomSheetBehavior;
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected async override void OnCreate(Bundle savedInstanceState)
         {
             #region original
             base.OnCreate(savedInstanceState);
@@ -118,6 +119,8 @@ namespace DivineVerITies
 
             // Register the app for push notifications. 
             GcmClient.Register(this, PushBroadcastReceiver.senderIDs);
+
+           
 
             pref = Application.Context.GetSharedPreferences("UserInfo", FileCreationMode.Private);
             edit = pref.Edit();

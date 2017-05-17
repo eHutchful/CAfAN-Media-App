@@ -20,6 +20,8 @@ namespace DivineVerITies
         public string Link { get; set; }
 
         [JsonProperty("imageurl")]
-        public string ImageUrl { get; set; }  
+        public string ImageUrl { get; set; }
+        [JsonProperty("category")]
+        public string Category { get; set; }
     }
 }

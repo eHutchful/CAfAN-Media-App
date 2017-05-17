@@ -52,7 +52,7 @@ namespace DivineVerITies.Helpers
             {
                 message = intent.Extras.Get("message").ToString();
                 type = intent.Extras.Get("type").ToString();
-                tag = intent.Extras.Get("category").ToString();
+                tag = intent.Extras.Get("tag").ToString();
 
                 var title = $"New {type} added:";
 
@@ -108,7 +108,7 @@ namespace DivineVerITies.Helpers
                     GetSystemService(NotificationService) as NotificationManager;
 
                 // Create a new intent to show the notification in the UI.
-                Intent secondIntent = new Intent(this, typeof(MainApp));
+                Intent secondIntent = new Intent(this, typeof(Announcement));
 
                 secondIntent.PutExtra("TAG", tag);
                     
