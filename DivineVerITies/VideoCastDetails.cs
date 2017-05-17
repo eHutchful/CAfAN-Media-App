@@ -46,21 +46,21 @@ namespace DivineVerITies
             collapsingToolBar.Title = selectedVideo.Title;
             collapsingToolBar.SetExpandedTitleColor(Android.Resource.Color.Transparent);
 
-            FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
+            //FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
 
-            fab.Click += (o, e) =>
-            {
-                View anchor = o as View;
+            //fab.Click += (o, e) =>
+            //{
+            //    View anchor = o as View;
               
-                PlayerActivity.selectedVideo = selectedVideo;
-                try { StopService(new Intent(this, typeof(MediaPlayerService))); }
-                catch (Exception es) { }
-                var mpdIntent = new Intent(this, typeof(PlayerActivity))
-                    .SetData(Android.Net.Uri.Parse(selectedVideo.Link))
-                    .PutExtra(PlayerActivity.ContentIdExtra, 3)
-                    .PutExtra(PlayerActivity.ContentTypeExtra, PlayerActivity.TypeOther);
-                StartActivity(mpdIntent);               
-            };
+            //    PlayerActivity.selectedVideo = selectedVideo;
+            //    try { StopService(new Intent(this, typeof(MediaPlayerService))); }
+            //    catch (Exception es) { }
+            //    var mpdIntent = new Intent(this, typeof(PlayerActivity))
+            //        .SetData(Android.Net.Uri.Parse(selectedVideo.Link))
+            //        .PutExtra(PlayerActivity.ContentIdExtra, 3)
+            //        .PutExtra(PlayerActivity.ContentTypeExtra, PlayerActivity.TypeOther);
+            //    StartActivity(mpdIntent);               
+            //};
             TextView mAudioDescription = FindViewById<TextView>(Resource.Id.AudioDescription);
             mAudioDescription.Text = selectedVideo.Description;
             mAudioCategory = FindViewById<TextView>(Resource.Id.category);

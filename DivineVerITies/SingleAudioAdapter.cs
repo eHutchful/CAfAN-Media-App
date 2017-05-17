@@ -67,7 +67,7 @@ namespace DivineVerITies
                 Android.Support.V7.Widget.PopupMenu Popup = new Android.Support.V7.Widget.PopupMenu(
                     holder.mOptions.Context, holder.mOptions);
 
-                Popup.Menu.Add(Menu.None, 0, Menu.None, "items").SetTitle("Play Next").SetShowAsAction(ShowAsAction.Never);
+                //Popup.Menu.Add(Menu.None, 0, Menu.None, "items").SetTitle("Play Next").SetShowAsAction(ShowAsAction.Never);
                 Popup.Menu.Add(Menu.None, 1, Menu.None, "items").SetTitle("Download").SetShowAsAction(ShowAsAction.Never);
                 Popup.Menu.Add(Menu.None, 2, Menu.None, "items").SetTitle("Details").SetShowAsAction(ShowAsAction.Never);
 
@@ -75,8 +75,8 @@ namespace DivineVerITies
                 {
                     switch (args.Item.ItemId)
                     {
-                        case 0:
-                            break;
+                        //case 0:
+                        //    break;
 
                         case 1:
                             MyService.selectedAudio = mAudios[position];

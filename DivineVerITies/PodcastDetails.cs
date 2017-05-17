@@ -47,18 +47,18 @@ namespace DivineVerITies
             collapsingToolBar.Title = selectedAudio.Title;
             collapsingToolBar.SetExpandedTitleColor(Android.Resource.Color.Transparent);
 
-            FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
+            //FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
 
-            fab.Click += (o, e) =>
-            {
-                MainApp.visibility = ViewStates.Visible;
-                // View anchor = o as View;
-                Intent intent = new Intent(this, typeof(MainApp));
-                MediaPlayerService.selectedAudio = selectedAudio;
-                try { StopService(new Intent(this, typeof(MediaPlayerService))); }
-                catch (Exception es) { }
-                StartActivity(intent);
-            };
+            //fab.Click += (o, e) =>
+            //{
+            //    MainApp.visibility = ViewStates.Visible;
+            //    // View anchor = o as View;
+            //    Intent intent = new Intent(this, typeof(MainApp));
+            //    MediaPlayerService.selectedAudio = selectedAudio;
+            //    try { StopService(new Intent(this, typeof(MediaPlayerService))); }
+            //    catch (Exception es) { }
+            //    StartActivity(intent);
+            //};
             mAudioDescription = FindViewById<TextView>(Resource.Id.AudioDescription);
             mAudioDescription.Text = selectedAudio.Description;
 
