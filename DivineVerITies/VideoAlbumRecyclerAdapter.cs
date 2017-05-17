@@ -94,31 +94,31 @@ namespace DivineVerITies
             {
                 test.Add(position);
             };
-            //simpleHolder.mOptions.Click += (s, e) =>
-            //{
-            //    Android.Support.V7.Widget.PopupMenu Popup = new Android.Support.V7.Widget.PopupMenu(
-            //        simpleHolder.mOptions.Context, simpleHolder.mOptions);
-            //    Popup.Inflate(Resource.Menu.menu_album);
-            //    Popup.MenuItemClick += (o, args) =>
-            //    {
-            //        switch (args.Item.ItemId)
-            //        {
-            //            case Resource.Id.action_add_favourite:
-            //                break;
+            simpleHolder.mOptions.Click += (s, e) =>
+            {
+                Android.Support.V7.Widget.PopupMenu Popup = new Android.Support.V7.Widget.PopupMenu(
+                    simpleHolder.mOptions.Context, simpleHolder.mOptions);
+                Popup.Inflate(Resource.Menu.menu_album);
+                Popup.MenuItemClick += (o, args) =>
+                {
+                    switch (args.Item.ItemId)
+                    {
+                        //case Resource.Id.action_add_favourite:
+                        //    break;
 
-            //            case Resource.Id.action_play_next:
-            //                break;
+                        //case Resource.Id.action_play_next:
+                        //    break;
 
-            //            case Resource.Id.action_Download:
-            //                MyService.selectedVideo = mVideos[position];
-            //                MyService.contxt = mContext;
-            //                var intent = new Intent(mContext, typeof(MyService));
-            //                intent.SetAction(MyService.Startvd);
-            //                mContext.StartService(intent);
-            //                break;
-            //        }
-            //    }; Popup.Show();
-            //};
+                        case Resource.Id.action_Download:
+                            MyService.selectedVideo = mVideos[position];
+                            MyService.contxt = mContext;
+                            var intent = new Intent(mContext, typeof(MyService));
+                            intent.SetAction(MyService.Startvd);
+                            mContext.StartService(intent);
+                            break;
+                    }
+                }; Popup.Show();
+            };
             simpleHolder.mOptions.Visibility = ViewStates.Gone;
 
 

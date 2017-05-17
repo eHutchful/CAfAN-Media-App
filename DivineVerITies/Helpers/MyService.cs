@@ -28,6 +28,7 @@ namespace DivineVerITies.Helpers
         public static Queue<string> typeQueue = new Queue<string>();
         public static Queue<AudioList> audioQueue = new Queue<AudioList>();
         public static Queue<Video> videoQueue = new Queue<Video>();
+        public static string choice = "no";
 
         
         public const string Cancel = "com.xamarin.action.CANCEL";
@@ -54,10 +55,10 @@ namespace DivineVerITies.Helpers
                     
                     break;
                 case StartD:
-                    startDownload();
+                    startDownload("audio");
                     break;
                 case Startvd:
-                    startDownload();
+                    startDownload("vide0");
                     break;
             }
             return StartCommandResult.Sticky;
@@ -142,94 +143,93 @@ namespace DivineVerITies.Helpers
             //const int notificationId = 0;
             notificationManager.Cancel(id);
         }
-        public void startDownload()
+        public void startDownload(string type)
         {
-            if (typeQueue.Count == 0)
-                return;
-            var dwn = new VideoDownloader();
-            string type="";
+            //if (typeQueue.Count == 0)
+            //    return;
+            //var dwn = new VideoDownloader();
+            //string type="";
             Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(contxt);
             builder.SetTitle("Confirm Download");
             builder.SetNegativeButton("No", delegate { builder.Dispose(); });
-
-           
-
-            type = typeQueue.Peek();
             if (type == "audio")
             {
-                selectedAudio = audioQueue.Peek();
+               
                 builder.SetMessage("Are You Sure You Want To Download" + " " + selectedAudio.Title);
             }
             else
             {
-                selectedVideo = videoQueue.Peek();
+                
                 builder.SetMessage("Are You Sure You Want To Download" + " " + selectedVideo.Title);
             }
             builder.SetPositiveButton("Yes", async delegate
             {
-                Progress<DownloadBytesProgress> progressReporter = new Progress<DownloadBytesProgress>();
-                progressReporter.ProgressChanged += (s, args) =>
-                {
-                    var name = filename;
-                    try
-                    {
-                        if (args.IsFinished)
-                        {
-                            dComplete(name);
-                        }
-                        else if (cancellations[name].IsCancellationRequested)
-                        {
-                            if (notificationIds.ContainsKey(name))
-                            {
-                                pBarCancelled(name);
-                                cancellations.Remove(name);
-                                if (File.Exists(name))
-                                {
-                                    File.Delete(name);
-                                }
-                            }
+                //Progress<DownloadBytesProgress> progressReporter = new Progress<DownloadBytesProgress>();
+                //progressReporter.ProgressChanged += (s, args) =>
+                //{
+                //    var name = filename;
+                //    try
+                //    {
+                //        if (args.IsFinished)
+                //        {
+                //            dComplete(name);
+                //        }
+                //        else if (cancellations[name].IsCancellationRequested)
+                //        {
+                //            if (notificationIds.ContainsKey(name))
+                //            {
+                //                pBarCancelled(name);
+                //                cancellations.Remove(name);
+                //                if (File.Exists(name))
+                //                {
+                //                    File.Delete(name);
+                //                }
+                //            }
 
-                        }
-                        else
-                        {
+                //        }
+                //        else
+                //        {
 
-                            int per = (int)(100 * args.PercentComplete);
-                            if ((per - previousPer) >= 2)
-                            {
-                                ChangePBar(per, name);
-                                previousPer = per;
-                            }
-                        }
-                    }
-                    catch (KeyNotFoundException kn)
-                    {
+                //            int per = (int)(100 * args.PercentComplete);
+                //            if ((per - previousPer) >= 2)
+                //            {
+                //                ChangePBar(per, name);
+                //                previousPer = per;
+                //            }
+                //        }
+                //    }
+                //    catch (KeyNotFoundException kn)
+                //    {
 
-                    }
+                //    }
 
-                };
+                //};
                 builder.Dispose();
                 if ((await FileCheck(type)).Equals("yes"))
                 {
-                    if (!notificationIds.ContainsKey(filename))
-                    {
-                        notificationIds.Add(filename, notificationId);
-                        notificationId++;
-                        cancellations.Add(filename, dwn.cts);
-                    }
-                    DownLoadItemNotification(filename);
+                    //if (!notificationIds.ContainsKey(filename))
+                    //{
+                    //    notificationIds.Add(filename, notificationId);
+                    //    notificationId++;
+                    //cancellations.Add(filename, dwn.cts);
+                    //}
+                    //DownLoadItemNotification(filename);
                     //await dwn.CreateDownloadTask(MyService.selectedAudio.Link, filename, progressReporter, contxt);
-                    if (type == "audio")
-                    {
-                        //await dwn.DownloadFileAsync(selectedAudio.Link, filename, progressReporter, contxt);
-                        //await dwn.CreateDownloadTask(MyService.selectedAudio.Link, filename, progressReporter, contxt);
-                    }
-                    else
-                    {
-                        //await dwn.DownloadFileAsync(selectedVideo.Link, filename, progressReporter, contxt);
-                        //await dwn.CreateDownloadTask(MyService.selectedAudio.Link, filename, progressReporter, contxt);
-                    }
+                    //if (type == "audio")
+                    //{
+                    //    //await dwn.DownloadFileAsync(selectedAudio.Link, filename, progressReporter, contxt);
+                    //    //await dwn.CreateDownloadTask(MyService.selectedAudio.Link, filename, progressReporter, contxt);
+                    //}
+                    //else
+                    //{
+                    //    //await dwn.DownloadFileAsync(selectedVideo.Link, filename, progressReporter, contxt);
+                    //    //await dwn.CreateDownloadTask(MyService.selectedAudio.Link, filename, progressReporter, contxt);
+                    //}
 
-
+                    
+                       var intent = new Intent(contxt, typeof(DownloadManager));
+                       contxt.StartService(intent);
+                    
                 };
             });
             builder.Create().Show();
@@ -243,25 +243,38 @@ namespace DivineVerITies.Helpers
             {
                 filetype = ".mp3";
                 specificDir = "cafan/Podcasts/audio/";
+                string path = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.Path, specificDir);
+                filename = path + selectedAudio.Title + filetype;
+                if (!Directory.Exists(path))
+                {
+
+                    Directory.CreateDirectory(path);
+
+                }
+                if (File.Exists(path + selectedAudio.Title + filetype))
+                {
+                    choiceMade = false;
+                    CreateAndShowDialog(choice);
+                }
             }
             else
             {
                 filetype = ".mp4";
                 specificDir = "cafan/Podcasts/video/";
+                string path = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.Path, specificDir);
+                filename = path + selectedVideo.Title + filetype;
+                if (!Directory.Exists(path))
+                {
+
+                    Directory.CreateDirectory(path);
+
+                }
+                if (File.Exists(path + selectedVideo.Title + filetype))
+                {
+                    choiceMade = false;
+                    CreateAndShowDialog(choice);
+                }
             }   
-            string path = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.Path, specificDir);
-            if (!Directory.Exists(path))
-            {
-                
-                Directory.CreateDirectory(path);
-
-            }
-            if (File.Exists(path + selectedAudio.Title + filetype)) 
-            { 
-                choiceMade = false;
-                CreateAndShowDialog(choice); }
-
-            filename = path + selectedAudio.Title + filetype;
             while (!choiceMade)
             {
                 await Task.Delay(1000);
@@ -422,15 +435,15 @@ namespace DivineVerITies.Helpers
             notificationManager.Notify(notificationIds[name], builder.Build());
             notificationIds.Remove(name);
             cancellations.Remove(name);
-            if(typeQueue.Count != 0)
-            {
-                var type = typeQueue.Dequeue();
-                if (type == "audio")
-                    audioQueue.Dequeue();
-                else
-                    videoQueue.Dequeue();
-                startDownload();
-            }
+            //if(typeQueue.Count != 0)
+            //{
+            //    var type = typeQueue.Dequeue();
+            //    if (type == "audio")
+            //        audioQueue.Dequeue();
+            //    else
+            //        videoQueue.Dequeue();
+            //    startDownload();
+            //}
         }
         private void pBarCancelled(string name)
         {
@@ -456,15 +469,15 @@ namespace DivineVerITies.Helpers
                 notificationIds.Remove(name);
                 cancellations.Remove(name);
             }
-            if (typeQueue.Count != 0)
-            {
-                var type = typeQueue.Dequeue();
-                if (type == "audio")
-                    audioQueue.Dequeue();
-                else
-                    videoQueue.Dequeue();
-                startDownload();
-            }
+            //if (typeQueue.Count != 0)
+            //{
+            //    var type = typeQueue.Dequeue();
+            //    if (type == "audio")
+            //        audioQueue.Dequeue();
+            //    else
+            //        videoQueue.Dequeue();
+            //    startDownload();
+            //}
         }
     }
 }
