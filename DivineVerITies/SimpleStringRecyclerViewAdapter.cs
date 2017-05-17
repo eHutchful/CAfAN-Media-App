@@ -59,7 +59,18 @@ namespace DivineVerITies
 
             simpleHolder.mTxtView.Text = mValues[position];
 
-            simpleHolder.mCbxFavTopic.Checked = ((SelectTopics)mContext).favourites.Contains(mValues[position]) ? true: false;
+            //simpleHolder.mCbxFavTopic.Checked = ((SelectTopics)mContext).favourites.Contains(mValues[position]) ? true: false;
+            simpleHolder.mCbxFavTopic.CheckedChange += (rv, r) => {
+                if (r.IsChecked)
+                {
+                    SelectTopics.favourites.Add(mValues[position]);
+                }
+                else
+                {
+                    SelectTopics.favourites.Remove(mValues[position]);
+                }
+                   
+            };
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
@@ -69,6 +80,8 @@ namespace DivineVerITies
 
             return new SimpleViewHolder(view);  
         }
+
+        
     }
 
     public class SimpleViewHolder : RecyclerView.ViewHolder
