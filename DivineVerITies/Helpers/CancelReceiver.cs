@@ -23,8 +23,9 @@ namespace DivineVerITies.Helpers
             
             try
             {
-                MyService.cancellations[intent.GetStringExtra("filename")].Cancel();
+                //MyService.cancellations[intent.GetStringExtra("filename")].Cancel();
                 //MyService.cancellations.Remove(intent.GetStringExtra("filename"));
+                DownloadManager.cancellation.Cancel();
                 File.Delete(intent.GetStringExtra("filename"));
             }
             catch (Exception e)
@@ -32,9 +33,11 @@ namespace DivineVerITies.Helpers
 
             }
             finally 
-            { 
-                MyService.cancel(MyService.notificationIds[intent.GetStringExtra("filename")]);
+            {
+                //MyService.cancel(MyService.notificationIds[intent.GetStringExtra("filename")]);
                 //MyService.notificationIds.Remove(intent.GetStringExtra("filename"));
+                DownloadManager.cancellation.Cancel();
+                File.Delete(intent.GetStringExtra("filename"));
             }
      
         }

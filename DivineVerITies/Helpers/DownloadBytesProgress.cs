@@ -23,6 +23,7 @@ namespace DivineVerITies.Helpers
         public int TotalBytes { get; set; }
 
         public float PercentComplete { get { return (float)BytesReceived / TotalBytes; } }
+        
 
         public int prevPer;
 

@@ -12,6 +12,8 @@ using Android.Support.Design.Widget;
 using System.Collections.Generic;
 using Android.Support.V4.View;
 using Android.Runtime;
+using Com.Sothree.Slidinguppanel;
+using Android.Support.V4.Media.Session;
 
 namespace DivineVerITies.Fragments
 {
@@ -172,10 +174,28 @@ namespace DivineVerITies.Fragments
             //SnapHelper snapHelper = new LinearSnapHelper();
             //snapHelper.AttachToRecyclerView(audioRecyclerView);
 
-            audioRecyclerView.SetItemClickListener((rv, position, view) =>
+            audioRecyclerView.SetItemClickListener(async (rv, position, view) =>
             {
                 int itemposition = rv.GetChildAdapterPosition(view);
                 Context context = view.Context;
+                MediaPlayerService.selectedAudio = ((SingleAudioAdapter)rv.GetAdapter()).mAudios[position];
+                MainApp.visibility = ViewStates.Visible;
+                if (MainApp.mLayout.GetPanelState() != SlidingUpPanelLayout.PanelState.Expanded)
+                {
+                    MainApp.mLayout.SetPanelState(SlidingUpPanelLayout.PanelState.Expanded);
+                }
+                var activity = ((MainApp)Activity);
+                if (activity.binder.GetMediaPlayerService().mediaPlayer != null && activity.binder.GetMediaPlayerService().MediaPlayerState == PlaybackStateCompat.StatePlaying)
+                {
+                    await activity.binder.GetMediaPlayerService().Stop();
+
+                    await activity.binder.GetMediaPlayerService().Play();
+                }
+                else
+                {
+
+                    await activity.binder.GetMediaPlayerService().Play();
+                }
 
             });
         }

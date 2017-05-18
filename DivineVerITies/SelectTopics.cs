@@ -19,11 +19,11 @@ namespace DivineVerITies
     public class SelectTopics : AppCompatActivity
     {
         RecyclerView mRecyclerView;
-        public List<string> favourites;
+        public static List<string> favourites = new List<string>();
         protected async override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            favourites = new List<string>();
+            
             SetContentView(Resource.Layout.SelectTopics);
 
             SupportToolbar toolBar = FindViewById<SupportToolbar>(Resource.Id.toolbar);
@@ -45,7 +45,7 @@ namespace DivineVerITies
             {
                 //View anchor = o as View;
                 var pref = Application.Context.GetSharedPreferences("UserInfo", FileCreationMode.Private);
-                if(pref.Contains("Favourites")){
+                
                     var list = pref.GetStringSet("Favourites", new List<string>());
                     for(int i=0; i < favourites.Count; i++)
                     {
@@ -53,10 +53,10 @@ namespace DivineVerITies
                             list.Add(favourites[i]);
                     }
                     var edit = pref.Edit();
-                    edit.PutStringSet("Favourite", list);
+                    edit.PutStringSet("Favourites", list);
                     edit.Commit();
 
-                }
+                
                 Intent intent = new Intent(fab.Context, typeof(MainApp));
                 StartActivity(intent);
             };
@@ -102,14 +102,15 @@ namespace DivineVerITies
             mRecyclerView.SetItemClickListener((rv, position, view) => {
                 //var pref = Application.Context.GetSharedPreferences("UserInfo", FileCreationMode.Private);
                 //var edit = pref.Edit();
-                if (!favourites.Contains(values[position]))
-                {
-                    favourites.Add(values[position]);
-                }
-                else
-                {
-                    favourites.Remove(values[position]);
-                }
+               
+                //if (!favourites.Contains(values[position]))
+                //{
+                //    favourites.Add(values[position]);
+                //}
+                //else
+                //{
+                //    favourites.Remove(values[position]);
+                //}
                 
             });
         }
