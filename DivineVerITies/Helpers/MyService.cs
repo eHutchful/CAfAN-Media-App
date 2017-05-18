@@ -13,7 +13,7 @@ namespace DivineVerITies.Helpers
 {
     [Service]
     [IntentFilter(new[] { Cancel, StartD, Startvd })]
-    public class MyService : Service
+    public class MyService : IntentService
     {
         private static int previousPer=0;
         bool choiceMade = true;
@@ -37,31 +37,31 @@ namespace DivineVerITies.Helpers
         {
             return null;
         }
-        public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
-        {
-            switch (intent.Action)
-            {
-                case Cancel:
-                    try
-                    {
-                        cts.Cancel();
-                    }
-                    catch (Exception e)
-                    {
+        //public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
+        //{
+        //    switch (intent.Action)
+        //    {
+        //        case Cancel:
+        //            try
+        //            {
+        //                cts.Cancel();
+        //            }
+        //            catch (Exception e)
+        //            {
 
-                    }
-                    finally { cancel(); }
+        //            }
+        //            finally { cancel(); }
                     
-                    break;
-                case StartD:
-                    startDownload();
-                    break;
-                case Startvd:
-                    startDownload();
-                    break;
-            }
-            return StartCommandResult.Sticky;
-        }
+        //            break;
+        //        case StartD:
+        //            startDownload();
+        //            break;
+        //        case Startvd:
+        //            startDownload();
+        //            break;
+        //    }
+        //    return StartCommandResult.Sticky;
+        //}
 
         private void startVideoDownload()
         {
@@ -465,6 +465,11 @@ namespace DivineVerITies.Helpers
                     videoQueue.Dequeue();
                 startDownload();
             }
+        }
+
+        protected override void OnHandleIntent(Intent intent)
+        {
+            throw new NotImplementedException();
         }
     }
 }
