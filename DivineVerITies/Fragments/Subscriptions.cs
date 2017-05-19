@@ -14,6 +14,7 @@ using Android.Support.V4.View;
 using Android.Runtime;
 using Com.Sothree.Slidinguppanel;
 using Android.Support.V4.Media.Session;
+using Newtonsoft.Json;
 
 namespace DivineVerITies.Fragments
 {
@@ -161,6 +162,19 @@ namespace DivineVerITies.Fragments
             {
                 int itemposition = rv.GetChildAdapterPosition(view);
                 Context context = view.Context;
+                Intent intent = new Intent(context, typeof(VideoCastDetails));
+                string serial = "";
+                if (mVideoAdapter.mVideos == null)
+                { serial = JsonConvert.SerializeObject(mVideos[position]); }
+
+                else if (mVideoAdapter.mVideos.Count == mVideos.Count)
+                { serial = JsonConvert.SerializeObject(mVideos[position]); }
+
+                else
+                { serial = JsonConvert.SerializeObject(mVideoAdapter.mVideos[position]); }
+
+                intent.PutExtra("selectedItem", serial);
+                context.StartActivity(intent);
 
             });
         }
