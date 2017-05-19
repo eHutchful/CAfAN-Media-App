@@ -190,9 +190,7 @@ namespace DivineVerITies.Fragments
 
             audioRecyclerView.SetItemClickListener(async (rv, position, view) =>
             {
-                int itemposition = rv.GetChildAdapterPosition(view);
-                Context context = view.Context;
-                MediaPlayerService.selectedAudio = ((SingleAudioAdapter)rv.GetAdapter()).mAudios[position];
+                MediaPlayerService.selectedAudio = ((AudioRecyclerViewAdapter)rv.GetAdapter()).mAudios[position];
                 MainApp.visibility = ViewStates.Visible;
                 if (MainApp.mLayout.GetPanelState() != SlidingUpPanelLayout.PanelState.Expanded)
                 {
@@ -210,7 +208,6 @@ namespace DivineVerITies.Fragments
 
                     await activity.binder.GetMediaPlayerService().Play();
                 }
-
             });
         }
 
