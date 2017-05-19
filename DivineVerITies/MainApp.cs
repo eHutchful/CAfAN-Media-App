@@ -506,12 +506,11 @@ namespace DivineVerITies
                 var audio = (AudioList)MediaPlayerService.selectedAudio;
                 if (MyService.typeQueue.Count == 0)
                 {
-                    MyService.typeQueue.Enqueue("audio");
-                    MyService.audioQueue.Enqueue(audio);
+                    MyService.selectedAudio = audio;
+                    MyService.contxt = ApplicationContext;
                     var intent = new Intent(ApplicationContext, typeof(MyService));
                     intent.SetAction(MyService.StartD);
                     StartService(intent);
-
                 }
                 else
                 {
