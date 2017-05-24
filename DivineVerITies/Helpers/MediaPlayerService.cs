@@ -348,7 +348,7 @@ namespace DivineVerITies.Helpers
                 }
                 UpdatePlaybackState(PlaybackStateCompat.StateBuffering);
                 mediaPlayer.PrepareAsync();
-                AquireWifiLock();     
+                //AquireWifiLock();     
                 UpdateMediaMetadataCompat(metaRetriever);
                 StartNotification();
                 //byte[] imageByteArray = metaRetriever.GetEmbeddedPicture();
@@ -389,7 +389,7 @@ namespace DivineVerITies.Helpers
                 }
                 UpdatePlaybackState(PlaybackStateCompat.StateBuffering);
                 mediaPlayer.PrepareAsync();
-                AquireWifiLock();
+                //AquireWifiLock();
                 UpdateMediaMetadataCompat(metaRetriever);
                 StartNotification();
             }
@@ -604,7 +604,7 @@ namespace DivineVerITies.Helpers
                     {
                         StopNotification();
                         StopForeground(true);
-                        ReleaseWifiLock();
+                        //ReleaseWifiLock();
                         sContext.Post(x => toPlay(), null);
                         MainApp.loadingBar.Visibility = ViewStates.Gone;
                         playImage = Resource.Drawable.ic_play_circle_outline;
@@ -890,7 +890,7 @@ namespace DivineVerITies.Helpers
 
                 StopNotification();
                 StopForeground(true);
-                ReleaseWifiLock();
+                //ReleaseWifiLock();
                 UnregisterMediaSessionCompat();
             }
         }

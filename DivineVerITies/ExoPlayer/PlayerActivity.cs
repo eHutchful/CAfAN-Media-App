@@ -15,10 +15,12 @@ using Com.Google.Android.Exoplayer.Drm;
 using Com.Google.Android.Exoplayer.Text;
 using Com.Google.Android.Exoplayer.Util;
 using DivineVerITies.ExoPlayer.Player;
+using DivineVerITies.Helpers;
 using Java.Interop;
 using Java.Lang;
 using Java.Net;
 using Java.Util;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Exception = Java.Lang.Exception;
@@ -200,6 +202,52 @@ namespace DivineVerITies.ExoPlayer
                 case Android.Resource.Id.Home:
                     Finish();
                     return true;
+
+                case Resource.Id.action_download:
+                    //try {
+                    //    MyService.selectedVideo = (Video)selectedVideo;
+                    //    MyService.contxt = this;
+                    //    Intent intent = new Intent(this, typeof(MyService));
+                    //    intent.SetAction(MyService.Startvd);
+                    //    StartService(intent);
+                    //    return true;
+                    //}catch(InvalidCastException e) { return true; }
+
+                    try
+                    {
+                        var checker = new FileChecker(this, "video", (Video)selectedVideo);
+                        bool exists = checker.FileExists();
+                        if (exists)
+                        {
+                            checker.CreateAndShowDialog((Video)selectedVideo);
+                        }
+                        else
+                        {
+                            //new DownloadTask(this, (Video)selectedVideo).Execute(((Video)selectedVideo).Link);
+                            var video = (Video)selectedVideo;
+                            var dwnIntent = new Intent(this, typeof(DownloadService));
+                            dwnIntent.PutExtra("url", video.Link);
+                            dwnIntent.PutExtra("type", "video");
+                            dwnIntent.PutExtra("selectedVideo", JsonConvert.SerializeObject(video));
+                            StartService(dwnIntent);
+
+                        }
+
+
+
+                        return true;
+                    }
+                    catch (InvalidCastException e)
+                    {
+
+                        return true;
+                    }
+
+                case Resource.Id.action_video_list:
+                    var secondIntent = new Intent(this, typeof(MainApp));
+                    secondIntent.PutExtra("SELECTED_TAB_EXTRA_KEY", 1);
+                    StartActivity(secondIntent);
+                    return true; 
             }
 
             return base.OnOptionsItemSelected(item);

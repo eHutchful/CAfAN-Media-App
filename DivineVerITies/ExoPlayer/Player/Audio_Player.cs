@@ -138,7 +138,7 @@ namespace DivineVerITies.ExoPlayer.Player
                     .Load(audio.ImageUrl)
                     .Placeholder(Resource.Drawable.Logo_trans192)
                     .Error(Resource.Drawable.Logo_trans192)
-                    .DiskCacheStrategy(DiskCacheStrategy.All)
+                    //.DiskCacheStrategy(DiskCacheStrategy.All)
                     .Into(artworkView);
                 downloadButton = FindViewById<ImageButton>(Resource.Id.audio_download);
                 downloadButton.Click += downloadButton_Click;
@@ -151,7 +151,7 @@ namespace DivineVerITies.ExoPlayer.Player
                      .Load(audio.AlbumArt)
                      .Placeholder(Resource.Drawable.Logo_trans192)
                      .Error(Resource.Drawable.Logo_trans192)
-                     .DiskCacheStrategy(DiskCacheStrategy.All)
+                     //.DiskCacheStrategy(DiskCacheStrategy.All)
                      .Into(artworkView);
             }
             

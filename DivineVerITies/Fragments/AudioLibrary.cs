@@ -71,12 +71,12 @@ namespace DivineVerITies.Fragments
         public override void OnStart()
         {
             base.OnStart();
-            getAudiosAsyc();
+            getAudiosAsyc(false);
         }
 
         
 
-        private async void getAudiosAsyc()
+        private async void getAudiosAsyc(bool userSwiped)
         {
             try
             {
@@ -88,7 +88,10 @@ namespace DivineVerITies.Fragments
                 recyclerView.Visibility = ViewStates.Visible;
                 mProgresBar.Visibility = ViewStates.Gone;
 
-                
+                if (userSwiped)
+                {
+                    swipeRefreshLayout.Refreshing = false;
+                }
             }
             catch (Exception e)
             {
@@ -98,15 +101,14 @@ namespace DivineVerITies.Fragments
                  {
                      recyclerView.Visibility = ViewStates.Gone;
                      mProgresBar.Visibility = ViewStates.Visible;
-                     getAudiosAsyc();
+                     getAudiosAsyc(false);
                  }).Show();
             }
         }
 
         private void swipeRefreshLayout_Refresh(object sender, EventArgs e)
         {
-            getAudiosAsyc();
-            swipeRefreshLayout.Refreshing = false;
+            getAudiosAsyc(true);
         }
 
 
@@ -140,7 +142,7 @@ namespace DivineVerITies.Fragments
             mProgresBar = view.FindViewById<ProgressBar>(Resource.Id.audio_player_loading);
             mProgresBar.Animate();
             swipeRefreshLayout = view.FindViewById<SwipeRefreshLayout>(Resource.Id.swipe_refresh_layout);
-            swipeRefreshLayout.SetColorSchemeColors(Color.Indigo, Color.Pink, Color.Blue, Color.Yellow);
+            swipeRefreshLayout.SetColorSchemeColors(Color.ParseColor("#067ab4"));
             mPlayedText = view.FindViewById<TextView>(Resource.Id.txtPlayed);
             SetUpAudioRecyclerView(recyclerView);
             return view;
@@ -185,7 +187,7 @@ namespace DivineVerITies.Fragments
                 .Placeholder(Resource.Drawable.ChurchLogo_Gray)
                 .Error(Resource.Drawable.ChurchLogo_Gray)
                 .SkipMemoryCache(true)
-                .DiskCacheStrategy(DiskCacheStrategy.All)
+                //.DiskCacheStrategy(DiskCacheStrategy.All)
                 .Into(backdrop);
             
             backdropProgress.Visibility = ViewStates.Gone;

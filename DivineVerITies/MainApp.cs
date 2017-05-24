@@ -25,6 +25,9 @@ using SupportActionBar = Android.Support.V7.App.ActionBar;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 using Android.Runtime;
 using Newtonsoft.Json.Linq;
+using Java.Net;
+using Java.IO;
+using Newtonsoft.Json;
 
 namespace DivineVerITies
 {
@@ -79,6 +82,9 @@ namespace DivineVerITies
             Resource.Drawable.ic_cloud_download
             //Resource.Drawable.ic_explore
                                  };
+        DownloadTask dwn;
+        CancelReceiver cancelR;
+        Intent dwnIntent;
         
         static MainApp instance = new MainApp();
 
@@ -97,7 +103,7 @@ namespace DivineVerITies
         CoordinatorLayout sheet;
         public BottomSheetBehavior bottomSheetBehavior;
 
-        protected async override void OnCreate(Bundle savedInstanceState)
+        protected override void OnCreate(Bundle savedInstanceState)
         {
             #region original
             base.OnCreate(savedInstanceState);
@@ -106,7 +112,7 @@ namespace DivineVerITies
             SetContentView(Resource.Layout.MainApp);
             toolBar = FindViewById<SupportToolbar>(Resource.Id.toolBar);
             SetSupportActionBar(toolBar);
-            SupportActionBar.Title = "DivineVerITies";
+            SupportActionBar.Title = "DIVINE VERITIES";
             SupportActionBar.SetHomeAsUpIndicator(Resource.Drawable.ic_menu);
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 
@@ -133,6 +139,11 @@ namespace DivineVerITies
                     edit.PutBoolean("Permission_Write", true).Apply();
                 }
             }
+
+            //cancelR = new CancelReceiver();
+
+            //dwnIntent = new Intent(this, typeof(DownloadService));
+            //cancelR.CancelAsyncTask += CancelR_CancelAsyncTask;
 
             mDrawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
@@ -174,13 +185,13 @@ namespace DivineVerITies
                             .Load(audio2.ImageUrl)
                             .Placeholder(Resource.Drawable.ChurchLogo)
                             .Error(Resource.Drawable.ChurchLogo)
-                            .DiskCacheStrategy(DiskCacheStrategy.All)
+                            //.DiskCacheStrategy(DiskCacheStrategy.All)
                             .Into(artworkView);
                         Glide.With(this)
                             .Load(audio2.ImageUrl)
                             .Placeholder(Resource.Drawable.ChurchLogo)
                             .Error(Resource.Drawable.ChurchLogo)
-                            .DiskCacheStrategy(DiskCacheStrategy.All)
+                            //.DiskCacheStrategy(DiskCacheStrategy.All)
                             .Into(avatar);
                     }
                     catch(InvalidCastException inv)
@@ -196,13 +207,13 @@ namespace DivineVerITies
                             .Load(audio1.AlbumArt)
                             .Placeholder(Resource.Drawable.ChurchLogo)
                             .Error(Resource.Drawable.ChurchLogo)
-                            .DiskCacheStrategy(DiskCacheStrategy.All)
+                            //.DiskCacheStrategy(DiskCacheStrategy.All)
                             .Into(artworkView);
                         Glide.With(this)
                             .Load(audio1.AlbumArt)
                             .Placeholder(Resource.Drawable.ChurchLogo)
                             .Error(Resource.Drawable.ChurchLogo)
-                            .DiskCacheStrategy(DiskCacheStrategy.All)
+                            //.DiskCacheStrategy(DiskCacheStrategy.All)
                             .Into(avatar);
                     }
                    
@@ -353,7 +364,7 @@ namespace DivineVerITies
                    .Load(audio.ImageUrl)
                    .Placeholder(Resource.Drawable.ChurchLogo)
                    .Error(Resource.Drawable.ChurchLogo)
-                   .DiskCacheStrategy(DiskCacheStrategy.All)
+                   //.DiskCacheStrategy(DiskCacheStrategy.All)
                    .Into(artworkView);
                    
                     
@@ -365,7 +376,7 @@ namespace DivineVerITies
                    .Load(audio.AlbumArt)
                    .Placeholder(Resource.Drawable.ChurchLogo)
                    .Error(Resource.Drawable.ChurchLogo)
-                   .DiskCacheStrategy(DiskCacheStrategy.All)
+                   //.DiskCacheStrategy(DiskCacheStrategy.All)
                    .Into(artworkView);
                 }
                
@@ -392,7 +403,7 @@ namespace DivineVerITies
 
             Buffering += (object sender, EventArgs e) =>
             {
-                //loadingBar.Visibility = ViewStates.Visible;
+                loadingBar.Visibility = ViewStates.Visible;
                 seekbar.SecondaryProgress = binder.GetMediaPlayerService().Buffered;
 
             };
@@ -412,11 +423,15 @@ namespace DivineVerITies
             };
 
             audio_player_view = FindViewById(Resource.Id.audioPlayerView);
-           
+
             #endregion
+
+            
         }
 
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
+        
+
+            public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
             switch (requestCode)
             {
@@ -504,15 +519,35 @@ namespace DivineVerITies
            try
             {
                 var audio = (AudioList)MediaPlayerService.selectedAudio;
-               
-                    MyService.selectedAudio = audio;
-                    MyService.contxt = ApplicationContext;
-                    var intent = new Intent(ApplicationContext, typeof(MyService));
-                    intent.SetAction(MyService.StartD);
-                    StartService(intent);
-              
+
+                //MyService.selectedAudio = audio;
+                //MyService.contxt = ApplicationContext;
+                //var intent = new Intent(ApplicationContext, typeof(MyService));
+                //intent.SetAction(MyService.StartD);
+                //StartService(intent);
+
+                var checker = new FileChecker(this, "audio", audio);
+                bool exists = checker.FileExists();
+                if (exists)
+                {
+                    checker.CreateAndShowDialog(audio);
+                }
+                else
+                {
+                    //dwn = new DownloadTask(this, audio);
+                    //dwn.Execute(audio.Link);
+
+                    dwnIntent.PutExtra("url", audio.Link);
+                    dwnIntent.PutExtra("type", "audio");
+                    dwnIntent.PutExtra("selectedAudio", JsonConvert.SerializeObject(audio));
+                    StartService(dwnIntent);
+
+                }
+
                 
-            }catch(Exception ex)
+
+            }
+            catch(Exception ex)
             {
 
             }
@@ -520,6 +555,13 @@ namespace DivineVerITies
 
         }
 
+        private void CancelR_CancelAsyncTask(string filename)
+        {
+            //dwn.Cancel(true);
+            StopService(dwnIntent);
+            System.IO.File.Delete(filename);
+            //cancelR.CancelAsyncTask -= CancelR_CancelAsyncTask;
+        }
 
         private void setupTabIcons()
         {
@@ -608,10 +650,10 @@ namespace DivineVerITies
                         StartActivity(intent);
                         break;
 
-                    case Resource.Id.nav_help:
-                        intent = new Intent(this, typeof(SampleChooserActivity));
-                        StartActivity(intent);
-                        break;
+                    //case Resource.Id.nav_help:
+                    //    intent = new Intent(this, typeof(SampleChooserActivity));
+                    //    StartActivity(intent);
+                    //    break;
                 }
             };
         }
@@ -661,9 +703,15 @@ namespace DivineVerITies
                     break;
                 case 1:
                     //SlidingUpPanelLayout.PanelState state= mLayout.GetPanelState();
-                    if (mLayout.GetPanelState() != SlidingUpPanelLayout.PanelState.Hidden)
+                    if (binder != null)
                     {
-                        mLayout.SetPanelState(SlidingUpPanelLayout.PanelState.Hidden);
+                        if (binder.GetMediaPlayerService().mediaPlayer == null || binder.GetMediaPlayerService().MediaPlayerState == PlaybackStateCompat.StateStopped)
+                        {
+                            if (mLayout.GetPanelState() != SlidingUpPanelLayout.PanelState.Hidden)
+                            {
+                                mLayout.SetPanelState(SlidingUpPanelLayout.PanelState.Hidden);
+                            }
+                        }
                     }
                     break;
                 case 2:

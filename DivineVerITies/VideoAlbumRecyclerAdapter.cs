@@ -126,7 +126,7 @@ namespace DivineVerITies
                 .Load(mVideos[position].ImageUrl)
                 .Placeholder(Resource.Drawable.ChurchLogo_Gray)
                 .Error(Resource.Drawable.ChurchLogo_Gray)
-                .DiskCacheStrategy(DiskCacheStrategy.All)
+                //.DiskCacheStrategy(DiskCacheStrategy.All)
                 .Into(simpleHolder.mAlbumArt);
         }
 

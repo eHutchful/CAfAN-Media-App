@@ -17,6 +17,7 @@ using Android.Text;
 using Android.Graphics;
 using Android.Text.Style;
 using System.Globalization;
+using Newtonsoft.Json;
 
 namespace DivineVerITies
 {
@@ -94,38 +95,64 @@ namespace DivineVerITies
             };
             simpleHolder.mOptions.Click += (s, e) =>
             {
-                Android.Support.V7.Widget.PopupMenu Popup = new Android.Support.V7.Widget.PopupMenu(
-                    simpleHolder.mOptions.Context, simpleHolder.mOptions);
-                Popup.Inflate(Resource.Menu.menu_album);
-                Popup.MenuItemClick += (o, args) =>
+                //Android.Support.V7.Widget.PopupMenu Popup = new Android.Support.V7.Widget.PopupMenu(
+                //    simpleHolder.mOptions.Context, simpleHolder.mOptions);
+                //Popup.Inflate(Resource.Menu.menu_album);
+                //Popup.MenuItemClick += (o, args) =>
+                //{
+                //    switch (args.Item.ItemId)
+                //    {
+                //        //case Resource.Id.action_add_favourite:
+                //        //    break;
+
+                //        //case Resource.Id.action_play_next:
+                //        //    break;
+
+                //        case Resource.Id.action_Download:
+                //            MyService.selectedVideo = mVideos[position];
+                //            MyService.contxt = mContext;
+                //            var intent = new Intent(mContext, typeof(MyService));
+                //            intent.SetAction(MyService.Startvd);
+                //            mContext.StartService(intent);
+
+                //            break;
+                //    }
+                //}; Popup.Show();
+
+                //MyService.selectedVideo = mVideos[position];
+                //MyService.contxt = mContext;
+                //var intent = new Intent(mContext, typeof(MyService));
+                //intent.SetAction(MyService.Startvd);
+                //mContext.StartService(intent);
+
+
+                var checker = new FileChecker(mContext, "video", mVideos[position]);
+                bool exists = checker.FileExists();
+                if (exists)
                 {
-                    switch (args.Item.ItemId)
-                    {
-                        //case Resource.Id.action_add_favourite:
-                        //    break;
+                    checker.CreateAndShowDialog(mVideos[position]);
+                }
+                else
+                {
+                    //new DownloadTask(mContext, mVideos[position]).Execute(mVideos[position].Link);
+                    var video = mVideos[position];
+                    var dwnIntent = new Intent(mContext, typeof(DownloadService));
+                    dwnIntent.PutExtra("url", video.Link);
+                    dwnIntent.PutExtra("type", "video");
+                    dwnIntent.PutExtra("selectedVideo", JsonConvert.SerializeObject(video));
+                    mContext.StartService(dwnIntent);
+                }
 
-                        //case Resource.Id.action_play_next:
-                        //    break;
-
-                        case Resource.Id.action_Download:
-                            MyService.selectedVideo = mVideos[position];
-                            MyService.contxt = mContext;
-                            var intent = new Intent(mContext, typeof(MyService));
-                            intent.SetAction(MyService.Startvd);
-                            mContext.StartService(intent);
-                            
-                            break;
-                    }
-                }; Popup.Show();
+                
             };
 
-            simpleHolder.mOptions.Visibility = ViewStates.Gone;
+            //simpleHolder.mOptions.Visibility = ViewStates.Gone;
 
             Glide.With(simpleHolder.mAlbumArt.Context)
                 .Load(mVideos[position].ImageUrl)
                 .Placeholder(Resource.Drawable.ChurchLogo_Gray)
                 .Error(Resource.Drawable.ChurchLogo_Gray)                
-                .DiskCacheStrategy(DiskCacheStrategy.All)
+                //.DiskCacheStrategy(DiskCacheStrategy.All)
                 .Into(simpleHolder.mAlbumArt);
         }
 
