@@ -426,7 +426,14 @@ namespace DivineVerITies
 
             #endregion
 
-            
+            if (Intent.HasExtra("slideup") && Intent.GetBooleanExtra("slideup", false))
+            {
+                //if (mLayout.GetPanelState() != SlidingUpPanelLayout.PanelState.Collapsed)
+                //{
+                //mLayout.SetPanelState(SlidingUpPanelLayout.PanelState.Collapsed);
+                //}
+                layout.Visibility = ViewStates.Visible;
+            }
         }
 
         

@@ -95,6 +95,13 @@ namespace DivineVerITies.Helpers
                 return false;
             }
 
+            if (!isValidPassword(pass, ".*[A-Z].*"))
+            {
+                textInputLayout.Error = "Password must contain at least one Uppercase letter";
+                //hideKeyboardFrom(textInputLayout.EditText);
+                return false;
+            }
+
             if (!isValidPassword(pass, ".*[a-z].*"))
             {
                 textInputLayout.Error = "Password must contain at least one lowercase letter";

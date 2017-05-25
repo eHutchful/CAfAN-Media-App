@@ -13,6 +13,7 @@ using Newtonsoft.Json.Linq;
 using DivineVerITies.Helpers;
 using Android.Text;
 using Java.Lang;
+using System.Linq;
 
 namespace DivineVerITies.Fragments
 {
@@ -83,6 +84,12 @@ namespace DivineVerITies.Fragments
                 return;
             }
 
+            if (txtUserName.Any(char.IsWhiteSpace))
+            {
+                UserName.Error = "Username cannot contain space characters";
+                return;
+            }
+
             if (!validityChecker.validatePassword(Password, txtPassword, txtUserName))
             {
                 return;
@@ -120,7 +127,7 @@ namespace DivineVerITies.Fragments
             {
                 Toast.MakeText(this.Context, exception.Message, ToastLength.Long).Show();
                 //if (string.Equals(exception.Message, "invalid_grant"))
-                    CreateAndShowDialog("Error", "Error Creating User. Please Try Again.");                
+                    CreateAndShowDialog("Error Creating User. Please Try Again.", "Error");                
             }
             catch(System.Exception ex)
             {
