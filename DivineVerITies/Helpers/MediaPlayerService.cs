@@ -586,7 +586,7 @@ namespace DivineVerITies.Helpers
                 await Task.Run(() => {
                     if (mediaPlayer == null)
                     {
-                        MainApp.loadingBar.Visibility = Android.Views.ViewStates.Gone;
+                        pbarState = ViewStates.Gone;
                         return;
 
                     }
@@ -595,7 +595,7 @@ namespace DivineVerITies.Helpers
                     if (mediaPlayer.IsPlaying)
                     {
                         mediaPlayer.Stop();
-                        MainApp.loadingBar.Visibility = Android.Views.ViewStates.Gone;
+                        pbarState = ViewStates.Gone;
                     }
 
                     UpdatePlaybackState(PlaybackStateCompat.StateStopped);
