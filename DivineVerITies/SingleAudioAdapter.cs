@@ -79,16 +79,36 @@ namespace DivineVerITies
                         //    break;
 
                         case 1:
-                            MyService.selectedAudio = mAudios[position];
-                            MyService.contxt = mContext;
-                            var intent = new Intent(mContext, typeof(MyService));
-                            intent.SetAction(MyService.StartD);
-                            mContext.StartService(intent);
+                            //MyService.selectedAudio = mAudios[position];
+                            //MyService.contxt = mContext;
+                            //var intent = new Intent(mContext, typeof(MyService));
+                            //intent.SetAction(MyService.StartD);
+                            //mContext.StartService(intent);
+
+
+                            var checker = new FileChecker(mContext, "audio", mAudios[position]);
+                            bool exists = checker.FileExists();
+                            if (exists)
+                            {
+                                checker.CreateAndShowDialog(mAudios[position]);
+                            }
+                            else
+                            {
+                                //new DownloadTask(mContext, mAudios[position]).Execute(mAudios[position].Link);
+                                var audio = mAudios[position];
+                                var dwnIntent = new Intent(mContext, typeof(DownloadService));
+                                dwnIntent.PutExtra("url", audio.Link);
+                                dwnIntent.PutExtra("type", "audio");
+                                dwnIntent.PutExtra("selectedAudio", JsonConvert.SerializeObject(audio));
+                                mContext.StartService(dwnIntent);
+                            }
+
+
                             break;
 
                         case 2:
                             string serial;
-                            intent = new Intent(mContext, typeof(PodcastDetails));
+                            var intent = new Intent(mContext, typeof(PodcastDetails));
                             serial = JsonConvert.SerializeObject(mAudios[position]);
                             intent.PutExtra("selectedItem", serial);
                             mContext.StartActivity(intent);

@@ -85,9 +85,9 @@ namespace DivineVerITies.Fragments
             try
             {
                 mVideos = await(new Initialize()).getVideoList();
-                if (mVideos.Count > 0)
-                {
-                    var favourties = Initialize.getFavouritesList(mVideos, Activity);
+                var favourties = Initialize.getFavouritesList(mVideos, Activity);
+                if (favourties.Count > 0)
+                {                   
                     mVideoAdapter = new VideoAlbumRecyclerViewAdapter(Activity, favourties, Activity.Resources, true);
                     videoRecyclerView.SetAdapter(mVideoAdapter);
 
@@ -120,9 +120,10 @@ namespace DivineVerITies.Fragments
             {
 
                 mAudios = await (new Initialize()).getAudioList();
-                if (mAudios.Count > 0)
-                {
-                    var favourties = Initialize.getFavouritesList(mAudios, Activity);
+                var favourties = Initialize.getFavouritesList(mAudios, Activity);
+
+                if (favourties.Count > 0)
+                {                   
                     mAudioAdapter = new AudioRecyclerViewAdapter(Activity, favourties, Activity.Resources);
                     audioRecyclerView.SetAdapter(mAudioAdapter);
 

@@ -108,7 +108,7 @@ namespace DivineVerITies
                     .Load(selectedAudio.ImageUrl)
                     .Placeholder(Resource.Drawable.ChurchLogo_Gray)
                     .Error(Resource.Drawable.ChurchLogo_Gray)                   
-                    .DiskCacheStrategy(DiskCacheStrategy.All)
+                    //.DiskCacheStrategy(DiskCacheStrategy.All)
                     .Into(mAlbumArt);
                 ProgressBar pBar= FindViewById<ProgressBar>(Resource.Id.image_loading);
                 pBar.Visibility = ViewStates.Gone;                

@@ -47,18 +47,18 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
-    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <AndroidLinkMode>Full</AndroidLinkMode>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
     <BundleAssemblies>False</BundleAssemblies>
     <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
-    <AndroidSupportedAbis>armeabi,armeabi-v7a,x86,x86_64,arm64-v8a</AndroidSupportedAbis>
-    <Debugger>Xamarin</Debugger>
+    <AndroidSupportedAbis>armeabi-v7a;arm64-v8a</AndroidSupportedAbis>
     <AotAssemblies>False</AotAssemblies>
     <EnableLLVM>False</EnableLLVM>
     <AndroidEnableMultiDex>False</AndroidEnableMultiDex>
     <EnableProguard>False</EnableProguard>
     <DebugSymbols>False</DebugSymbols>
     <JavaMaximumHeapSize>400m</JavaMaximumHeapSize>
+    <Debugger>.Net (Xamarin)</Debugger>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ExoPlayer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -259,10 +259,13 @@
     <Compile Include="Fragments\Downloaded.cs" />
     <Compile Include="Fragments\Fragment6.cs" />
     <Compile Include="Fragments\Subscriptions.cs" />
+    <Compile Include="Helpers\DownloadService.cs" />
     <Compile Include="Helpers\CustomWebViewClient.cs" />
     <Compile Include="Helpers\DividerDecoration.cs" />
     <Compile Include="Helpers\DownloadManager.cs" />
-    <Compile Include="Helpers\DownloadService.cs" />
+    <Compile Include="Helpers\Service1.cs" />
+    <Compile Include="Helpers\DownloadTask.cs" />
+    <Compile Include="Helpers\FileChecker.cs" />
     <Compile Include="Helpers\ISimpleMediaHolder.cs" />
     <Compile Include="Helpers\Media.cs" />
     <Compile Include="Helpers\AudioService.cs" />
@@ -914,6 +917,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_announcement_black_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\ChurchLogo_Glow.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

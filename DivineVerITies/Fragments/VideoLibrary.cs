@@ -49,7 +49,7 @@ namespace DivineVerITies.Fragments
             mProgresBar = view.FindViewById<ProgressBar>(Resource.Id.audio_player_loading);
             mProgresBar.Animate();
             swipeRefreshLayout = view.FindViewById<SwipeRefreshLayout>(Resource.Id.swipe_refresh_layout);
-            swipeRefreshLayout.SetColorSchemeColors(Color.Indigo, Color.Pink, Color.Blue, Color.Yellow);
+            swipeRefreshLayout.SetColorSchemeColors(Color.ParseColor("#067ab4"));
             SetUpVideoRecyclerView(recyclerView);
             return view;
         }
@@ -81,7 +81,7 @@ namespace DivineVerITies.Fragments
             });
         }
 
-        private async Task getVideosAsync()
+        private async Task getVideosAsync(bool userSwiped)
         {
             try
             {
@@ -91,6 +91,11 @@ namespace DivineVerITies.Fragments
 
                 recyclerView.Visibility = ViewStates.Visible;
                 mProgresBar.Visibility = ViewStates.Gone;
+
+                if (userSwiped)
+                {
+                    swipeRefreshLayout.Refreshing = false;
+                }
             }
             catch (Exception e)
             {
@@ -99,26 +104,29 @@ namespace DivineVerITies.Fragments
                  .SetAction("Retry", async v =>
                  {
                      mProgresBar.Visibility = ViewStates.Visible;
-                     await getVideosAsync();
+                     await getVideosAsync(false);
                  }).Show();
             }
         }
 
-        public override async void OnActivityCreated(Bundle savedInstanceState)
+        public override void OnActivityCreated(Bundle savedInstanceState)
         {
             base.OnActivityCreated(savedInstanceState);
-
-            await getVideosAsync();
             HasOptionsMenu = true;
             swipeRefreshLayout.Refresh += swipeRefreshLayout_Refresh;
         }
 
         private async void swipeRefreshLayout_Refresh(object sender, EventArgs e)
         {
-            await getVideosAsync();
-            swipeRefreshLayout.Refreshing = false;
+            await getVideosAsync(true);
+            
         }
 
+        public async override void OnStart()
+        {
+            base.OnStart();
+            await getVideosAsync(false);
+        }
         public override void OnCreateOptionsMenu(IMenu menu, MenuInflater inflater)
         {
             var item = menu.FindItem(Resource.Id.action_search);

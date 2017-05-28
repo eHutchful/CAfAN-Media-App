@@ -59,7 +59,7 @@ namespace DivineVerITies
                 .Placeholder(Resource.Drawable.ChurchLogo)
                 .Error(Resource.Drawable.ChurchLogo)
                 .SkipMemoryCache(true)
-                .DiskCacheStrategy(DiskCacheStrategy.All)
+                //.DiskCacheStrategy(DiskCacheStrategy.All)
                 .Into(holder.Image);
         }
 

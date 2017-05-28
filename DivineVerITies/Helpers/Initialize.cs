@@ -21,7 +21,7 @@ namespace DivineVerITies.Helpers
         public async Task<List<AudioList>> getAudioList()
         {
             string feed = //"http://feeds.soundcloud.com/users/soundcloud:users:247218071/sounds.rss";
-                "http://versolstore.blob.core.windows.net/divineverities/audios/audio.rss";
+                "http://versolstore.blob.core.windows.net/cafan/audios/audio.rss";
 
             var httpClient = new HttpClient(new NativeMessageHandler());
             //httpClient.DefaultRequestHeaders.Add("x-ms-date", DateTime.UtcNow.ToString("R", CultureInfo.InvariantCulture));
@@ -66,7 +66,7 @@ namespace DivineVerITies.Helpers
         public async Task<List<Video>> getVideoList()
         {
             string feed = //"http://feeds.soundcloud.com/users/soundcloud:users:247218071/sounds.rss";
-                "http://versolstore.blob.core.windows.net/divineverities/videos/video.rss";
+                "http://versolstore.blob.core.windows.net/cafan/videos/video.rss";
 
             var httpClient = new HttpClient();
             //httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/atom+xml"));

@@ -47,7 +47,7 @@ namespace DivineVerITies
             SetUpRecyclerView(recyclerView);
             mProgressBar = FindViewById<ProgressBar>(Resource.Id.message_loading);
             swipeRefreshLayout = FindViewById<SwipeRefreshLayout>(Resource.Id.swipe_refresh_layout);
-            swipeRefreshLayout.SetColorSchemeColors(Color.Purple);
+            swipeRefreshLayout.SetColorSchemeColors(Color.ParseColor("#067ab4"));
 
             swipeRefreshLayout.Refresh += delegate
             {

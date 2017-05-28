@@ -138,9 +138,17 @@ namespace DivineVerITies.Fragments
                         var media = new Media();
                         string filep = System.IO.Path.Combine(path, file);
                         media.Location = filep;
-                        await metaRetriever.SetDataSourceAsync(filep);
                         try
                         {
+                            await metaRetriever.SetDataSourceAsync(filep);
+                        }
+                        catch(Exception E)
+                        {
+                            continue;
+                        }
+                        try
+                        {
+                            
                             media.Title = metaRetriever.ExtractMetadata(MetadataKey.Title);
                             if (media.Title == null)
                             {

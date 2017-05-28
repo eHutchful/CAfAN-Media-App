@@ -22,7 +22,7 @@ namespace DivineVerITies.Helpers
 
     [Service]
     [IntentFilter(new[] { ActionPlay, ActionPause, ActionStop, ActionFastForward, ActionRewind, ActionTogglePlayback })]
-    public class AudioService : Service, AudioManager.IOnAudioFocusChangeListener,
+    public class AudioService : Android.App.Service, AudioManager.IOnAudioFocusChangeListener,
         MediaPlayer.IOnBufferingUpdateListener,
         MediaPlayer.IOnCompletionListener,
         MediaPlayer.IOnErrorListener,

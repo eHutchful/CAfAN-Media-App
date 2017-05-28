@@ -348,7 +348,7 @@ namespace DivineVerITies.Helpers
                 }
                 UpdatePlaybackState(PlaybackStateCompat.StateBuffering);
                 mediaPlayer.PrepareAsync();
-                AquireWifiLock();     
+                //AquireWifiLock();     
                 UpdateMediaMetadataCompat(metaRetriever);
                 StartNotification();
                 //byte[] imageByteArray = metaRetriever.GetEmbeddedPicture();
@@ -389,7 +389,7 @@ namespace DivineVerITies.Helpers
                 }
                 UpdatePlaybackState(PlaybackStateCompat.StateBuffering);
                 mediaPlayer.PrepareAsync();
-                AquireWifiLock();
+                //AquireWifiLock();
                 UpdateMediaMetadataCompat(metaRetriever);
                 StartNotification();
             }
@@ -604,7 +604,7 @@ namespace DivineVerITies.Helpers
                     {
                         StopNotification();
                         StopForeground(true);
-                        ReleaseWifiLock();
+                        //ReleaseWifiLock();
                         sContext.Post(x => toPlay(), null);
                         MainApp.loadingBar.Visibility = ViewStates.Gone;
                         playImage = Resource.Drawable.ic_play_circle_outline;
@@ -681,8 +681,10 @@ namespace DivineVerITies.Helpers
         {
             if (mediaSessionCompat == null)
                 return;
+            var activityIntent = new Intent(ApplicationContext, typeof(MainApp));
+            activityIntent.PutExtra("slideup", true);
 
-            var pendingIntent = PendingIntent.GetActivity(ApplicationContext, 0, new Intent(ApplicationContext, typeof(MainApp)), PendingIntentFlags.UpdateCurrent);
+            var pendingIntent = PendingIntent.GetActivity(ApplicationContext, 0, activityIntent, PendingIntentFlags.UpdateCurrent);
             MediaMetadataCompat currentTrack = mediaControllerCompat.Metadata;
 
             Android.Support.V7.App.NotificationCompat.MediaStyle style = new Android.Support.V7.App.NotificationCompat.MediaStyle();
@@ -890,7 +892,7 @@ namespace DivineVerITies.Helpers
 
                 StopNotification();
                 StopForeground(true);
-                ReleaseWifiLock();
+                //ReleaseWifiLock();
                 UnregisterMediaSessionCompat();
             }
         }

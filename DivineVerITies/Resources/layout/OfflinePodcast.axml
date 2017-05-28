@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="50"
-        android:background="#d3d3d3">
+        android:background="#ffffff">
         <ProgressBar
             android:id="@+id/audio_loading"
             style="?android:progressBarStyleLarge"
@@ -72,7 +72,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="50"
-        android:background="#d3d3d3">
+        android:background="#ffffff">
         <ProgressBar
             android:id="@+id/video_loading"
             style="?android:progressBarStyleLarge"

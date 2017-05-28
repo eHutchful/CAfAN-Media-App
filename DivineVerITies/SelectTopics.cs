@@ -37,7 +37,7 @@ namespace DivineVerITies
             jo.Add("title", "The Lord and His Christ");
             jo.Add("mediaType", "audio");
             jo.Add("category", "Doctrine");
-            var t = await AzureService.DefaultService.client.InvokeApiAsync("/api/notification/newmedia", jo);
+            //var t = await AzureService.DefaultService.client.InvokeApiAsync("/api/notification/newmedia", jo);
 
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
 

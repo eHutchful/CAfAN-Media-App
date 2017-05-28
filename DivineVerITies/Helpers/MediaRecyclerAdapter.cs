@@ -75,7 +75,7 @@ namespace DivineVerITies.Helpers
                     .Error(Resource.Drawable.Logo_trans192)
                     .SkipMemoryCache(true)
                     //.Thumbnail(1)
-                    .DiskCacheStrategy(DiskCacheStrategy.All)
+                    //.DiskCacheStrategy(DiskCacheStrategy.All)
                     .Into(simpleHolder.AlbumArt);
 
                 string Msg = media[position].Title.ToLower(CultureInfo.CurrentCulture);

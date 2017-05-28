@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using DivineVerITies.Fragments;
+using System.Text;
 
 namespace DivineVerITies.Helpers
 {
@@ -45,8 +46,8 @@ namespace DivineVerITies.Helpers
             // define request content
             HttpContent content = new StringContent(
             string.Format("username={0}&password={1}&grant_type=password",
-                          email.ToLower(),
-                          password));
+                          Uri.EscapeDataString(email.ToLower()),
+                          Uri.EscapeDataString(password)));
 
             // set header
             content.Headers.ContentType

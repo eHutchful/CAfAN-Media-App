@@ -81,7 +81,7 @@ namespace DivineVerITies
                 .Error(Resource.Drawable.Logo_trans192)
                 .SkipMemoryCache(true)
                 //.Thumbnail(1)
-                .DiskCacheStrategy(DiskCacheStrategy.All)
+                //.DiskCacheStrategy(DiskCacheStrategy.All)
                 .Into(simpleHolder.mAlbumArt);
 
             string Msg = mAudios[position].Title.ToLower(CultureInfo.CurrentCulture);

@@ -54,7 +54,7 @@ namespace DivineVerITies
                 .Transform(new CircleTransform(simpleHolder.mImageView.Context))
                 .Placeholder(Resource.Drawable.ChurchLogo_Gray)
                 .Error(Resource.Drawable.ChurchLogo_Gray)
-                .DiskCacheStrategy(DiskCacheStrategy.All)
+                //.DiskCacheStrategy(DiskCacheStrategy.All)
                 .Into(simpleHolder.mImageView);
 
             simpleHolder.mTxtView.Text = mValues[position];

@@ -130,7 +130,7 @@ namespace DivineVerITies
                     .Transform(new CircleTransform(simpleHolder.mAlbumArt.Context))
                     .Placeholder(Resource.Drawable.ChurchLogo_Gray)
                     .Error(Resource.Drawable.ChurchLogo_Gray)
-                    .DiskCacheStrategy(DiskCacheStrategy.All)
+                    //.DiskCacheStrategy(DiskCacheStrategy.All)
                     .Into(simpleHolder.mAlbumArt);
 
                 string Msg = mAudios[position].Title.ToLower(CultureInfo.CurrentCulture);
@@ -157,7 +157,7 @@ namespace DivineVerITies
                     .Load(mAudios[position].ImageUrl)
                     .Placeholder(Resource.Drawable.ChurchLogo_Gray)
                     .Error(Resource.Drawable.ChurchLogo_Gray)
-                    .DiskCacheStrategy(DiskCacheStrategy.All)
+                    //.DiskCacheStrategy(DiskCacheStrategy.All)
                     .Into(simpleHolder.mAlbumArt);
 
                 string Msg = mAudios[position].Title.ToLower(CultureInfo.CurrentCulture);

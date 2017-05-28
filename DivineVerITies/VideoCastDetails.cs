@@ -46,21 +46,22 @@ namespace DivineVerITies
             collapsingToolBar.Title = selectedVideo.Title;
             collapsingToolBar.SetExpandedTitleColor(Android.Resource.Color.Transparent);
 
-            //FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
+            FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
+            fab.Visibility = ViewStates.Visible;
 
-            //fab.Click += (o, e) =>
-            //{
-            //    View anchor = o as View;
-              
-            //    PlayerActivity.selectedVideo = selectedVideo;
-            //    try { StopService(new Intent(this, typeof(MediaPlayerService))); }
-            //    catch (Exception es) { }
-            //    var mpdIntent = new Intent(this, typeof(PlayerActivity))
-            //        .SetData(Android.Net.Uri.Parse(selectedVideo.Link))
-            //        .PutExtra(PlayerActivity.ContentIdExtra, 3)
-            //        .PutExtra(PlayerActivity.ContentTypeExtra, PlayerActivity.TypeOther);
-            //    StartActivity(mpdIntent);               
-            //};
+            fab.Click += (o, e) =>
+            {
+                View anchor = o as View;
+
+                PlayerActivity.selectedVideo = selectedVideo;
+                try { StopService(new Intent(this, typeof(MediaPlayerService))); }
+                catch (Exception es) { }
+                var mpdIntent = new Intent(this, typeof(PlayerActivity))
+                    .SetData(Android.Net.Uri.Parse(selectedVideo.Link))
+                    .PutExtra(PlayerActivity.ContentIdExtra, 3)
+                    .PutExtra(PlayerActivity.ContentTypeExtra, PlayerActivity.TypeOther);
+                StartActivity(mpdIntent);
+            };
             TextView mAudioDescription = FindViewById<TextView>(Resource.Id.AudioDescription);
             mAudioDescription.Text = selectedVideo.Description;
             mAudioCategory = FindViewById<TextView>(Resource.Id.category);
@@ -101,7 +102,7 @@ namespace DivineVerITies
                    .Load(selectedVideo.ImageUrl)
                    .Placeholder(Resource.Drawable.ChurchLogo_Gray)
                    .Error(Resource.Drawable.ChurchLogo_Gray)
-                   .DiskCacheStrategy(DiskCacheStrategy.All)
+                   //.DiskCacheStrategy(DiskCacheStrategy.All)
                    .Into(mAlbumArt);
             ProgressBar pBar = FindViewById<ProgressBar>(Resource.Id.image_loading);
             pBar.Visibility = ViewStates.Gone;

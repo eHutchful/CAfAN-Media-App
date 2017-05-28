@@ -58,7 +58,7 @@ namespace DivineVerITies.Helpers
                     startDownload("audio");
                     break;
                 case Startvd:
-                    startDownload("vide0");
+                    startDownload("video");
                     break;
             }
             return StartCommandResult.Sticky;

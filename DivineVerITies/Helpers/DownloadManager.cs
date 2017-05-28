@@ -24,12 +24,16 @@ namespace DivineVerITies.Helpers
     {
         public static CancellationTokenSource cancellation;
         private static int prevper = 0;
+        //public static int UPDATE_PROGRESS = 8344;
+        Android.Support.V4.App.NotificationCompat.Builder builder;
+
         public DownloadManager() : base("Downloader")
         {
 
         }
-        protected override async void OnHandleIntent(Intent intent)
+        protected override void OnHandleIntent(Intent intent)
         {
+            //ResultReceiver receiver = (ResultReceiver)intent.GetParcelableExtra("receiver");
             string filename = MyService.filename;
             string link = "";
             if (MyService.selectedAudio == null)
@@ -91,7 +95,7 @@ namespace DivineVerITies.Helpers
                 HttpWebResponse aResponse = (HttpWebResponse)aRequest.GetResponse();
                 stream = aResponse.GetResponseStream();
                 cancellation.Token.Register(stream.Close);
-                byte[] buffer = new byte[4096];
+                byte[] buffer = new byte[524288];
                 totalBytes = Int32.Parse(aResponse.Headers[HttpRequestHeader.ContentLength]); 
                 var filestream = File.Create(filename, totalBytes);
                 for (;;)
@@ -132,6 +136,10 @@ namespace DivineVerITies.Helpers
             catch (Exception b)
             {
                 downloadError();
+                if (File.Exists(filename))
+                {
+                    File.Delete(filename);
+                }
                 return;
 
             }
@@ -144,8 +152,8 @@ namespace DivineVerITies.Helpers
             intent.PutExtra("filename", name);
             intent.SetAction(CancelReceiver.cancel);
             PendingIntent pIntent = PendingIntent.GetBroadcast(this, 100, intent, PendingIntentFlags.UpdateCurrent);
-            Android.Support.V4.App.NotificationCompat.Builder builder = new Android.Support.V4.App.NotificationCompat.Builder(this)
-                .SetContentTitle("Downloading Podcast")
+            builder = new Android.Support.V4.App.NotificationCompat.Builder(this)
+                .SetContentTitle(MyService.selectedAudio.Title)
                 .SetContentText("Download Starting")
                 .SetLargeIcon(BitmapFactory.DecodeResource(Resources, Resource.Drawable.Logo_trans192))
                 .SetSmallIcon(Resource.Drawable.ic_cloud_download)
@@ -157,7 +165,7 @@ namespace DivineVerITies.Helpers
                 .SetProgress(0, 0, true);
             Notification notification = builder.Build();
             NotificationManager notificationManager =
-                GetSystemService(Context.NotificationService) as NotificationManager;
+                GetSystemService(NotificationService) as NotificationManager;
             notificationManager.Notify(100, notification);
         }
         private void ChangePBar(int per, string name)

@@ -71,6 +71,9 @@ namespace DivineVerITies
                     if (networkStatusMonitor.State == NetworkState.ConnectedData || networkStatusMonitor.State == NetworkState.ConnectedWifi)
                     {
                         var t = await AzureService.DefaultService.client.InvokeApiAsync("/api/feedback/sendsupportmail", jo);
+                        Email.EditText.Text = string.Empty;
+                        Subject.EditText.Text = string.Empty;
+                        Body.EditText.Text = string.Empty;
                         Snackbar.Make(anchor, "Thanks. We'll get back to you shortly.", Snackbar.LengthIndefinite).Show();
                     }
                     else if (networkStatusMonitor.State == NetworkState.Disconnected)
